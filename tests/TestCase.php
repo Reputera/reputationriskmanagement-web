@@ -1,7 +1,11 @@
 <?php
 
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+
 class TestCase extends Illuminate\Foundation\Testing\TestCase
 {
+    use DatabaseTransactions, \SoftDeleteTestTrait;
+
     /**
      * The base URL to use while testing the application.
      *
@@ -15,6 +19,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
      * @var string $apiVersionPrefix
      */
     protected $apiVersionPrefix = 'api/';
+
     /**
      * Creates the application.
      *
@@ -106,6 +111,13 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
         $data = $this->response->getData(true);
         $this->assertArrayHasKey('message', $data);
         $this->assertEquals($message, $data['message']);
+    }
+
+    protected function assertJsonResponseHasDataKey($key)
+    {
+        $data = $this->response->getData(true);
+        $this->assertArrayHasKey('data', $data);
+        $this->assertArrayHasKey($key, $data['data']);
     }
 
     protected function assertJsonResponseHasErrors()
