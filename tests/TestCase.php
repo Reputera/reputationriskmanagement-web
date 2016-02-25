@@ -2,6 +2,9 @@
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
+use Illuminate\Database\SQLiteConnection;
+use Illuminate\Support\Facades\DB;
+
 class TestCase extends Illuminate\Foundation\Testing\TestCase
 {
     use DatabaseTransactions, \SoftDeleteTestTrait;
@@ -30,6 +33,10 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
         $app = require __DIR__.'/../bootstrap/app.php';
 
         $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+
+        if (DB::connection() instanceof SQLiteConnection) {
+            DB::statement(DB::raw('PRAGMA foreign_keys = ON'));
+        }
 
         return $app;
     }
