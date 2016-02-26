@@ -8,7 +8,8 @@
         "laravel/framework": "5.2.*",
         "aws/aws-sdk-php": "~3.0",
         "league/fractal": "^0.13.0",
-        "tymon/jwt-auth": "@dev"
+        "tymon/jwt-auth": "@dev",
+        "guzzlehttp/guzzle": "^6.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
