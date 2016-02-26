@@ -20,7 +20,7 @@ class CanGetTodaysStockInfoForACompanyTest extends \TestCase
         $quandl = new \App\Services\Vendors\Quandl($mockedClient);
 
         $expectedResults = [
-            "Date" => date('Y-m-d'),
+            "Date" => date('Y-m-d', strtotime('today-1day')),
             "Open" => 75.68,
             "High" => 76.21,
             "Low" => 74.66,
@@ -61,11 +61,11 @@ class CanGetTodaysStockInfoForACompanyTest extends \TestCase
                     12 => "Adj. Volume",
                 ],
                 "start_date" => "1984-12-18",
-                "end_date" => date('Y-m-d'),
+                "end_date" => date('Y-m-d', strtotime('today-1day')),
                 "frequency" => "daily",
                 "data" => [
                     0 => [
-                        0 => date('Y-m-d'),
+                        0 => date('Y-m-d', strtotime('today-1day')),
                         1 => 75.68,
                         2 => 76.21,
                         3 => 74.66,
