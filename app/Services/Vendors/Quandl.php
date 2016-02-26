@@ -95,7 +95,8 @@ class Quandl
     public function latest($tickerSymbol)
     {
         if ($res = $this->get($tickerSymbol, 'limit=1&end_date='.date('Y-m-d'))) {
-            return $this->getDataArrayFromResults(json_decode($res->getBody(), true)['dataset_data']);
+            $result = $this->getDataArrayFromResults(json_decode($res->getBody(), true)['dataset_data']);
+            return current($result);
         };
         return false;
     }

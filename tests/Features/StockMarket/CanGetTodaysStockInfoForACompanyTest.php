@@ -20,21 +20,19 @@ class CanGetTodaysStockInfoForACompanyTest extends \TestCase
         $quandl = new \App\Services\Vendors\Quandl($mockedClient);
 
         $expectedResults = [
-            [
-                "Date" => date('Y-m-d'),
-                "Open" => 75.68,
-                "High" => 76.21,
-                "Low" => 74.66,
-                "Close" => 76.13,
-                "Volume" => 866085,
-                "Ex-Dividend" => 0,
-                "Split Ratio" => 1,
-                "Adj. Open" => 75.68,
-                "Adj. High" => 76.21,
-                "Adj. Low" => 74.66,
-                "Adj. Close" => 76.13,
-                "Adj. Volume" => 866085,
-            ]
+            "Date" => date('Y-m-d'),
+            "Open" => 75.68,
+            "High" => 76.21,
+            "Low" => 74.66,
+            "Close" => 76.13,
+            "Volume" => 866085,
+            "Ex-Dividend" => 0,
+            "Split Ratio" => 1,
+            "Adj. Open" => 75.68,
+            "Adj. High" => 76.21,
+            "Adj. Low" => 74.66,
+            "Adj. Close" => 76.13,
+            "Adj. Volume" => 866085,
         ];
 
         $this->assertEquals($expectedResults, $quandl->latest('HAS'));
