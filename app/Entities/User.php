@@ -109,4 +109,14 @@ class User extends Authenticatable
                 implode(', ', $allRoles).') must be assigned to create a user.');
         }
     }
+
+    /**
+     * Checks the user to see if they are an admin.
+     *
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        return ($this->role && $this->role == Role::ADMIN);
+    }
 }
