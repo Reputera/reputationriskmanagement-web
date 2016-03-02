@@ -1,6 +1,6 @@
 <?php
 
-namespace Features\StockMarket;
+namespace Tests\Features\StockMarket;
 
 class CanGetTodaysStockInfoForACompanyTest extends \TestCase
 {

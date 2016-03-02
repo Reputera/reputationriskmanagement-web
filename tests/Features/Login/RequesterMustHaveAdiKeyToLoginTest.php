@@ -1,6 +1,6 @@
 <?php
 
-namespace Features\Login;
+namespace Tests\Features\Login;
 
 class RequesterMustHaveAdiKeyToLoginTest extends \TestCase
 {

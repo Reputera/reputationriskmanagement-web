@@ -1,6 +1,6 @@
 <?php
 
-namespace Features\Login;
+namespace Tests\Features\Login;
 
 use App\Entities\ApiKey;
 use App\Entities\User;
