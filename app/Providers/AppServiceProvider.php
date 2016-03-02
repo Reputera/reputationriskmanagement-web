@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Providers\Auth\AdminUserProvider;
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
 use Illuminate\Support\ServiceProvider;
 
@@ -14,7 +15,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        \Auth::provider('admin', function ($app, array $config) {
+            return new AdminUserProvider($app['hash'], $config['model']);
+        });
     }
 
     /**
