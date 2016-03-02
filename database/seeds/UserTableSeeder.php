@@ -1,5 +1,6 @@
 <?php
 
+use App\Entities\Role;
 use App\Entities\User;
 use Illuminate\Database\Seeder;
 
@@ -16,6 +17,7 @@ class UserTableSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@rrm.com',
             'password' => bcrypt('testing'),
+            'role' => Role::ADMIN
         ]);
     }
 }

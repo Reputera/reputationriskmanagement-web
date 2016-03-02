@@ -2,6 +2,7 @@
 
 namespace App\Entities;
 
+use App\Entities\Exceptions\InvalidRoleAssignment;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -38,7 +39,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'role'
     ];
 
     /**
@@ -58,5 +59,54 @@ class User extends Authenticatable
     public function companies()
     {
         return $this->hasMany(Company::class);
+    }
+
+    /**
+     * Save a new model and return the instance.
+     *
+     * @param  array  $attributes
+     * @throws InvalidRoleAssignment
+     * @return User
+     */
+    public static function create(array $attributes = [])
+    {
+        self::arrayHasAssignableRole($attributes);
+        return parent::create($attributes);
+    }
+
+    /**
+     * Get the first record matching the attributes or create it.
+     *
+     * @param  array  $attributes
+     * @return User
+     */
+    public function firstOrCreate(array $attributes)
+    {
+        if (! is_null($instance = $this->where($attributes)->first())) {
+            return $instance;
+        }
+
+        self::arrayHasAssignableRole($attributes);
+        $instance = $this->model->newInstance($attributes);
+
+        $instance->save();
+
+        return $instance;
+    }
+
+    /**
+     * Checks if a given array has a valid role in it.
+     *
+     * @param array $attributes
+     * @throws InvalidRoleAssignment
+     */
+    protected static function arrayHasAssignableRole(array $attributes)
+    {
+        $role = array_get($attributes, 'role');
+        $allRoles = Role::values();
+        if (!$role || !in_array($role, $allRoles)) {
+            throw new InvalidRoleAssignment('On of the following roles ('.
+                implode(', ', $allRoles).') must be assigned to create a user.');
+        }
     }
 }

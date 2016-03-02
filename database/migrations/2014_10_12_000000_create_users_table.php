@@ -1,5 +1,6 @@
 <?php
 
+use App\Entities\Role;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
@@ -15,6 +16,7 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->enum('role', Role::values());
             $table->string('email')->unique();
             $table->string('password', 60);
             $table->rememberToken();
