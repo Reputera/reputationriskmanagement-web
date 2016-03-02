@@ -1,2 +1,47 @@
-// @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+@import url(http://fonts.useso.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic);
+@import "bower_components/bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 
+@import '_variables';
+
+@import "bower_components/admin-lte.scss/scss/core";
+@import "bower_components/admin-lte.scss/scss/mixins";
+//
+@import "bower_components/admin-lte.scss/scss/header";
+@import "bower_components/admin-lte.scss/scss/sidebar";
+@import "bower_components/admin-lte.scss/scss/sidebar-mini";
+@import "bower_components/admin-lte.scss/scss/control-sidebar";
+@import "bower_components/admin-lte.scss/scss/dropdown";
+@import "bower_components/admin-lte.scss/scss/forms";
+@import "bower_components/admin-lte.scss/scss/progress-bars";
+@import "bower_components/admin-lte.scss/scss/small-box";
+@import "bower_components/admin-lte.scss/scss/boxes";
+@import "bower_components/admin-lte.scss/scss/info-box";
+@import "bower_components/admin-lte.scss/scss/timeline";
+@import "bower_components/admin-lte.scss/scss/buttons";
+//
+@import "bower_components/admin-lte.scss/scss/callout";
+@import "bower_components/admin-lte.scss/scss/alerts";
+@import "bower_components/admin-lte.scss/scss/navs";
+@import "bower_components/admin-lte.scss/scss/products";
+@import "bower_components/admin-lte.scss/scss/table";
+@import "bower_components/admin-lte.scss/scss/labels";
+@import "bower_components/admin-lte.scss/scss/direct-chat";
+@import "bower_components/admin-lte.scss/scss/users-list";
+@import "bower_components/admin-lte.scss/scss/carousel";
+@import "bower_components/admin-lte.scss/scss/modal";
+//
+////PAGES
+////------
+//@import "bower_components/admin-lte.scss/scss/mailbox";
+//@import "bower_components/admin-lte.scss/scss/lockscreen";
+@import "bower_components/admin-lte.scss/scss/login_and_register";
+//@import "bower_components/admin-lte.scss/scss/404_500_errors";
+//@import "bower_components/admin-lte.scss/scss/invoice";
+////
+////@import "bower_components/admin-lte.scss/scss/fullcalendar";
+//
+////Miscellaneous
+////-------------
+//@import "bower_components/admin-lte.scss/scss/miscellaneous";
+//@import "bower_components/admin-lte.scss/scss/print";
+@import "skins/skin-blue";
