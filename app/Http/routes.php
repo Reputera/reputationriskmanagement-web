@@ -1,8 +1,10 @@
 <?php
 
 Route::group(['middleware' => ['web']], function () {
-    Route::get('login', 'Auth\AuthController@getLogin');
-    Route::post('login', 'Auth\AuthController@postLogin');
+    Route::get('login', 'Auth\AuthController@getLogin')->name('login.get');
+    Route::post('login', 'Auth\AuthController@postLogin')->name('login.post');
+
+    Route::post('create-user', 'Users\UserController@store')->name('user.store');
 
     Route::group(['middleware' => ['auth']], function () {
         Route::get('/', function () {
@@ -14,9 +16,8 @@ Route::group(['middleware' => ['web']], function () {
 });
 
 Route::group(['prefix' => 'api', 'middleware' => ['api']], function () {
-    Route::post('login', 'Auth\ApiAuthController@authenticate')->name('api.post.login');
-
+    Route::post('login', 'Auth\ApiAuthController@authenticate')->name('api.login.post');
     Route::group(['middleware' => 'auth'], function () {
-        // Future routes.
+        Route::post('create-admin', 'Users\AdminUserController@store')->name('admin.store');
     });
 });
