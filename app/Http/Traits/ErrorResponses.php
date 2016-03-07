@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\JsonResponse;
 
-trait ErrorResponsesTrait
+trait ErrorResponses
 {
     /**
      * @apiDefine NotFound

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Traits\ErrorResponsesTrait;
-use App\Http\Traits\TransformerTrait;
+use App\Http\Traits\ErrorResponses;
+use App\Http\Traits\Transformer;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -11,5 +11,5 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class Controller extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, TransformerTrait, ErrorResponsesTrait;
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, Transformer, ErrorResponses;
 }

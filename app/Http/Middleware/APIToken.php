@@ -5,12 +5,12 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 use App\Entities\ApiKey;
-use App\Http\Traits\ErrorResponsesTrait;
+use App\Http\Traits\ErrorResponses;
 use Tymon\JWTAuth\Middleware\GetUserFromToken;
 
 class ApiToken extends GetUserFromToken
 {
-    use ErrorResponsesTrait;
+    use ErrorResponses;
 
     /**
      * {@inheritDoc}

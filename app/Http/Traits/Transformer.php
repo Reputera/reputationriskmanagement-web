@@ -9,7 +9,7 @@ use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use League\Fractal\Resource\Item;
 use Illuminate\Support\Collection as IlluminateCollection;
 
-trait TransformerTrait
+trait Transformer
 {
     /**
      * The default status code used for HTTP responses.
