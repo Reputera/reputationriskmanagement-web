@@ -2,15 +2,23 @@
 
 namespace App\Exceptions;
 
+use App\Http\Traits\ErrorResponses;
 use Exception;
-use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use Illuminate\Session\TokenMismatchException;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 class Handler extends ExceptionHandler
 {
+    use ErrorResponses;
+
     /**
      * A list of the exception types that should not be reported.
      *
@@ -20,6 +28,9 @@ class Handler extends ExceptionHandler
         AuthorizationException::class,
         HttpException::class,
         ModelNotFoundException::class,
+        NotFoundHttpException::class,
+        TokenExpiredException::class,
+        TokenMismatchException::class,
         ValidationException::class,
     ];
 
@@ -45,6 +56,33 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
+        if ($e instanceof TokenExpiredException) {
+            return $this->unauthorizedResponse('Session expired');
+        } elseif ($e instanceof FileNotFoundException) {
+            return $this->notFoundResponse('Not found');
+        } elseif ($e instanceof TokenInvalidException) {
+            return $this->unauthorizedResponse(['token_invalid']);
+        } elseif ($e instanceof TokenMismatchException) {
+            if ($this->isApiRequest($request)) {
+                return $this->errorResponse('Your session has expired please refresh this page to login again.', 400);
+            }
+            return redirect()->route('get.login')
+                ->with('error_message', 'Your token has expired. Please re-try your request.');
+        } elseif ($this->isApiRequest($request)) {
+            if ($e instanceof ValidationException) {
+                return $this->unprocessableEntyResponse($e);
+            } elseif ($e instanceof ModelNotFoundException || $e instanceof NotFoundHttpException) {
+                return $this->notFoundResponse();
+            }
+        }
+
         return parent::render($request, $e);
+    }
+
+    protected function isApiRequest($request)
+    {
+        return ($request->route() && str_contains($request->route()->getPrefix(), '/api') ||
+            ($request->acceptsJson() || $request->isJson() || $request->wantsJson())
+        );
     }
 }
