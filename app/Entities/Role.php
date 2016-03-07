@@ -9,5 +9,6 @@ class Role
     use Enumerable;
 
     const ADMIN = 'Admin';
+    const USER_ACCOUNT_ADMIN = 'User Account Admin';
     const USER = 'User';
 }
