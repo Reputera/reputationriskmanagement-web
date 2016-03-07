@@ -1,7 +1,7 @@
 <?php
 
+use App\Entities\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-
 use Illuminate\Database\SQLiteConnection;
 use Illuminate\Support\Facades\DB;
 
@@ -56,6 +56,19 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
     protected function apiCall($method, $uri, $parameters = [], $cookies = [], $files = [], $server = [], $content = null)
     {
         return parent::call($method, $this->apiVersionPrefix.$uri, $parameters, $cookies, $files, $server, $content);
+    }
+
+    /**
+     * Makes an Admin in the DB and logs them in.
+     *
+     * @param array $attributes
+     * @return User
+     */
+    protected function beLoggedInAsAdmin(array $attributes = [])
+    {
+        $user = factory(User::class, 'admin')->create($attributes);
+        $this->be($user);
+        return $user;
     }
 
     protected function assertJsonUnprocessableEntity($assertErrors = true)
