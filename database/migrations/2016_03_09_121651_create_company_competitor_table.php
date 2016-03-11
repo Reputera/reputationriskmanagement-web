@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCompanyRivalsTable extends Migration
+class CreateCompanyCompetitorTable extends Migration
 {
     /**
      * Run the migrations.
@@ -32,9 +32,9 @@ class CreateCompanyRivalsTable extends Migration
      */
     public function down()
     {
-        Schema::table('company_rivals', function (Blueprint $table) {
-            $table->dropForeign('company_rivals_rival_company_id_foreign');
+        Schema::table('company_competitor', function (Blueprint $table) {
+            $table->dropForeign('company_competitor_competitor_company_id_foreign');
         });
-        Schema::drop('company_rivals');
+        Schema::drop('company_competitor');
     }
 }
