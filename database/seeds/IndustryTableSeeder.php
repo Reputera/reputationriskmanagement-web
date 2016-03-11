@@ -12,13 +12,8 @@ class IndustryTableSeeder extends Seeder
      */
     public function run()
     {
-        Company::create([
-            'name' => 'Consumer Goods',
-            'entity_id' => 'I6fXbd'
-        ]);
-        Company::create([
-            'name' => 'Media and Entertainment',
-            'entity_id' => 'BEifq6'
+        Industry::create([
+            'name' => 'Consumer Package Goods (CPG)',
         ]);
     }
 }
