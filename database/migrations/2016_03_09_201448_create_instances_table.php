@@ -28,6 +28,7 @@ class CreateInstancesTable extends Migration
             $table->string('link');
             $table->float('positive_sentiment');
             $table->float('negative_sentiment');
+            $table->dateTime('published_at');
             $table->timestamps();
 
             $table->foreign('company_id')->references('id')->on('companies');
