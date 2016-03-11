@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCompaniesTable extends Migration
+class CreateCountriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,13 +12,14 @@ class CreateCompaniesTable extends Migration
      */
     public function up()
     {
-        Schema::create('companies', function (Blueprint $table) {
+        Schema::create('countries', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->string('stock_symbol', 5)->nullable();
-            $table->string('entity_id')->nullable();
+            $table->string('name')->index();
+            $table->string('entity_id');
+            $table->unsignedInteger('region_id')->nullable();
             $table->timestamps();
-            $table->softDeletes();
+
+            $table->foreign('region_id')->references('id')->on('regions');
         });
     }
 
@@ -29,6 +30,6 @@ class CreateCompaniesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('companies');
+        Schema::drop('countries');
     }
 }

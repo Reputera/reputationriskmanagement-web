@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\ApiKey whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\ApiKey whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\ApiKey whereDeletedAt($value)
+ * @mixin \Eloquent
  */
 class ApiKey extends Model
 {

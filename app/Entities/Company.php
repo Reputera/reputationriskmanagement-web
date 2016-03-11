@@ -11,17 +11,22 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @property integer $id
  * @property string $name
- * @property string $stock_name
+ * @property string $stock_symbol
+ * @property string $entity_id
+ * @property integer $industry_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property \Carbon\Carbon $deleted_at
- * @property-read Collection|Region[] $regions
- * @method static \App\Entities\User|null find($id)
- * @method static \Illuminate\Database\Query\Builder|\App\Entities\User whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Entities\User whereName($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Entities\User whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Entities\User whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Entities\User whereDeletedAt($value)
+ * @property-read \App\Entities\Industry $industry
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Company whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Company whereName($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Company whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Company whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Company whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Company whereStockSymbol($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Company whereEntityId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Company whereIndustryId($value)
+ * @mixin \Eloquent
  */
 class Company extends Model
 {
@@ -38,11 +43,8 @@ class Company extends Model
 
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany|Collection
-     */
-    public function regions()
+    public function industry()
     {
-        return $this->hasMany(Region::class);
+        return $this->belongsTo(Industry::class);
     }
 }
