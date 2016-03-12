@@ -1,4 +1,6 @@
-<?php namespace App\Services\Traits;
+<?php
+
+namespace App\Services\Traits;
 
 trait Enumerable
 {
