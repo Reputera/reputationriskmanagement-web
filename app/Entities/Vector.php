@@ -27,4 +27,26 @@ class Vector extends Model
     protected $fillable = [
         'name',
     ];
+
+    /**
+     * Retrieves the Vector from a given event type.
+     *
+     * @param string $eventType
+     * @return Vector|null
+     */
+    public static function fromEventType(string $eventType)
+    {
+        $eventType = strtolower($eventType);
+        foreach (VectorEventType::all() as $vectorName => $vectorEventTypes) {
+            $vectorEventTypes = array_map(function ($value) {
+                return  strtolower($value);
+            }, $vectorEventTypes);
+
+            if (in_array($eventType, $vectorEventTypes)) {
+                return self::whereName(ucfirst(strtolower($vectorName)))->first();
+            }
+        };
+
+        return null;
+    }
 }
