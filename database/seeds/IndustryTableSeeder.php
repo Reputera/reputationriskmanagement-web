@@ -1,6 +1,6 @@
 <?php
 
-use App\Entities\Company;
+use App\Entities\Industry;
 use Illuminate\Database\Seeder;
 
 class IndustryTableSeeder extends Seeder
