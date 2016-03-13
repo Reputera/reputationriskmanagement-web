@@ -24,16 +24,18 @@ class CreateInstancesTable extends Migration
             $table->string('source');
             $table->string('title');
             $table->string('fragment');
-            $table->unsignedInteger('fragment_intval')->unique(); // Used for searching.
+            $table->string('fragment_hash');
             $table->string('link');
             $table->float('positive_sentiment');
             $table->float('negative_sentiment');
-            $table->dateTime('published_at');
+            $table->dateTime('published_at')->nullable();
             $table->timestamps();
 
             $table->foreign('company_id')->references('id')->on('companies');
             $table->foreign('country_id')->references('id')->on('countries');
             $table->foreign('region_id')->references('id')->on('regions');
+
+            $table->unique(['fragment_hash'], 'unique_fragment_hash');
         });
     }
 
