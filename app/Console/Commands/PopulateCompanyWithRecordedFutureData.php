@@ -40,9 +40,8 @@ class PopulateCompanyWithRecordedFutureData extends Command
             exit;
         }
 
-        foreach (Company::all() as $company) {
+        foreach (Company::where('id', '<>', 1)->get() as $company) {
             $this->saveCompanyData($company);
-            break;
         }
     }
 
@@ -145,9 +144,11 @@ class PopulateCompanyWithRecordedFutureData extends Command
                         'updated_at' => $timestamp
                     ]);
                 } catch (\Exception $e) {
-                    \Log::error('-----------------------------------------------------------------');
-                    \Log::error($e->getMessage());
-                    \Log::error(array_get($instance, 'id', 'unknown ID??'));
+                    if (!str_contains('Integrity constraint violation', $e->getMessage())) {
+                        \Log::error('-----------------------------------------------------------------');
+                        \Log::error($e->getMessage());
+                        \Log::error(array_get($instance, 'id', 'unknown ID??'));
+                    }
                 }
             }
 
