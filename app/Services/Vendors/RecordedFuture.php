@@ -109,6 +109,10 @@ class RecordedFuture
      */
     public function continentFromCountry(string $name): array
     {
+        if (!$name) {
+            return [];
+        }
+
         $this->limit = 1;
         $options = ['entity' => ['name' => (string)$name, 'type' => 'Country']];
         $results = $this->queryApi($options);
@@ -123,7 +127,8 @@ class RecordedFuture
                 }
             }
         }
-        return '';
+
+        return [];
     }
 
     public function instancesForEntity(string $entityId, int $daysBack = 7): array
@@ -163,30 +168,6 @@ class RecordedFuture
         }
         return [];
     }
-
-//    public function getInstancesForCompanyName($name)
-//    {
-//        $options = [
-//            'instance' => [
-//                'attributes' => [
-//                    'entity' => ['name' => (string)$name, 'type' => 'Company']
-//                ]
-//            ]
-//        ];
-//        return $this->queryApi($options);
-//    }
-//
-//    public function getInstancesForEntityId($entityId)
-//    {
-//        $options = [
-//            'instance' => [
-//                'attributes' => [
-//                    'entity' => ['id' => (string)$entityId]
-//                ]
-//            ]
-//        ];
-//        return $this->queryApi($options);
-//    }
 
     protected function queryApi(array $options): array
     {
