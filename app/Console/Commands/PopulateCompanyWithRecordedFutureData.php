@@ -83,7 +83,7 @@ class PopulateCompanyWithRecordedFutureData extends Command
                 try {
                     $eventType = array_get($instance, 'type');
                     $countryId = null;
-                    $countryName = array_get($instance, 'document.sourceId.country', '');
+                    $countryName = trim(array_get($instance, 'document.sourceId.country', ''));
                     if (!$countryName && $relatedEntityCodes = array_get($instance, 'attributes.entities')) {
                         foreach(array_get($rf2->getEntitiesByCodes($relatedEntityCodes), 'entity_details') as $entityId => $entity) {
                             if (array_get($entity, 'name') && array_get($entity, 'type') == 'Country') {
@@ -132,12 +132,12 @@ class PopulateCompanyWithRecordedFutureData extends Command
                         'region_id' => $regionId,
                         'entity_id' => array_get($instance, 'id'),
                         'event_type' => $eventType,
-                        'original_language' => array_get($instance, 'document.language'),
-                        'source' => array_get($instance, 'document.sourceId.name'),
-                        'title' => array_get($instance, 'document.title'),
+                        'original_language' => trim(array_get($instance, 'document.language')),
+                        'source' => trim(array_get($instance, 'document.sourceId.name')),
+                        'title' => trim(array_get($instance, 'document.title')),
                         'fragment' => $fragment,
                         'fragment_hash' => md5($fragment),
-                        'link' => array_get($instance, 'document.url'),
+                        'link' => trim(array_get($instance, 'document.url')),
                         'positive_sentiment' => $positiveSentiment,
                         'negative_sentiment' => $negativeSentiment,
                         'published_at' => $publishedAt,
