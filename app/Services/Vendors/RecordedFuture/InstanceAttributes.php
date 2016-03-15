@@ -18,8 +18,10 @@ class InstanceAttributes extends BaseRecord
     {
         /** @var RecordedFutureApi $recordedFutureApi */
         $recordedFutureApi = app(RecordedFutureApi::class);
+        if ($response = $recordedFutureApi->getEntitiesByCodes($this->getFieldAsArray('entities'))) {
+            return $response->getEntities();
+        }
 
-        return $recordedFutureApi->getEntitiesByCodes($this->getFieldAsArray('entities'))
-            ->getEntities();
+        return [];
     }
 }
