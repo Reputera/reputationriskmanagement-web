@@ -1,6 +1,6 @@
 <?php
 
-namespace Unit\Services\Vendors\RecordedFuture;
+namespace Tests\Unit\Services\Vendors\RecordedFuture;
 
 use App\Services\Vendors\RecordedFuture\Entity;
 
