@@ -45,9 +45,16 @@ class DocumentTest extends \TestCase
     }
 
     /** @dataProvider function_name_and_expected_data_provider */
-    public function test_getting_fields_for_non_return_objects($function, $expectedResult)
+    public function test_getting_populated_fields_for_non_return_objects($function, $expectedResult)
     {
         $this->assertEquals($expectedResult, $this->document->{$function}());
+    }
+
+    /** @dataProvider function_name_and_expected_data_provider */
+    public function test_getting_missing_fields_for_non_return_objects($function)
+    {
+        $document = new Document([]);
+        $this->assertEquals('', $document->{$function}());
     }
 
     public function test_get_source_gives_a_source_instance()
