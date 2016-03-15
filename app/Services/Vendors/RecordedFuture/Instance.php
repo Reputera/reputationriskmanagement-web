@@ -32,7 +32,9 @@ class Instance extends BaseRecord
     public function getCountry()
     {
         $countryName = $this->getDocument()->getSource()->getCountry();
-        if (!$countryName && $entities = $this->getAttributes()->getEntities()) {
+        if ($countryName) {
+            return $countryName;
+        } elseif ($entities = $this->getAttributes()->getEntities()) {
             foreach ($entities as $entity) {
                 if ($entity->getType() == 'Country') {
                     return $entity;
