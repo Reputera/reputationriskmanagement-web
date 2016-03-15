@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services\Vendors;
+namespace App\Services\Vendors\RecordedFuture;
 
 use GuzzleHttp\Client;
 
-class RecordedFuture
+class RecordedFutureApi
 {
     /**
      * The URL to make queries to Recorded Future.
@@ -43,7 +43,7 @@ class RecordedFuture
     protected $pageStart = '';
 
     /**
-     * Creates an instance of the RecordedFuture class.
+     * Creates an instance of the RecordedFutureApi class.
      *
      * @param Client $client
      * @param string $token
@@ -59,9 +59,9 @@ class RecordedFuture
 
     /**
      * @param int $newLimit
-     * @return RecordedFuture
+     * @return RecordedFutureApi
      */
-    public function setLimit(int $newLimit): RecordedFuture
+    public function setLimit(int $newLimit): RecordedFutureApi
     {
         if ($newLimit) {
             $this->limit = (string)$newLimit;
@@ -72,9 +72,9 @@ class RecordedFuture
 
     /**
      * @param $start
-     * @return RecordedFuture
+     * @return RecordedFutureApi
      */
-    public function setPageStart($start): RecordedFuture
+    public function setPageStart($start): RecordedFutureApi
     {
         if ($start) {
             $this->pageStart = (string)$start;
@@ -105,33 +105,31 @@ class RecordedFuture
      * Gets the continent entity from a country.
      *
      * @param string $name
-     * @return array
+     * @return Entity|null
      */
-    public function continentFromCountry(string $name): array
+    public function continentFromCountry(string $name)
     {
         if (!$name) {
-            return [];
+            return null;
         }
 
         $this->limit = 1;
         $options = ['entity' => ['name' => (string)$name, 'type' => 'Country']];
-        $results = $this->queryApi($options);
-        $entity = current(array_get($results, 'entities', []));
-        if ($entity && $entityDetails = array_get($results, 'entity_details.'.$entity)) {
-            $results = $this->getEntitiesByCodes(array_get($entityDetails, 'containers', []));
-            if ($results = array_get($results, 'entity_details')) {
-                foreach ($results as $entityId => $result) {
-                    if (array_has($result, 'type') && $result['type'] == 'Continent') {
-                        return [$entityId => $result];
-                    }
+
+        if ($entity = $this->queryApi($options)->getEntity()) {
+            $containers = $this->getEntitiesByCodes($entity->getContainers())
+                ->getEntities();
+            foreach ($containers as $containerEntity) {
+                if ($containerEntity->getType() == 'Continent') {
+                    return $containerEntity;
                 }
             }
         }
 
-        return [];
+        return null;
     }
 
-    public function instancesForEntity(string $entityId, int $daysBack = 7): array
+    public function queryInstancesForEntity(string $entityId, int $daysBack = 7): Response
     {
         $options = [
             'instance' => [
@@ -160,16 +158,20 @@ class RecordedFuture
         return [];
     }
 
-    public function getEntitiesByCodes(array $entityIds): array
+    /**
+     * @param array $entityIds
+     * @return Response|null
+     */
+    public function getEntitiesByCodes(array $entityIds)
     {
         if (!empty($entityIds)) {
             $options = ['entity' => ['id' => $entityIds]];
             return $this->queryApi($options);
         }
-        return [];
+        return null;
     }
 
-    protected function queryApi(array $options): array
+    protected function queryApi(array $options): Response
     {
         $options = [
             // The json key indicated the query parameters should be sent as JSON encoded.
@@ -177,7 +179,7 @@ class RecordedFuture
         ];
 
         $response = $this->client->get('https://api.recordedfuture.com/query?q=', $options);
-        return json_decode($response->getBody(), true);
+        return new Response($response);
     }
 
     protected function assembleExtraOptions(array $options): array
