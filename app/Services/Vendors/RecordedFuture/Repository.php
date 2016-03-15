@@ -20,15 +20,15 @@ class Repository
     {
         try {
             $countryId = null;
-            if ($country = $instance->getCountry()) {
-                $country = DB::table('countries')->where('name', $country->getName())->first(['id']);
-                if (!$country) {
-                    $countryId = DB::table('countries')->insertGetId(['name' => $country->getName()]);
+            if ($countryName = $instance->getCountry()) {
+                $countryRecord = DB::table('countries')->where('name', $countryName)->first(['id']);
+                if (!$countryRecord) {
+                    $countryId = DB::table('countries')->insertGetId(['name' => $countryName]);
                 } else {
                     $countryId = $country->id;
                 }
             }
-//dd($instance);
+
             $regionId = null;
             if ($continent = $instance->getContinent()) {
                 if (!$region = DB::table('regions')->where('name', $continent->getName())->first(['id'])) {
