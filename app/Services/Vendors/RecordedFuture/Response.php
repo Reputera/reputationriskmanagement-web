@@ -62,11 +62,13 @@ class Response extends BaseRecord
     /**
      * @return Entity
      */
-    public function getEntity(): Entity
+    public function getEntity()
     {
         $entities = array_get($this->record, 'entity_details', []);
         foreach ($entities as $entityKey => $entity) {
             return new Entity($entityKey, $entity);
         }
+
+        return [];
     }
 }
