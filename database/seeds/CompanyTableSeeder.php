@@ -14,7 +14,7 @@ class CompanyTableSeeder extends Seeder
     {
         Company::create([
             'name' => 'Tyson Foods',
-            'entity_id' => 'B_PuI'
+            'entity_id' => 'I37WRG'
         ]);
 
         Company::create([
@@ -24,12 +24,12 @@ class CompanyTableSeeder extends Seeder
 
         Company::create([
             'name' => 'Godiva Chocolatier',
-            'entity_id' => 'dlnAD'
+            'entity_id' => 'DtYnO'
         ]);
 
         Company::create([
-            'name' => 'Heinz',
-            'entity_id' => 'JRS_Gx'
+            'name' => 'Heinz Corporation',
+            'entity_id' => 'LbbFzW'
         ]);
 
         Company::create([
@@ -44,7 +44,7 @@ class CompanyTableSeeder extends Seeder
 
         Company::create([
             'name' => 'PepsiCo',
-            'entity_id' => 'PepsiCo'
+            'entity_id' => 'B_E_A'
         ]);
 
         Company::create([
