@@ -64,7 +64,7 @@ class RecordedFutureApi
     public function setLimit(int $newLimit): RecordedFutureApi
     {
         if ($newLimit) {
-            $this->limit = (string)$newLimit;
+            $this->limit = (string)($newLimit > 1000) ? 1000 : $newLimit;
         }
 
         return $this;
@@ -184,17 +184,7 @@ class RecordedFutureApi
 
     protected function assembleExtraOptions(array $options): array
     {
-        $queryType = key($options);
-        if ($queryType == 'instance') {
-            $options[$queryType] = $this->assembleLimitAndPageStart($options[$queryType]);
-        }
-
         $options['token'] = $this->token;
-        return $options;
-    }
-
-    protected function assembleLimitAndPageStart(array $options): array
-    {
         if ($this->limit) {
             $options['limit'] = $this->limit;
         }
