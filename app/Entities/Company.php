@@ -26,6 +26,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Company whereStockSymbol($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Company whereEntityId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Company whereIndustryId($value)
+ * @method static \App\Entities\Company find($id)
  * @mixin \Eloquent
  */
 class Company extends Model
