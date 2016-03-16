@@ -182,13 +182,15 @@ class RecordedFutureApi
 
     protected function assembleExtraOptions(array $options): array
     {
+        $queryType = key($options);
         $options['token'] = $this->token;
+        $options[$queryType]['searchtype'] = 'scan';
         if ($this->limit) {
-            $options['limit'] = $this->limit;
+            $options[$queryType]['limit'] = $this->limit;
         }
 
         if ($this->pageStart) {
-            $options['page_start'] = $this->pageStart;
+            $options[$queryType]['page_start'] = $this->pageStart;
         }
 
         return $options;

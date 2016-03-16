@@ -157,9 +157,10 @@ class RecordedFutureApiTest extends \TestCase
                         'entity' => [
                             'name' => 'testing',
                             'type' => 'Country',
+                            'limit' => 1,
+                            'searchtype' => 'scan',
                         ],
                         'token' => 'someAPIToken',
-                        'limit' => 1,
                     ]
                 ]
             )
@@ -177,9 +178,10 @@ class RecordedFutureApiTest extends \TestCase
                             'id' => [
                                 'B_GRZ',
                             ],
+                            'limit' => 1,
+                            'searchtype' => 'scan',
                         ],
                         'token' => 'someAPIToken',
-                        'limit' => 1,
                     ]
                 ]
             )
@@ -201,9 +203,10 @@ class RecordedFutureApiTest extends \TestCase
                         'entity' => [
                             'name' => 'testing',
                             'type' => 'Country',
+                            'limit' => 1,
+                            'searchtype' => 'scan',
                         ],
                         'token' => 'someAPIToken',
-                        'limit' => 1,
                     ]
                 ]
             )
