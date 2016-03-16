@@ -71,6 +71,14 @@ class RecordedFutureApi
     }
 
     /**
+     * @return int
+     */
+    public function getLimit(): int
+    {
+        return $this->limit;
+    }
+
+    /**
      * @param $start
      * @return RecordedFutureApi
      */
@@ -84,21 +92,11 @@ class RecordedFutureApi
     }
 
     /**
-     * Get the entity code for a company name
-     *
-     * @param string $name
-     * @return string
+     * @return int
      */
-    public function entityCodeForCompany(string $name): string
+    public function getPageStart(): int
     {
-        $this->limit = 1;
-        $options = ['entity' => ['name' => (string)$name, 'type' => 'Company']];
-        $results = $this->queryApi($options);
-
-        if ($results = array_get($results, 'entities')) {
-            return current($results);
-        }
-        return '';
+        return $this->pageStart;
     }
 
     /**
