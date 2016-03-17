@@ -14,14 +14,8 @@ class InstanceAttributes extends BaseRecord
         return $this->getFieldAsFloat('general_negative');
     }
 
-    public function getEntities(): array
+    public function getEntityCodes(): array
     {
-        /** @var RecordedFutureApi $recordedFutureApi */
-        $recordedFutureApi = app(RecordedFutureApi::class);
-        if ($response = $recordedFutureApi->getEntitiesByCodes($this->getFieldAsArray('entities'))) {
-            return $response->getEntities();
-        }
-
-        return [];
+        return $this->getFieldAsArray('entities', []);
     }
 }
