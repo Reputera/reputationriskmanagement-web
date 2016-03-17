@@ -6,6 +6,7 @@ use App\Services\Vendors\RecordedFuture\Entity;
 use App\Services\Vendors\RecordedFuture\RecordedFutureApi;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response as GuzzleResponse;
+use Tests\StubData\RecordedFuture\SingleEntity;
 
 class RecordedFutureApiTest extends \TestCase
 {
@@ -15,248 +16,129 @@ class RecordedFutureApiTest extends \TestCase
     /** @var ClientInterface|\Mockery\MockInterface */
     protected $mockedClient;
 
+    /** @var GuzzleResponse|\Mockery\MockInterface */
+    protected $mockedGuzzleResponse;
+
     /** @var string */
     protected $apiKey = 'someAPIToken';
 
-    protected $responseCountry = [
-        'count' => [
-            'entities' => [
-                'returned' => 1,
-                'total' => 0
-            ]
-        ],
-        'next_page_start' => '0',
-        'status' => 'SUCCESS',
-        'entities' => [
-            'B_FAG'
-        ],
-        'entity_details' => [
-            'B_FAG' => [
-                'name' => 'United States',
-                'hits' => 451742011,
-                'type' => 'Country',
-                'external_id' => '188021635',
-                'containers' => [
-                    'B_GRZ'
-                ],
-                'longname' => 'United States',
-                'external_links' => [
-                    'wikipedia' => [
-                        'id' => 'United_States'
-                    ]
-                ],
-                'alias' => [
-                    '',
-                    'us',
-                    '188021635',
-                    'usa',
-                    'u.s.',
-                    'united states',
-                    'u.s.a.',
-                    'united states of america'
-                ],
-                'features' => [
-                    'J3HWz_'
-                ],
-                'curated' => 1,
-                'meta_type' => 'type:Country',
-                'pos' => [
-                    'latitude' => 39.76,
-                    'longitude' => -98.5
-                ]
-            ]
-        ]
-    ];
-
-    protected $responseContinent = [
-        'count' => [
-            'entities' => [
-                'returned' => 1,
-                'total' => 0
-            ]
-        ],
-        'next_page_start' => '0',
-        'status' => 'SUCCESS',
-        'entities' => [
-            'B_GRZ'
-        ],
-        'entity_details' => [
-            'B_GRZ' => [
-                'name' => 'North America',
-                'hits' => 9094951,
-                'type' => 'Continent',
-                'alias' => [
-                    'Norteamerica',
-                    'América do Norte',
-                    'Северна Америка',
-                    'Amérique du Nord',
-                    'Norður-Ameríka',
-                    'Bac My',
-                    'America settentrionale',
-                    'Abya Yala',
-                    'Amèrica del Nord',
-                ],
-                'features' => [
-                    'J3HW2Y'
-                ],
-                'curated' => 1,
-                'meta_type' => 'type:Continent',
-                'pos' => [
-                    'latitude' => 46.07323,
-                    'longitude' => -100.54688
-                ]
-            ]
-        ]
-    ];
-    
     public function setUp()
     {
         parent::setUp();
         $this->mockedClient = \Mockery::mock(Client::class);
+        $this->mockedGuzzleResponse = \Mockery::mock(GuzzleResponse::class);
         $this->recordedFutureApi = new RecordedFutureApi($this->mockedClient, $this->apiKey);
     }
 
-    public function test_setting_request_limit()
+    public function test_querying_with_no_options_and_default_days_used()
     {
-        $this->assertInstanceOf(RecordedFutureApi::class, $this->recordedFutureApi->setLimit(1000));
-        $this->assertEquals(1000, $this->recordedFutureApi->getLimit());
-    }
+        $this->mockedGuzzleResponse->shouldReceive('getBody')->once()->andReturn('{}');
 
-    public function test_setting_request_limit_above_threshold()
-    {
-        $this->assertInstanceOf(RecordedFutureApi::class, $this->recordedFutureApi->setLimit(1001));
-        $this->assertEquals(1000, $this->recordedFutureApi->getLimit());
-    }
-
-    public function test_limit_default()
-    {
-        $this->assertEquals(100, $this->recordedFutureApi->getLimit());
-    }
-
-    public function test_setting_page_start()
-    {
-        $this->assertInstanceOf(RecordedFutureApi::class, $this->recordedFutureApi->setPageStart(10));
-        $this->assertEquals(10, $this->recordedFutureApi->getPageStart());
-    }
-
-    public function test_getting_the_continent_when_a_blank_string_is_given()
-    {
-        $this->assertEmpty($this->recordedFutureApi->continentFromCountry(''));
-    }
-
-    public function test_getting_the_continent()
-    {
-        $mockedGuzzleClientForCountry = \Mockery::mock(GuzzleResponse::class);
-        $mockedGuzzleClientForCountry->shouldReceive('getBody')->once()->andReturn(json_encode($this->responseCountry));
+        $entityId = 'EntityId';
         $this->mockedClient->shouldReceive('get')
             ->once()
             ->with(
                 'https://api.recordedfuture.com/query?q=',
                 [
                     'json' => [
-                        'entity' => [
-                            'name' => 'testing',
-                            'type' => 'Country',
-                            'limit' => 1,
-                            'searchtype' => 'scan',
-                        ],
-                        'token' => 'someAPIToken',
-                    ]
-                ]
-            )
-            ->andReturn($mockedGuzzleClientForCountry);
-
-        $mockedGuzzleClientForContinent = \Mockery::mock(GuzzleResponse::class);
-        $mockedGuzzleClientForContinent->shouldReceive('getBody')->once()->andReturn(json_encode($this->responseContinent));
-        $this->mockedClient->shouldReceive('get')
-            ->once()
-            ->with(
-                'https://api.recordedfuture.com/query?q=',
-                [
-                    'json' => [
-                        'entity' => [
-                            'id' => [
-                                'B_GRZ',
+                        'instance' => [
+                            'attributes' => [
+                                ['entity' => ['id' => $entityId]],
+                                [
+                                    'name' => ['general_positive', 'general_negative'],
+                                    'range' => ['gt' => 0]
+                                ]
                             ],
-                            'limit' => 1,
-                            'searchtype' => 'scan',
+                            'time_range' => "-7d to +7d",
                         ],
                         'token' => 'someAPIToken',
                     ]
                 ]
             )
-            ->andReturn($mockedGuzzleClientForContinent);
+            ->andReturn($this->mockedGuzzleResponse);
 
-        $this->assertInstanceOf(Entity::class, $this->recordedFutureApi->continentFromCountry('testing'));
+        $this->recordedFutureApi->queryInstancesForEntity($entityId);
     }
 
-    public function test_getting_the_continet_when_there_is_no_record_for_it()
+    public function test_querying_with_non_default_days()
     {
-        $mockedGuzzleClientForCountry = \Mockery::mock(GuzzleResponse::class);
-        $mockedGuzzleClientForCountry->shouldReceive('getBody')->once()->andReturn('{}');
+        $this->mockedGuzzleResponse->shouldReceive('getBody')->once()->andReturn('{}');
+
+        $entityId = 'EntityId';
         $this->mockedClient->shouldReceive('get')
             ->once()
             ->with(
                 'https://api.recordedfuture.com/query?q=',
                 [
                     'json' => [
-                        'entity' => [
-                            'name' => 'testing',
-                            'type' => 'Country',
-                            'limit' => 1,
-                            'searchtype' => 'scan',
+                        'instance' => [
+                            'attributes' => [
+                                ['entity' => ['id' => $entityId]],
+                                [
+                                    'name' => ['general_positive', 'general_negative'],
+                                    'range' => ['gt' => 0]
+                                ]
+                            ],
+                            'time_range' => "-1d to +1d",
                         ],
                         'token' => 'someAPIToken',
                     ]
                 ]
             )
-            ->andReturn($mockedGuzzleClientForCountry);
+            ->andReturn($this->mockedGuzzleResponse);
 
-        $this->assertNull($this->recordedFutureApi->continentFromCountry('testing'));
+        $this->recordedFutureApi->queryInstancesForEntity($entityId, 1);
     }
 
-//    public function companyCodeDataProvider()
-//    {
-//        $entityArray = SingleEntity::getCompany(['entity_name' => 'Hasbro'], false);
-//        $jsonEncodedArray = json_encode($entityArray);
-//        return [
-//            ['Hasbro', current($entityArray['entities']), $jsonEncodedArray],
-//            ['SomeCompany', '', EmptyEntity::get()],
-//        ];
-//    }
-//
-//    /** @dataProvider companyCodeDataProvider */
-//    public function test_getting_company_code($companyName, $expectedResults, $apiReturnData)
-//    {
-//        $expectedQueryParams = [
-//            'json' => [
-//                'entity' => [
-//                    'name' => $companyName,
-//                    'type' => 'Company',
-//                ],
-//                'token' => $this->apiKey
-//            ]
-//        ];
-//
-//        $this->assertMockedApiCall($expectedQueryParams, $apiReturnData);
-//
-//        $this->assertEquals(
-//            $expectedResults,
-//            $this->rfApi->entityCodeForCompany($companyName)
-//        );
-//    }
-//
-//    protected function assertMockedApiCall(array $expectedQueryParams, $returnData)
-//    {
-//        $this->mockedClient
-//            ->shouldReceive('get')
-//            ->once()
-//            ->with('https://api.recordedfuture.com/query?q=', $expectedQueryParams)
-//            ->andReturnSelf();
-//
-//        $this->mockedClient
-//            ->shouldReceive('getBody')
-//            ->withNoArgs()
-//            ->andReturn($returnData);
-//    }
+    public function test_querying_with_options_specified_number_of_days_to_process()
+    {
+        $this->mockedGuzzleResponse->shouldReceive('getBody')->once()->andReturn('{}');
+
+        $entityId = 'EntityId';
+        $this->mockedClient->shouldReceive('get')
+            ->once()
+            ->with(
+                'https://api.recordedfuture.com/query?q=',
+                [
+                    'json' => [
+                        'instance' => [
+                            'attributes' => [
+                                ['entity' => ['id' => $entityId]],
+                                [
+                                    'name' => ['general_positive', 'general_negative'],
+                                    'range' => ['gt' => 0]
+                                ]
+                            ],
+                            'time_range' => "-5d to +5d",
+                            'limit' => 5,
+                        ],
+                        'token' => 'someAPIToken',
+                    ]
+                ]
+            )
+            ->andReturn($this->mockedGuzzleResponse);
+
+        $this->recordedFutureApi->queryInstancesForEntity($entityId, 5, ['limit' => 5]);
+    }
+
+    public function test_getting_entites_by_ids()
+    {
+        $this->mockedGuzzleResponse->shouldReceive('getBody')->once()->andReturn('{}');
+
+        $entityIds = ['1234', '5678'];
+        $this->mockedClient->shouldReceive('get')
+            ->once()
+            ->with(
+                'https://api.recordedfuture.com/query?q=',
+                [
+                    'json' => [
+                        'entity' => ['id' => $entityIds],
+                        'token' => 'someAPIToken',
+                    ]
+                ]
+            )
+            ->andReturn($this->mockedGuzzleResponse);
+
+        $this->recordedFutureApi->getEntitiesByCodes($entityIds);
+    }
 }
