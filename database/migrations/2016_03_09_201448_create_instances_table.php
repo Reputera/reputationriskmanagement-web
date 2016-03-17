@@ -17,13 +17,14 @@ class CreateInstancesTable extends Migration
             $table->unsignedInteger('company_id');
             $table->unsignedInteger('vector_id')->nullable();
             $table->unsignedInteger('region_id')->nullable();
+            $table->string('country_name');
             $table->unsignedInteger('country_id')->nullable();
             $table->string('entity_id');
             $table->string('event_type');
             $table->string('original_language');
             $table->string('source');
             $table->string('title');
-            $table->string('fragment');
+            $table->string('fragment', 600);
             $table->string('fragment_hash');
             $table->string('link');
             $table->float('positive_sentiment');

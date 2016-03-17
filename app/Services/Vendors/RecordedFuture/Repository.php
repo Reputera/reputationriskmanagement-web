@@ -20,24 +20,12 @@ class Repository
     {
         try {
             $countryId = null;
-            if ($countryName = $instance->getCountry()) {
-                $countryRecord = DB::table('countries')->where('name', $countryName)->first(['id']);
-                if (!$countryRecord) {
-                    $countryId = DB::table('countries')->insertGetId(['name' => $countryName]);
-                } else {
-                    $countryId = $country->id;
-                }
-            }
-
             $regionId = null;
-            if ($continent = $instance->getContinent()) {
-                if (!$region = DB::table('regions')->where('name', $continent->getName())->first(['id'])) {
-                    $regionId = DB::table('regions')->insertGetId([
-                        'name' => $continent->getName(),
-                        'entity_id' => $continent->getKey()
-                    ]);
-                } else {
-                    $regionId = $region->id;
+            if ($countryName = $instance->getCountry()) {
+                $countryInfo = DB::table('countries')->where('name', $countryName)->first(['id', 'region_id']);
+                if ($countryInfo) {
+                    $countryId = $countryInfo->id;
+                    $regionId = $countryInfo->region_id;
                 }
             }
 
@@ -59,12 +47,13 @@ class Repository
             DB::table('instances')->insert([
                 'company_id' => $company->id,
                 'vector_id' => $vectorId,
+                'country_name' => $countryName,
                 'country_id' => $countryId,
                 'region_id' => $regionId,
                 'entity_id' => $instance->getId(),
                 'event_type' => $instance->getType(),
                 'original_language' => $document->getLanguage(),
-                'source' => $document->getSource(),
+                'source' => $document->getSource()->getName(),
                 'title' => $document->getTitle(),
                 'fragment' => $fragment,
                 'fragment_hash' => md5($fragment),
