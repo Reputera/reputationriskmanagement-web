@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $region_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @property-read \App\Entities\Region $region
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Country whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Country whereName($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Country whereEntityId($value)
@@ -31,4 +32,9 @@ class Country extends Model
     protected $fillable = [
         'name',
     ];
+
+    public function region()
+    {
+        return $this->belongsTo(Region::class);
+    }
 }
