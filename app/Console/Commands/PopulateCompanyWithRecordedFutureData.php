@@ -80,9 +80,8 @@ class PopulateCompanyWithRecordedFutureData extends Command
         $apiResponse = $this->queryApi($company);
 
         $safetyValve = $apiResponse->countOfReferences();
-        $nextPageStart = null;
-        while ($instances = $apiResponse->getInstances() && $safetyValve) {
-            $this->saveInstances($company, $instances);
+        while ($apiResponse->getInstances() && $safetyValve) {
+            $this->saveInstances($company, $apiResponse->getInstances());
 
             if (!$this->hasMoreResults($apiResponse)) {
                 break;
