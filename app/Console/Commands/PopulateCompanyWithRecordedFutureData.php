@@ -64,8 +64,6 @@ class PopulateCompanyWithRecordedFutureData extends Command
             exit;
         }
 
-        $this->recordedFutureApi->setLimit(500);
-
         foreach ($companies as $company) {
             $this->saveCompanyResults($company);
         }
@@ -78,25 +76,31 @@ class PopulateCompanyWithRecordedFutureData extends Command
      */
     protected function saveCompanyResults(Company $company)
     {
-        $done = false;
-        $safetyValve = 0;
-        $startPage = 0;
         $numberOfDays = $this->option('days');
 
-        while (!$done && $safetyValve <= 10000000) {
-            $apiResponse = $this->recordedFutureApi
-                ->setPageStart($startPage)
-                ->queryInstancesForEntity($company->entity_id, $numberOfDays);
+        $apiResponse = $this->recordedFutureApi
+            ->queryInstancesForEntity($company->entity_id, $numberOfDays);
 
-            if (!$nextPageStart = $apiResponse->getNextPageStart()) {
-                $done = true;
-            } else {
-                $startPage = $nextPageStart;
-            }
-
-            foreach ($apiResponse->getInstances() as $instance) {
+        $safetyValve = $apiResponse->countOfReferences();
+        $nextPageStart = null;
+        while ($apiResponse->has('Instances') && $safetyValve) {
+            foreach ($instances = $apiResponse->getInstances() as $instance) {
                 $this->recordedFutureRepo->saveInstanceForCompany($instance, $company);
             }
+
+            if (!$apiResponse->hasMorePages() || !$apiResponse->countOfReferences()) {
+                // No more records, so no need to make more queries.
+                break;
+            }
+
+            $apiResponse = $this->recordedFutureApi
+                ->queryInstancesForEntity(
+                    $company->entity_id,
+                    $numberOfDays,
+                    ['page_start' => $apiResponse->getNextPageStart()]
+                );
+
+            $safetyValve--;
         }
     }
 }
