@@ -44,14 +44,4 @@ class Instance extends BaseRecord
 
         return '';
     }
-
-    /**
-     * @return Entity|null
-     */
-    public function getContinent()
-    {
-        /** @var RecordedFutureApi $recordedFutureApi */
-        $recordedFutureApi = app(RecordedFutureApi::class);
-        return $recordedFutureApi->continentFromCountry($this->getCountry());
-    }
 }
