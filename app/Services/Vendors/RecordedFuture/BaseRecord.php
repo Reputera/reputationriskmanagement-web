@@ -38,4 +38,9 @@ abstract class BaseRecord
     {
         return array_get($this->record, $field, []);
     }
+
+    public function __toString(): string
+    {
+        return json_encode($this->record, JSON_PRETTY_PRINT);
+    }
 }
