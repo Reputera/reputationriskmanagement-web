@@ -182,4 +182,26 @@ class VectorEventType
         'RFEVEPoliticalRelationship',
         'RadiologicalMaterialTransaction',
     ];
+
+    /**
+     * Retrieves the Vector name from a given event type.
+     *
+     * @param string $eventType
+     * @return string|null
+     */
+    public static function getVectorNameFromEventType(string $eventType)
+    {
+        $eventType = strtolower($eventType);
+        foreach (self::all() as $vectorName => $vectorEventTypes) {
+            $vectorEventTypes = array_map(function ($value) {
+                return  strtolower($value);
+            }, $vectorEventTypes);
+
+            if (in_array($eventType, $vectorEventTypes)) {
+                return ucfirst(strtolower($vectorName));
+            }
+        };
+
+        return null;
+    }
 }
