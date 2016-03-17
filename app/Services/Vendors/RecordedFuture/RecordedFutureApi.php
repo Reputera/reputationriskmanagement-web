@@ -99,7 +99,7 @@ class RecordedFutureApi
 
     protected function assembleExtraOptions(array $options): array
     {
-//        $options[key($options)]['searchtype'] = 'scan';
+        $options[key($options)]['searchtype'] = 'scan';
         $options['token'] = $this->token;
 
         return $options;

@@ -16,9 +16,9 @@ class Response extends BaseRecord
         return $this->getFieldAsBool('next_page_start');
     }
 
-    public function getNextPageStart(): int
+    public function getNextPageStart(): string
     {
-        return $this->getFieldAsInt('next_page_start');
+        return $this->getFieldAsString('next_page_start');
     }
 
     public function countOfReferences(): int
@@ -36,9 +36,8 @@ class Response extends BaseRecord
      */
     public function getInstances(): array
     {
-        $instances = array_get($this->record, 'instances', []);
         $instancesToReturn = [];
-        foreach ($instances as $instance) {
+        foreach (array_get($this->record, 'instances', []) as $instance) {
             $instancesToReturn[] = new Instance($instance);
         }
 
