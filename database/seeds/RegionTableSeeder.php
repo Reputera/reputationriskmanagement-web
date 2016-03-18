@@ -13,31 +13,40 @@ class RegionTableSeeder extends Seeder
     public function run()
     {
         Region::create([
-            'name' => 'Asia'
+            'name' => 'Asia',
+            'entity_id' => 'B_Fa4'
         ]);
-
         Region::create([
-            'name' => 'Africa'
+            'name' => 'Asia and east Africa',
+            'entity_id' => 'HwAhdb'
         ]);
-
         Region::create([
-            'name' => 'North America'
+            'name' => 'Antarctica',
+            'entity_id' => 'CAvQc'
         ]);
-
         Region::create([
-            'name' => 'South America'
+            'name' => 'Oceania',
+            'entity_id' => 'Bch5HB'
         ]);
-
         Region::create([
-            'name' => 'Antarctica'
+            'name' => 'Africa',
+            'entity_id' => 'B_FGS'
         ]);
-
         Region::create([
-            'name' => 'Europe'
+            'name' => 'Europe',
+            'entity_id' => 'B_FA-'
         ]);
-
         Region::create([
-            'name' => 'Australia'
+            'name' => 'South America',
+            'entity_id' => 'B_KvE'
+        ]);
+        Region::create([
+            'name' => 'Europe; Asia',
+            'entity_id' => 'I_aUUN'
+        ]);
+        Region::create([
+            'name' => 'North America',
+            'entity_id' => 'B_GRZ'
         ]);
     }
 }
