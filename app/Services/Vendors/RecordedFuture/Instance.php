@@ -29,8 +29,18 @@ class Instance extends BaseRecord
         return new InstanceAttributes(array_get($this->record, 'attributes'));
     }
 
-    public function getCountry()
+    public function getCountry(): string
     {
-        return $document = $this->getDocument()->getSource()->getCountry();
+        if ($country = $this->getDocument()->getSource()->getCountry()) {
+            return $country;
+        }
+
+        foreach ($this->getFieldAsArray('entities') as $entity) {
+            if (array_get($entity, 'type') == 'Country' && array_has($entity, 'name')) {
+                return array_get($entity, 'name');
+            }
+        }
+
+        return '';
     }
 }

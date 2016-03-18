@@ -38,6 +38,7 @@ class Response extends BaseRecord
     {
         $instancesToReturn = [];
         foreach (array_get($this->record, 'instances', []) as $instance) {
+            $instance['entities'] = array_get($this->record, 'entities', []);
             $instancesToReturn[] = new Instance($instance);
         }
 
