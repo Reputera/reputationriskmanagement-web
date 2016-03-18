@@ -76,6 +76,15 @@ class RecordedFutureApi
         return null;
     }
 
+    public function getInstanceByCodes(array $instanceIds)
+    {
+        if (!empty($instanceIds)) {
+            $options = ['instance' => ['id' => $instanceIds]];
+            return $this->queryApi($options);
+        }
+        return null;
+    }
+
     protected function queryApi(array $options): Response
     {
         $options = [
