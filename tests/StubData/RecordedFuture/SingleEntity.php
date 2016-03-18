@@ -4,11 +4,14 @@ namespace Tests\StubData\RecordedFuture;
 
 class SingleEntity
 {
-    public static function getCompany(array $options = [], bool $jsonEncode = true)
+    public static function getCompany(array $options = [], bool $jsonEncode = false)
     {
         $faker = \Faker\Factory::create();
-        $entityId = array_key_exists('entity_id', $options) ? $options['entity_key'] : $faker->name;
+        $entityId = array_key_exists('entity_id', $options) ? $options['entity_id'] : $faker->name;
         $entityName = array_key_exists('entity_name', $options) ? $options['entity_name'] : $faker->name;
+        $entityHits = array_key_exists('entity_hits', $options) ? $options['entity_hits'] : $faker->randomNumber;
+        $entityContainers = array_key_exists('entity_containers_array', $options) ?
+            $options['entity_containers_array'] : [$faker->name, $faker->name];
         $entityIndustries = array_key_exists('industries_array', $options) ?
             $options['industries_array'] : [$faker->name, $faker->name];
 
@@ -27,7 +30,7 @@ class SingleEntity
             'entity_details' => [
                 $entityId => [
                     'name' => $entityName,
-                    'hits' => 559109,
+                    'hits' => $entityHits,
                     'type' => 'Company',
                     'cik' => [
                         '0000046080',
@@ -40,6 +43,7 @@ class SingleEntity
                             ],
                         ],
                     ],
+                    'containers' => $entityContainers,
                     'industries' => $entityIndustries,
                     'curated' => 1,
                     'cusip' => ['418056107'],
