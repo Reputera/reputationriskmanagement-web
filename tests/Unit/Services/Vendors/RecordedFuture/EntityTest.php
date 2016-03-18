@@ -3,63 +3,33 @@
 namespace Tests\Unit\Services\Vendors\RecordedFuture;
 
 use App\Services\Vendors\RecordedFuture\Entity;
+use Tests\StubData\RecordedFuture\SingleEntity;
 
 class EntityTest extends \TestCase
 {
     /** @var Entity */
     protected $entity;
-    
-    protected $fields = [
-        'B_FAG' => [
-            'name' => 'United States',
-            'hits' => 451682344,
-            'type' => 'Country',
-            'external_id' => '188021635',
-            'containers' => [
-                'B_GRZ'
-            ],
-            'longname' => 'United States',
-            'external_links' => [
-                'wikipedia' => [
-                    'id' => 'United_States'
-                ]
-            ],
-            'alias' => [
-                '',
-                'us',
-                '188021635',
-                'usa',
-                'u.s.',
-                'united states',
-                'u.s.a.',
-                'united states of america'
-            ],
-            'features' => [
-                'J3HWz_'
-            ],
-            'curated' => 1,
-            'meta_type' => 'type=>Country',
-            'pos' => [
-                'latitude' => 39.76,
-                'longitude' => -98.5
-            ]
-        ]
-    ];
 
     public function setUp()
     {
         parent::setUp();
-        $this->entity = new Entity(key($this->fields), current($this->fields));
+        $responseArray = SingleEntity::getCompany([
+            'entity_id' => '123456789',
+            'entity_name' => 'Some Name',
+            'entity_hits' => '451682344',
+            'entity_containers_array' => ['someString']
+        ])['entity_details'];
+        $this->entity = new Entity(key($responseArray), current($responseArray));
     }
 
     public function function_name_and_expected_populated_data_provider()
     {
         return [
-            ['getKey', 'B_FAG'],
-            ['getName', 'United States'],
+            ['getId', '123456789'],
+            ['getName', 'Some Name'],
             ['getHits', 451682344],
-            ['getType', 'Country'],
-            ['getContainers', ['B_GRZ']]
+            ['getType', 'Company'],
+            ['getContainers', ['someString']]
         ];
     }
 
