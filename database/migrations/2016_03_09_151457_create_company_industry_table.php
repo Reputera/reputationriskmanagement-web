@@ -16,7 +16,6 @@ class CreateCompanyIndustryTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('company_id');
             $table->unsignedInteger('industry_id');
-            $table->timestamps();
 
             $table->foreign('company_id')->references('id')->on('companies');
             $table->foreign('industry_id')->references('id')->on('industries');

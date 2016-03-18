@@ -16,7 +16,6 @@ class CreateCompanyCompetitorTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('company_id');
             $table->unsignedInteger('competitor_company_id');
-            $table->timestamps();
 
             $table->foreign('company_id')->references('id')->on('companies');
             $table->foreign('competitor_company_id')->references('id')->on('companies');
