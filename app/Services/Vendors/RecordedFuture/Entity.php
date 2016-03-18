@@ -7,17 +7,17 @@ class Entity extends BaseRecord
     /**
      * @var
      */
-    protected $key;
+    protected $id;
 
     public function __construct(string $entityKey, array $record)
     {
-        $this->key = $entityKey;
+        $this->id = $entityKey;
         parent::__construct($record);
     }
 
-    public function getKey(): string
+    public function getId(): string
     {
-        return $this->key;
+        return $this->id;
     }
 
     public function getName(): string
