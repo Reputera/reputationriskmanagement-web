@@ -28,19 +28,9 @@ class RecordedFutureApi
     protected $client;
 
     /**
-     * @var string
-     */
-    protected $limit = '100';
-
-    /**
      * @var array
      */
     protected $options = [];
-
-    /**
-     * @var string
-     */
-    protected $pageStart = '';
 
     /**
      * Creates an instance of the RecordedFutureApi class.
