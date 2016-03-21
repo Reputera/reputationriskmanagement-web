@@ -13,7 +13,7 @@ class VectorTableSeeder extends Seeder
     public function run()
     {
         Vector::create([
-           'name' => 'Compliance'
+           'name' => 'Social Responsibility'
         ]);
 
         Vector::create([
@@ -21,19 +21,19 @@ class VectorTableSeeder extends Seeder
         ]);
 
         Vector::create([
-            'name' => 'Media'
+            'name' => 'Social Intelligence'
         ]);
 
         Vector::create([
-            'name' => 'Information'
+            'name' => 'Cybersecurity'
         ]);
 
         Vector::create([
-            'name' => 'Operations'
+            'name' => 'Operational Risks'
         ]);
 
         Vector::create([
-            'name' => 'Political'
+            'name' => 'Geopolitics'
         ]);
     }
 }
