@@ -99,7 +99,7 @@ class PopulateCompanyWithRecordedFutureData extends Command
      * @param array $options
      * @return Response
      */
-    protected function queryApi(Company $company, array $options = [])
+    protected function queryApi(Company $company, array $options = []): Response
     {
         $numberOfDays = $this->option('days');
 
