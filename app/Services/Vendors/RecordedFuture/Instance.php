@@ -60,6 +60,14 @@ class Instance extends BaseRecord
     }
 
     /**
+     * Gets entities that are involved in the instance.
+     */
+    public function getRelatedEntities(): array
+    {
+        return $this->relatedEntities;
+    }
+
+    /**
      * Adds entities that are involved in the instance.
      *
      * @param array $entities
