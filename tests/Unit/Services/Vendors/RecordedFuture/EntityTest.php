@@ -29,7 +29,7 @@ class EntityTest extends \TestCase
             ['getName', 'Some Name'],
             ['getHits', 451682344],
             ['getType', 'Company'],
-            ['getContainers', ['someString']]
+            ['getContainerCodes', ['someString']]
         ];
     }
 

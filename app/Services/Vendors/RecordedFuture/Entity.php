@@ -5,7 +5,7 @@ namespace App\Services\Vendors\RecordedFuture;
 class Entity extends BaseRecord
 {
     /**
-     * @var
+     * @var string
      */
     protected $id;
 
@@ -15,27 +15,52 @@ class Entity extends BaseRecord
         parent::__construct($record);
     }
 
+    /**
+     * Gets the Recorded Future identifier.
+     *
+     * @return string
+     */
     public function getId(): string
     {
         return $this->id;
     }
 
+    /**
+     * Gets the name.
+     *
+     * @return string
+     */
     public function getName(): string
     {
         return $this->getFieldAsString('name');
     }
 
+    /**
+     * Gets the hits.
+     *
+     * @return int
+     */
     public function getHits(): int
     {
         return $this->getFieldAsInt('hits');
     }
 
+    /**
+     * Gets the type.
+     *
+     * @return string
+     */
     public function getType(): string
     {
         return $this->getFieldAsString('type');
     }
 
-    public function getContainers(): array
+    /**
+     * Gets the Recorded Future container codes/IDs.
+     *
+     * @return array
+     */
+    public function getContainerCodes(): array
     {
         return $this->getFieldAsArray('containers');
     }
