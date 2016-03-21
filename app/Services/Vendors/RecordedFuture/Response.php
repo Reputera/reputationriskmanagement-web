@@ -61,7 +61,7 @@ class Response extends BaseRecord
     {
         $instancesToReturn = [];
         $requestEntities = $this->getEntities();
-        foreach (array_get($this->record, 'instances', []) as $instance) {
+        foreach ($this->getFieldAsArray('instances') as $instance) {
             $newInstance = new Instance($instance);
 
             if ($instanceEntityCodes = $newInstance->getAttributes()->getEntityCodes()) {

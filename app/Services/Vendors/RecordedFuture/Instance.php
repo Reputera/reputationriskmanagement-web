@@ -46,7 +46,7 @@ class Instance extends BaseRecord
      */
     public function getDocument(): Document
     {
-        return new Document(array_get($this->record, 'document'));
+        return new Document($this->getFieldAsArray('document'));
     }
 
     /**
@@ -56,7 +56,7 @@ class Instance extends BaseRecord
      */
     public function getAttributes(): InstanceAttributes
     {
-        return new InstanceAttributes(array_get($this->record, 'attributes'));
+        return new InstanceAttributes($this->getFieldAsArray('attributes'));
     }
 
     /**

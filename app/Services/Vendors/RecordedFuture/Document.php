@@ -31,6 +31,6 @@ class Document extends BaseRecord
 
     public function getSource(): Source
     {
-        return new Source(array_get($this->record, 'sourceId', []));
+        return new Source($this->getFieldAsArray('sourceId'));
     }
 }
