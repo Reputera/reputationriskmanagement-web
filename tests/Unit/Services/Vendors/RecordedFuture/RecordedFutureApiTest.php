@@ -49,7 +49,8 @@ class RecordedFutureApiTest extends \TestCase
                                     'range' => ['gt' => 0]
                                 ]
                             ],
-                            'time_range' => "-7d to +7d",
+                            'time_range' => "-7d to +0d",
+                            'searchtype' => 'scan',
                         ],
                         'token' => 'someAPIToken',
                     ]
@@ -79,7 +80,8 @@ class RecordedFutureApiTest extends \TestCase
                                     'range' => ['gt' => 0]
                                 ]
                             ],
-                            'time_range' => "-1d to +1d",
+                            'time_range' => "-1d to +0d",
+                            'searchtype' => 'scan',
                         ],
                         'token' => 'someAPIToken',
                     ]
@@ -109,8 +111,9 @@ class RecordedFutureApiTest extends \TestCase
                                     'range' => ['gt' => 0]
                                 ]
                             ],
-                            'time_range' => "-5d to +5d",
+                            'time_range' => "-5d to +0d",
                             'limit' => 5,
+                            'searchtype' => 'scan',
                         ],
                         'token' => 'someAPIToken',
                     ]
@@ -121,7 +124,7 @@ class RecordedFutureApiTest extends \TestCase
         $this->recordedFutureApi->queryInstancesForEntity($entityId, 5, ['limit' => 5]);
     }
 
-    public function test_getting_entites_by_ids()
+    public function test_getting_entities_by_ids()
     {
         $this->mockedGuzzleResponse->shouldReceive('getBody')->once()->andReturn('{}');
 
@@ -132,7 +135,7 @@ class RecordedFutureApiTest extends \TestCase
                 'https://api.recordedfuture.com/query?q=',
                 [
                     'json' => [
-                        'entity' => ['id' => $entityIds],
+                        'entity' => ['id' => $entityIds, 'searchtype' => 'scan',],
                         'token' => 'someAPIToken',
                     ]
                 ]

@@ -57,7 +57,7 @@ class RecordedFutureApi
                     'range' => ['gt' => 0]
                 ]
             ],
-            'time_range' => "-{$daysBack}d to +{$daysBack}d",
+            'time_range' => "-{$daysBack}d to +0d",
         ];
 
         return $this->queryApi(['instance' => array_merge($defaultOptions, $options)]);
