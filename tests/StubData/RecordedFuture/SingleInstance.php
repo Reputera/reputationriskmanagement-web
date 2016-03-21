@@ -9,10 +9,11 @@ class SingleInstance
     public static function get(array $options = [], bool $jsonEncode = false)
     {
         $faker = \Faker\Factory::create();
-        $instanceId = array_key_exists('entity_id', $options) ? $options['instance_id'] : $faker->name;
+        $instanceId = array_key_exists('id', $options) ? $options['id'] : $faker->name;
+        $fragment = array_key_exists('fragment', $options) ? $options['fragment'] : $faker->sentence;
 
-        if (array_key_exists('event_type', $options)) {
-            $eventType = $options['event_type'];
+        if (array_key_exists('type', $options)) {
+            $eventType = $options['type'];
         } else {
             $eventVectors = VectorEventType::keys();
             $randomVector = $eventVectors[array_rand($eventVectors)];
@@ -41,8 +42,8 @@ class SingleInstance
                     'start' => '2016-03-17T00:00:00.000Z',
                     'stop' => '2016-03-17T23:59:59.000Z',
                     'tagged_fragment' => 'Lorem ipsum dolor sit amet, aliquam sit libero fringilla purus, aliqua ligula.',
-                    'fragment' => 'Lorem ipsum dolor sit amet, aliquam sit libero fringilla purus, aliqua ligula.',
-                    'time_fragment_context' => 'Lorem ipsum dolor sit amet, aliquam sit libero fringilla purus, aliqua ligula.',
+                    'fragment' => $fragment,
+                    'time_fragment_context' => $fragment,
                     'time_fragment' => 'March 17',
                     'item_fragment' => 'Lorem ipsum dolor sit amet, aliquam sit libero fringilla purus, aliqua ligula.',
                     'precision' => 'day',
