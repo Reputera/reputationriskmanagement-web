@@ -9,16 +9,16 @@
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.15.9",
+            "version": "3.17.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "5f27941e2f1ac1700e667cfcf9d9da44c1d9b612"
+                "reference": "4853bf1f865f6c6df44db0cd5664319ae806f319"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/5f27941e2f1ac1700e667cfcf9d9da44c1d9b612",
-                "reference": "5f27941e2f1ac1700e667cfcf9d9da44c1d9b612",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/4853bf1f865f6c6df44db0cd5664319ae806f319",
+                "reference": "4853bf1f865f6c6df44db0cd5664319ae806f319",
                 "shasum": ""
             },
             "require": {
@@ -85,7 +85,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-03-11 00:44:20"
+            "time": "2016-03-17 23:57:52"
         },
         {
             "name": "classpreloader/classpreloader",
@@ -1158,16 +1158,16 @@
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v1.2.2",
+            "version": "v1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "b3313b618f4edd76523572531d5d7e22fe747430"
+                "reference": "c7e26a21ba357863de030f0b9e701c7d04593774"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/b3313b618f4edd76523572531d5d7e22fe747430",
-                "reference": "b3313b618f4edd76523572531d5d7e22fe747430",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/c7e26a21ba357863de030f0b9e701c7d04593774",
+                "reference": "c7e26a21ba357863de030f0b9e701c7d04593774",
                 "shasum": ""
             },
             "require": {
@@ -1202,7 +1202,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2016-03-11 19:54:08"
+            "time": "2016-03-18 20:34:03"
         },
         {
             "name": "phpseclib/phpseclib",
@@ -3033,12 +3033,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/padraic/mockery.git",
-                "reference": "c00c2ff72c31b061e73967b8eb36ca2bd90b5748"
+                "reference": "e597b2047e5a722dc18d7a629a2964b4ca606441"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/padraic/mockery/zipball/c00c2ff72c31b061e73967b8eb36ca2bd90b5748",
-                "reference": "c00c2ff72c31b061e73967b8eb36ca2bd90b5748",
+                "url": "https://api.github.com/repos/padraic/mockery/zipball/e597b2047e5a722dc18d7a629a2964b4ca606441",
+                "reference": "e597b2047e5a722dc18d7a629a2964b4ca606441",
                 "shasum": ""
             },
             "require": {
@@ -3090,7 +3090,7 @@
                 "test double",
                 "testing"
             ],
-            "time": "2016-03-01 19:45:32"
+            "time": "2016-03-17 19:48:40"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
