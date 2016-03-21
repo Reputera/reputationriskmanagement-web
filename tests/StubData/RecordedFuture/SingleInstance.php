@@ -11,6 +11,8 @@ class SingleInstance
         $faker = \Faker\Factory::create();
         $instanceId = array_key_exists('id', $options) ? $options['id'] : $faker->name;
         $fragment = array_key_exists('fragment', $options) ? $options['fragment'] : $faker->sentence;
+        $totalReferences = array_key_exists('total', $options) ? $options['total'] : 5;
+        $referencesReturned = array_key_exists('returned', $options) ? $options['returned'] : 1;
 
         if (array_key_exists('type', $options)) {
             $eventType = $options['type'];
@@ -24,9 +26,9 @@ class SingleInstance
 
         $result = [
             'count' => [
-                'entities' => [
-                    'returned' => 1,
-                    'total' => 1,
+                'references' => [
+                    'returned' => $referencesReturned,
+                    'total' => $totalReferences,
                 ],
             ],
             'next_page_start' => '1',
@@ -102,6 +104,100 @@ class SingleInstance
                         'fragment_count' => 171,
                         'document_offset' => 21
                     ]
+                ]
+            ],
+            'entities' => [
+                'I6JBTy' => [
+                    'name' => 'Salt Lake City',
+                    'hits' => 1812506,
+                    'type' => 'City',
+                    'containers' => [
+                        'B_GRZ',
+                        'I2EnZw',
+                        'B_FAG',
+                        'I2Eo1m'
+                    ],
+                    'longname' => 'Salt Lake City,Utah,United States',
+                    'alias' => [],
+                    'external_links' => [
+                        'wikipedia' => [
+                            'id' => 'Salt_Lake_City'
+                        ]
+                    ],
+                    'features' => [
+                        'J3HW2_'
+                    ],
+                    'curated' => 1,
+                    'pos' => [
+                        'latitude' => 40.76078,
+                        'longitude' => -111.89105
+                    ],
+                        'meta_type' => 'type:City'
+                ],
+                'I2Endo' => [
+                    'name' => 'Sacramento',
+                    'hits' => 2819435,
+                    'type' => 'City',
+                    'containers' => [
+                        'I2En_R',
+                        'B_GRZ',
+                        'B_FAG',
+                        'I2EnW9'
+                    ],
+                    'longname' => 'Sacramento,California,United States',
+                    'alias' => [
+                        'Sacramento',
+                    ],
+                    'external_links' => [
+                        'wikipedia' => [
+                            'id' => 'Sacramento%2C_California'
+                        ]
+                    ],
+                    'features' => [
+                        'J3HW2_'
+                    ],
+                    'curated' => 1,
+                    'pos' => [
+                        'latitude' => 38.58157,
+                        'longitude' => -121.4944
+                    ],
+                    'meta_type' => 'type:City'
+                ],
+                'B_FAG' => [
+                    'name' => 'United States',
+                    'hits' => 453345898,
+                    'type' => 'Country',
+                    'containers' => [
+                        'B_GRZ'
+                    ],
+                    'external_id' => '188021635',
+                    'longname' => 'United States',
+                    'alias' => [
+                        'united states of america',
+                        'u.s.a.'
+                    ],
+                    'external_links' => [
+                        'wikipedia' => [
+                            'id' => 'United_States'
+                        ]
+                    ],
+                    'features' => [
+                        'J3HWz_'
+                    ],
+                    'curated' => 1,
+                    'pos' => [
+                        'latitude' => 39.76,
+                        'longitude' => -98.5
+                    ],
+                    'meta_type' => 'type:Country'
+                ],
+                'url:http://www.someurl.com' => [
+                    'name' => 'http://www.someurl.com',
+                    'type' => 'URL',
+                    'created' => '2016-03-21T00:11:26.945Z',
+                    'domain' => 'idn:www.someurl.com',
+                    'curated' => 0,
+                    'meta_type' => 'type:URL'
                 ]
             ]
         ];
