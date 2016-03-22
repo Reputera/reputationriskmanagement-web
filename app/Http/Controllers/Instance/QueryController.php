@@ -33,14 +33,16 @@ class QueryController extends Controller
         ])
             ->selectRaw('(instances.positive_sentiment - instances.negative_sentiment) as risk_score')
             ->join('vectors', 'vectors.id', '=', 'instances.vector_id')
+            ->join('companies', 'companies.id', '=', 'instances.company_id')
             ->leftJoin('instance_country', 'instances.id', '=', 'instance_country.instance_id')
-            ->leftJoin('countries', 'countries.id', '=', 'instance_country.country_id');
+            ->leftJoin('countries', 'countries.id', '=', 'instance_country.country_id')
+            ->leftJoin('regions', 'regions.id', '=', 'countries.region_id');
 
         $builder = $request->sendBuilderThroughPipeline($builder, [SortingPipeline::class]);
         $builder->where($request->onlyArray([
             'vectors.name',
-            'company.name',
-            'country.name'
+            'companies.name',
+            'regions.name',
         ]));
 
         if($start = $request->input('start_datetime')) {
