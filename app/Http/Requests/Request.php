@@ -41,4 +41,15 @@ class Request extends FormRequest
             return $builder;
         });
     }
+
+    public function onlyArray(array $params)
+    {
+        $returnArray = [];
+        foreach($params as $param) {
+            if($paramValue = $this->get($param)) {
+                $returnArray[$param] =  $paramValue;
+            }
+        }
+        return $returnArray;
+    }
 }
