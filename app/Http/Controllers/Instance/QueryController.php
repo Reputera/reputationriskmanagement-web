@@ -9,6 +9,7 @@ use App\Http\Pipelines\Query\SortingPipeline;
 use App\Http\Requests\Instance\InstanceQueryRequest;
 use App\Http\Traits\PaginationTrait;
 use App\Transformers\Instance\InstanceTransformer;
+use Illuminate\Http\Request;
 
 class QueryController extends Controller
 {
@@ -46,12 +47,23 @@ class QueryController extends Controller
         ]));
 
         if($start = $request->input('start_datetime')) {
-            $builder->where('instances.created_at', '>', $start);
+            $builder->where('instances.start', '>', $start);
         }
         if($end = $request->input('end_datetime')) {
-            $builder->where('instances.created_at', '<', $end);
+            $builder->where('instances.start', '<', $end);
         }
 
         return $this->respondWith($builder->get(), new InstanceTransformer());
+    }
+
+    public function getRiskScore(Request $request)
+    {
+        $riskScore = \DB::table('instances')
+            ->selectRaw('(sum(positive_sentiment) - sum(negative_sentiment)) / count(*) as risk_score')
+            ->where('instances.start', '>', $request->input('start_datetime'))
+            ->where('instances.start', '<', $request->input('end_datetime'))
+            ->where('company_id', '=', $request->input('company_id'))
+            ->first();
+        return $this->respondWithArray(['risk_score' => $riskScore->risk_score]);
     }
 }

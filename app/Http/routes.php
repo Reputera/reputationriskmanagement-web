@@ -19,6 +19,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['api']], function () {
     Route::post('login', 'Auth\ApiAuthController@authenticate')->name('api.login.post');
     Route::group(['middleware' => 'auth'], function () {
         Route::get('instance', 'Instance\QueryController@getInstances')->name('instance.get');
+        Route::get('riskScore', 'Instance\QueryController@getRiskScore')->name('instance.getRiskScore');
 
         Route::post('create-admin', 'Users\AdminUserController@store')->name('admin.store');
     });
