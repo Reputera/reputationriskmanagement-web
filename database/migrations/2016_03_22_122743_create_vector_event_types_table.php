@@ -15,7 +15,7 @@ class CreateVectorEventTypesTable extends Migration
         Schema::create('vector_event_types', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('vector_id');
-            $table->string('event_type');
+            $table->string('event_type')->index();
             $table->timestamps();
 
             $table->foreign('vector_id')->references('id')->on('vectors');
