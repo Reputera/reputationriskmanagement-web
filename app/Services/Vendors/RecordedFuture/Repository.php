@@ -20,7 +20,7 @@ class Repository
         try {
             $vectorId = null;
             $vectorEventType = DB::table('vector_event_types')->where('event_type', $instance->getType())
-                ->first(['id']);
+                ->first(['vector_id']);
             if ($vectorEventType) {
                 $vectorId = $vectorEventType->vector_id;
             };
