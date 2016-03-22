@@ -20,6 +20,16 @@ class Instance extends BaseRecord
     }
 
     /**
+     * Get the Recorded Future start time in UTC.
+     *
+     * @return string
+     */
+    public function getStart(): string
+    {
+        return $this->getFieldAsString('start');
+    }
+
+    /**
      * Get the instance type.
      *
      * @return string
