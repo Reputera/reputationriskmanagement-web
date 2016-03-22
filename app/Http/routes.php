@@ -18,6 +18,8 @@ Route::group(['middleware' => ['web']], function () {
 Route::group(['prefix' => 'api', 'middleware' => ['api']], function () {
     Route::post('login', 'Auth\ApiAuthController@authenticate')->name('api.login.post');
     Route::group(['middleware' => 'auth'], function () {
+        Route::get('instance', 'Instance\QueryController@getInstances')->name('instance.get');
+
         Route::post('create-admin', 'Users\AdminUserController@store')->name('admin.store');
     });
 });
