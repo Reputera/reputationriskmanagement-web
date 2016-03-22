@@ -25,8 +25,9 @@ class CreateInstancesTable extends Migration
             $table->text('fragment');
             $table->string('fragment_hash');
             $table->string('link');
-            $table->double('positive_sentiment', 18, 17);
-            $table->double('negative_sentiment', 18, 17);
+            $table->double('sentiment', 18, 17);
+            $table->double('positive_sentiment', 18, 17)->unsigned();
+            $table->double('negative_sentiment', 18, 17)->unsigned();
             $table->timestamps();
 
             $table->foreign('company_id')->references('id')->on('companies');

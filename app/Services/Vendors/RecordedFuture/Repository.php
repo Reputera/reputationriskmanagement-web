@@ -21,8 +21,11 @@ class Repository
 
         $fragment = $instance->getFragment();
         $hashedFragment = md5($fragment);
+        $attributes = $instance->getAttributes();
 
-        if (DB::table('instances')->where('fragment_hash', $hashedFragment)->value('id')) {
+        if (DB::table('instances')->where('fragment_hash', $hashedFragment)->value('id') ||
+            $attributes->getPositiveSentiment() == $attributes->getNegativeSentiment()
+        ) {
             return false;
         }
 
@@ -32,8 +35,6 @@ class Repository
         $document = $instance->getDocument();
         
         try {
-            $attributes = $instance->getAttributes();
-
             $instanceId = DB::table('instances')->insertGetId([
                 'company_id' => $company->id,
                 'vector_id' => $vectorId,
@@ -46,6 +47,7 @@ class Repository
                 'fragment' => $fragment,
                 'fragment_hash' => md5($fragment),
                 'link' => $document->getUrl(),
+                'sentiment' => (-$attributes->getNegativeSentiment() + $attributes->getPositiveSentiment()),
                 'positive_sentiment' => $attributes->getPositiveSentiment(),
                 'negative_sentiment' => $attributes->getNegativeSentiment(),
                 'created_at' => $timestamp,
