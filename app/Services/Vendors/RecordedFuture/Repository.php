@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class Repository
 {
-    protected $error;
+    protected $error = null;
 
     public function getError()
     {
@@ -17,30 +17,29 @@ class Repository
 
     public function saveInstanceForCompany(Instance $instance, Company $company)
     {
+        $this->resetError();
+
+        $fragment = $instance->getFragment();
+        $hashedFragment = md5($fragment);
+
+        if (DB::table('instances')->where('fragment_hash', $hashedFragment)->value('id')) {
+            return false;
+        }
+
+        $vectorId = DB::table('vector_event_types')->where('event_type', $instance->getType())->value('vector_id');
+
+        $timestamp = (new Carbon())->toDateTimeString();
+        $document = $instance->getDocument();
+        
         try {
-            $vectorId = null;
-            $vectorEventType = DB::table('vector_event_types')->where('event_type', $instance->getType())
-                ->first(['vector_id']);
-            if ($vectorEventType) {
-                $vectorId = $vectorEventType->vector_id;
-            };
-
-            $timestamp = (new Carbon())->toDateTimeString();
-            $fragment = $instance->getFragment();
-            $document = $instance->getDocument();
             $attributes = $instance->getAttributes();
-
-            $publishedAt = null;
-            if ($documentPublishedAt = $document->getPublished()) {
-                $publishedAt = (new Carbon($documentPublishedAt))->toDateTimeString();
-            }
 
             $instanceId = DB::table('instances')->insertGetId([
                 'company_id' => $company->id,
                 'vector_id' => $vectorId,
                 'entity_id' => $instance->getId(),
                 'type' => $instance->getType(),
-                'start' => $publishedAt,
+                'start' => (new Carbon($instance->getStart()))->toDateTimeString(),
                 'language' => $document->getLanguage(),
                 'source' => $document->getSource()->getName(),
                 'title' => $document->getTitle(),
@@ -69,5 +68,10 @@ class Repository
         } catch (\Exception $e) {
             $this->error = $e->getMessage();
         }
+    }
+
+    protected function resetError()
+    {
+        $this->error = null;
     }
 }
