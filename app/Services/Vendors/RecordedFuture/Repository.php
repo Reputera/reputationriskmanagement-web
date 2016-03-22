@@ -3,7 +3,6 @@
 namespace App\Services\Vendors\RecordedFuture;
 
 use App\Entities\Company;
-use App\Entities\Vector;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -20,8 +19,10 @@ class Repository
     {
         try {
             $vectorId = null;
-            if ($vector = Vector::fromEventType($instance->getType())) {
-                $vectorId = $vector->id;
+            $vectorEventType = DB::table('vector_event_types')->where('event_type', $instance->getType())
+                ->first(['id']);
+            if ($vectorEventType) {
+                $vectorId = $vectorEventType->vector_id;
             };
 
             $timestamp = (new Carbon())->toDateTimeString();
