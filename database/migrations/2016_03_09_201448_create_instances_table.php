@@ -16,17 +16,17 @@ class CreateInstancesTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('company_id');
             $table->unsignedInteger('vector_id')->nullable();
-            $table->string('entity_id'); // Recorded Future Instance ID
-            $table->string('event_type');
-            $table->string('original_language');
+            $table->string('entity_id');
+            $table->string('type');
+            $table->dateTime('start');
+            $table->string('language');
             $table->string('source');
             $table->string('title');
-            $table->string('fragment', 600);
+            $table->text('fragment');
             $table->string('fragment_hash');
             $table->string('link');
-            $table->float('positive_sentiment');
-            $table->float('negative_sentiment');
-            $table->dateTime('published_at')->nullable();
+            $table->double('positive_sentiment', 18, 17);
+            $table->double('negative_sentiment', 18, 17);
             $table->timestamps();
 
             $table->foreign('company_id')->references('id')->on('companies');
