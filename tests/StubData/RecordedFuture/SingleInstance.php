@@ -2,8 +2,6 @@
 
 namespace Tests\StubData\RecordedFuture;
 
-use App\Entities\VectorEventType;
-
 class SingleInstance
 {
     public static function get(array $options = [], bool $jsonEncode = false)
@@ -14,15 +12,7 @@ class SingleInstance
         $totalReferences = array_key_exists('total', $options) ? $options['total'] : 5;
         $referencesReturned = array_key_exists('returned', $options) ? $options['returned'] : 1;
 
-        if (array_key_exists('type', $options)) {
-            $eventType = $options['type'];
-        } else {
-            $eventVectors = VectorEventType::keys();
-            $randomVector = $eventVectors[array_rand($eventVectors)];
-
-            $vectorEventTypes = VectorEventType::valueByStringKey($randomVector);
-            $eventType = $vectorEventTypes[array_rand($vectorEventTypes)];
-        }
+        $eventType = (array_key_exists('type', $options)) ? $options['type'] : 'Event';
 
         $result = [
             'count' => [
