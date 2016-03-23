@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Instance;
 
-
 use App\Entities\Company;
 use App\Entities\Region;
 use App\Entities\Vector;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
 
-class InstanceUIController extends Controller
+class InstanceUIController extends ApiController
 {
 
     public function index()
@@ -20,5 +19,4 @@ class InstanceUIController extends Controller
         ]);
         return view('instance.instanceQuery');
     }
-
 }

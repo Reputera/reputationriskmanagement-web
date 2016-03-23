@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers\Instance;
 
-
 use App\Entities\Instance;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
 use App\Http\Pipelines\Query\SortingPipeline;
 use App\Http\Requests\Instance\InstanceQueryRequest;
 use App\Http\Requests\Instance\RiskScoreRequest;
 use App\Http\Traits\PaginationTrait;
 use App\Transformers\Instance\InstanceTransformer;
 
-class QueryController extends Controller
+class QueryController extends ApiController
 {
     use PaginationTrait;
 
@@ -46,10 +45,10 @@ class QueryController extends Controller
             'regions_name',
         ]));
 
-        if($start = $request->input('start_datetime')) {
+        if ($start = $request->input('start_datetime')) {
             $builder->where('instances.start', '>', $start);
         }
-        if($end = $request->input('end_datetime')) {
+        if ($end = $request->input('end_datetime')) {
             $builder->where('instances.start', '<', $end);
         }
 
