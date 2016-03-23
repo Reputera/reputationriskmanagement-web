@@ -17,6 +17,12 @@
             <option value="">Select a region</option>
         </select>
 
+        <label>Start date</label>
+        <input type="text" class="form-control" id="start_datetime">
+
+        <label>End date</label>
+        <input type="text" class="form-control" id="end_datetime">
+
         <button class="btn btn-primary form-control" id="submit" onclick="getInstances();">Query</button>
 
         <div id="resultsDiv">
@@ -37,6 +43,10 @@
             $.each(regions, function() {
                 $("#regions").append($("<option />").val(this.name).text(this.name));
             });
+
+            $(function() {
+                $("#start_datetime").datepicker();
+            });
         });
 
         function getInstances() {
@@ -48,17 +58,23 @@
                     'regions_name': $("#regions").val()
                 }
             }).done(function(data) {
-                $('#resultsDiv').html('<h2>Results</h2><p>Total risk score: ' + data.data.total_risk_score + '</p>');
-                $.each(data.data.instances.data, function() {
-                    var instanceContent = '<div class="well"';
-                    for(var key in this) {
-                        instanceContent += '<p>' + key + ': ' + this[key] + '</p>';
-                    }
-                    instanceContent += '</div>';
-                    $("#resultsDiv").append(instanceContent);
-                });
+                if(data.data.instances.data.length == 0) {
+                    $('#resultsDiv').html('<h2>No Results</h2>');
+                }
+                else {
+                    $('#resultsDiv').html('<h2>Results</h2><p>Total sentiment score: ' + data.data.total_sentiment_score + '</p>');
+                    $.each(data.data.instances.data, function() {
+                        var instanceContent = '<div class="well"';
+                        for(var key in this) {
+                            instanceContent += '<p>' + key + ': ' + this[key] + '</p>';
+                        }
+                        instanceContent += '</div>';
+                        $("#resultsDiv").append(instanceContent);
+                    });
+                }
             }).fail(function(data) {
-//                console.log(data);
+
+                $('#resultsDiv').append('<p style="color:red;">'+data.responseText +'</p>');
             });
         }
     </script>

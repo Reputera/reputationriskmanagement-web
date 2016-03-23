@@ -33,7 +33,6 @@ class QueryController extends Controller
             'instances.*'
         ])
             ->selectRaw('(instances.positive_sentiment - instances.negative_sentiment) as risk_score')
-            ->selectRaw('((sum(positive_sentiment) - sum(negative_sentiment)) / count(*)) * 100 as total_risk_score')
             ->join('vectors', 'vectors.id', '=', 'instances.vector_id')
             ->join('companies', 'companies.id', '=', 'instances.company_id')
             ->leftJoin('instance_country', 'instances.id', '=', 'instance_country.instance_id')
@@ -56,8 +55,8 @@ class QueryController extends Controller
 
         $resultCollection = $builder->get();
         return $this->respondWithArray([
-            'total_risk_score' => $resultCollection->first()->total_risk_score,
-            'instances' => $this->fractalize($resultCollection, new InstanceTransformer())
+            'total_sentiment_score' => ($resultCollection->sum('positive_sentiment') - $resultCollection->sum('negative_sentiment')) / $resultCollection->count() * 100,
+            'instances' => $resultCollection->first()->id ? $this->fractalize($resultCollection, new InstanceTransformer()) : ['data'=>[]]
         ]);
     }
 
