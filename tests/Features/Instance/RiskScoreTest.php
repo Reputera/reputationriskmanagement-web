@@ -30,7 +30,7 @@ class RiskScoreTest extends \TestCase
         ]);
         $this->assertJsonResponseOkAndFormattedProperly();
         $results = $this->response->getData(true)['data'];
-        $this->assertEquals($results['risk_score'], .4);
+        $this->assertEquals(40, $results['risk_score']);
     }
 
 }
