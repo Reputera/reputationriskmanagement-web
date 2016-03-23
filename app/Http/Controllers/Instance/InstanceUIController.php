@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Instance;
 
 
 use App\Entities\Company;
+use App\Entities\Region;
 use App\Entities\Vector;
 use App\Http\Controllers\Controller;
 
@@ -14,7 +15,8 @@ class InstanceUIController extends Controller
     {
         \JavaScript::put([
             'vectors' => Vector::all(),
-            'companies' => Company::all()
+            'companies' => Company::all(),
+            'regions' => Region::all()
         ]);
         return view('instance.instanceQuery');
     }
