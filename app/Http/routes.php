@@ -4,12 +4,15 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('login', 'Auth\AuthController@getLogin')->name('login.get');
     Route::post('login', 'Auth\AuthController@postLogin')->name('login.post');
 
-    Route::post('create-user', 'Users\UserController@store')->name('user.store');
-
     Route::group(['middleware' => ['auth']], function () {
         Route::get('/', function () {
             return view('layouts.default');
         })->name('admin.landing');
+
+        Route::group(['middleware' => ['adminAccess']], function () {
+            Route::get('create-user', 'Users\AdminUserController@get')->name('adminUser.get');
+            Route::post('create-user', 'Users\AdminUserController@store')->name('adminUser.store');
+        });
     });
 
     Route::get('logout', 'Auth\AuthController@logout')->name('logout');
@@ -20,7 +23,5 @@ Route::group(['prefix' => 'api', 'middleware' => ['api']], function () {
     Route::group(['middleware' => 'auth'], function () {
         Route::get('instance', 'Instance\QueryController@getInstances')->name('instance.get');
         Route::get('riskScore', 'Instance\QueryController@getRiskScore')->name('instance.getRiskScore');
-
-        Route::post('create-admin', 'Users\AdminUserController@store')->name('admin.store');
     });
 });
