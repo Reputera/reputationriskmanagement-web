@@ -14,18 +14,25 @@ var elixir = require('laravel-elixir');
 elixir(function(mix) {
     mix
         .sass([
-            'resources/assets/sass/app.scss',
+            'resources/assets/sass/app.scss'
         ], 'public/css')
         .scripts([
             'bower_components/jquery/dist/jquery.min.js',
-            'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.min.js'
+            'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.min.js',
+            'node_modules/moment/min/moment.min.js',
+            'bower_components/jquery-ui/jquery-ui.min.js'
         ], 'public/js/jquery.js', './')
         .scripts([
             'bower_components/admin-lte.scss/javascripts/app.js'
         ],'public/js/adminlte.js', './')
+        .styles([
+            'bower_components/jquery-ui/themes/base/jquery-ui.min.css',
+            'bower_components/jquery-ui/themes/base/all.css'
+        ], 'public/css', './')
         .copy('bower_components/bootstrap-sass-official/assets/fonts', 'public/build/fonts')
         .version([
             'public/css/app.css',
+            'public/css/all.css',
             'public/js/jquery.js',
             'public/js/adminlte.js'
         ])
