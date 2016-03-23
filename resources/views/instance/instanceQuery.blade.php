@@ -75,7 +75,11 @@
                     $.each(data.data.instances.data, function() {
                         var instanceContent = '<div class="well"';
                         for(var key in this) {
-                            instanceContent += '<p>' + key + ': ' + this[key] + '</p>';
+                            if(key == 'link') {
+                                instanceContent += '<p>link: <a target="_blank" href="'+this[key]+'">'+ this[key] + '</a></p>';
+                            } else {
+                                instanceContent += '<p>' + key + ': ' + this[key] + '</p>';
+                            }
                         }
                         instanceContent += '</div>';
                         $("#resultsDiv").append(instanceContent);
