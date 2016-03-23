@@ -4,14 +4,12 @@ namespace App\Http\Controllers\Users;
 
 use App\Entities\Company;
 use App\Entities\Role;
+use App\Entities\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Users\NewUserRequest;
-use App\Http\Traits\CreatesUser;
 
 class AdminUserController extends Controller
 {
-    use CreatesUser;
-
     public function get()
     {
         return view('adminUsers.create', [
@@ -22,6 +20,18 @@ class AdminUserController extends Controller
 
     public function store(NewUserRequest $request)
     {
-        return $this->createUser($request->all(), $request->get('role'));
+        $createdUser = User::create([
+            'name' => $request->get('name'),
+            'email' => $request->get('email'),
+            'password' => bcrypt($request->get('password')),
+            'role' => $request->get('role'),
+        ]);
+
+        if (!$createdUser->isAdmin()) {
+            $createdUser->company_id = $request->get('company_id');
+            $createdUser->save();
+        }
+
+        return redirect()->route('adminUser.get');
     }
 }
