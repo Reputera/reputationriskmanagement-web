@@ -7,6 +7,7 @@ use App\Entities\Country;
 use App\Entities\Region;
 use App\Entities\Vector;
 use App\Entities\VectorEventType;
+use App\Services\Vendors\RecordedFuture\Entity;
 use App\Services\Vendors\RecordedFuture\Instance;
 use App\Services\Vendors\RecordedFuture\Repository;
 use Carbon\Carbon;
@@ -23,23 +24,40 @@ class RepositoryTest extends \TestCase
         $this->repo = new Repository();
     }
 
+    public function test_no_saving_of_duplicate_records()
+    {
+        $singleInstance = SingleInstance::get();
+        $instance = new Instance($singleInstance['instances'][0]);
+        factory(\App\Entities\Instance::class)->create(['fragment_hash' => md5($instance->getFragment())]);
+        $company = factory(Company::class)->create();
+
+        $this->assertFalse($this->repo->saveInstanceForCompany($instance, $company));
+    }
+
+    public function test_no_saving_of_duplicate_recorddddds()
+    {
+        $singleInstance = SingleInstance::get();
+        $singleInstance['instances'][0]['attributes']['general_negative'] =
+            $singleInstance['instances'][0]['attributes']['general_positive'];
+        $instance = new Instance($singleInstance['instances'][0]);
+
+        $company = factory(Company::class)->create();
+
+        $this->assertFalse($this->repo->saveInstanceForCompany($instance, $company));
+    }
+
     public function test_saving_an_instance_when_country_cannot_be_found()
     {
-        $eventVectors = VectorEventType::keys();
-        $randomVector = $eventVectors[array_rand($eventVectors)];
+        $eventType = factory(VectorEventType::class)->create();
 
-        $vector = factory(Vector::class)->create(['name' => ucfirst(strtolower($randomVector))]);
+        $singleInstance = SingleInstance::get(['type' => $eventType->event_type]);
 
-        $vectorEventTypes = VectorEventType::valueByStringKey($randomVector);
-        $eventType = $vectorEventTypes[array_rand($vectorEventTypes)];
-
-        $singleInstance = SingleInstance::get(['event_type' => $eventType]);
         $instance = new Instance($singleInstance['instances'][0]);
         $company = factory(Company::class)->create();
 
         $this->repo->saveInstanceForCompany($instance, $company);
 
-        $this->assertInstanceInDb($company, $singleInstance['instances'][0], $vector);
+        $this->assertInstanceInDb($company, $singleInstance['instances'][0], $eventType->vector);
     }
 
     public function test_saving_an_instance_when_vector_cannot_be_found()
@@ -55,18 +73,18 @@ class RepositoryTest extends \TestCase
 
     public function test_saving_an_instance_when_everything_is_found()
     {
-        $singleInstance = SingleInstance::get()['instances'][0];
+        $eventType = factory(VectorEventType::class)->create();
+        $singleInstance = SingleInstance::get(['type' => $eventType->event_type]);
 
-        $vector = factory(Vector::class)->create(['name' => VectorEventType::getVectorNameFromEventType($singleInstance['type'])]);
+        $country = factory(Country::class)->create(['entity_id' => 'B_FAG']);
 
-        $country = factory(Country::class)->create(['name' => $singleInstance['document']['sourceId']['country']]);
-
-        $instance = new Instance($singleInstance);
+        $instance = new Instance($singleInstance['instances'][0]);
+        $instance->setRelatedEntities([new Entity('B_FAG', $singleInstance['entities']['B_FAG'])]);
         $company = factory(Company::class)->create();
 
         $this->repo->saveInstanceForCompany($instance, $company);
 
-        $this->assertInstanceInDb($company, $singleInstance, $vector, $country, $country->region);
+        $this->assertInstanceInDb($company, $singleInstance['instances'][0], $eventType->vector, $country);
     }
 
     protected function assertInstanceInDb(Company $company, array $instance, Vector $vector = null, Country $country = null, Region $region = null)
@@ -74,20 +92,26 @@ class RepositoryTest extends \TestCase
         $this->seeInDatabase('instances', [
             'company_id' => $company->id ?? null,
             'vector_id' => $vector->id ?? null,
-            'country_name' => $instance['document']['sourceId']['country'],
-            'country_id' => $country->id ?? null,
-            'region_id' => $region->id ?? null,
             'entity_id' => $instance['id'],
-            'event_type' => $instance['type'],
-            'original_language' => $instance['document']['language'],
+            'type' => $instance['type'],
+            'start' => (new Carbon($instance['start']))->toDateTimeString(),
+            'language' => $instance['document']['language'],
             'source' => $instance['document']['sourceId']['name'],
             'title' => $instance['document']['title'],
             'fragment' => $instance['fragment'],
             'fragment_hash' => md5($instance['fragment']),
             'link' => $instance['document']['url'],
+            'sentiment' => (-$instance['attributes']['general_negative'] + $instance['attributes']['general_positive']),
             'positive_sentiment' => $instance['attributes']['general_positive'],
             'negative_sentiment' => $instance['attributes']['general_negative'],
-            'published_at' => (new Carbon($instance['document']['published']))->toDateTimeString(),
         ]);
+
+        if ($country) {
+            $instanceId = \DB::table('instances')->where('entity_id', $instance['id'])->value('id');
+            $this->seeInDatabase('instance_country', [
+                'instance_id' => $instanceId,
+                'country_id' => $country->id
+            ]);
+        }
     }
 }
