@@ -7,12 +7,11 @@ class AdminMustProvideAllFieldsTest extends \TestCase
     public function test_all_required_fields()
     {
         $this->beLoggedInAsAdmin();
-        $this->apiCall('post', 'create-admin');
+        $this->call('post', 'create-user');
 
-        $this->assertJsonUnprocessableEntity();
         $this->assertEquals(
             $this->getRequiredFieldValidationErrors(),
-            json_decode($this->response->getContent(), true)['errors']
+            \Session::get('errors')->toArray()
         );
     }
 
@@ -23,6 +22,7 @@ class AdminMustProvideAllFieldsTest extends \TestCase
             'email' => ['The email field is required.'],
             'password' => ['The password field is required.'],
             'role' => ['The role field is required.'],
+            'company_id' => ['The company field is required.']
         ];
     }
 }
