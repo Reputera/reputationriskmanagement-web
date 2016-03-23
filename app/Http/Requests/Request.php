@@ -42,12 +42,12 @@ class Request extends FormRequest
         });
     }
 
-    public function onlyArray(array $params)
+    public function getForQuery(array $params)
     {
         $returnArray = [];
         foreach($params as $param) {
             if($paramValue = $this->get($param)) {
-                $returnArray[$param] =  $paramValue;
+                $returnArray[str_replace('_', '.', $param)] = $paramValue;
             }
         }
         return $returnArray;

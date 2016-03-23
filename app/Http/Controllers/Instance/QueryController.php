@@ -33,6 +33,7 @@ class QueryController extends Controller
             'instances.*'
         ])
             ->selectRaw('(instances.positive_sentiment - instances.negative_sentiment) as risk_score')
+            ->selectRaw('((sum(positive_sentiment) - sum(negative_sentiment)) / count(*)) * 100 as total_risk_score')
             ->join('vectors', 'vectors.id', '=', 'instances.vector_id')
             ->join('companies', 'companies.id', '=', 'instances.company_id')
             ->leftJoin('instance_country', 'instances.id', '=', 'instance_country.instance_id')
@@ -40,10 +41,10 @@ class QueryController extends Controller
             ->leftJoin('regions', 'regions.id', '=', 'countries.region_id');
 
         $builder = $request->sendBuilderThroughPipeline($builder, [SortingPipeline::class]);
-        $builder->where($request->onlyArray([
-            'vectors.name',
-            'companies.name',
-            'regions.name',
+        $builder->where($request->getForQuery([
+            'vectors_name',
+            'companies_name',
+            'regions_name',
         ]));
 
         if($start = $request->input('start_datetime')) {
@@ -53,7 +54,11 @@ class QueryController extends Controller
             $builder->where('instances.start', '<', $end);
         }
 
-        return $this->respondWith($builder->get(), new InstanceTransformer());
+        $resultCollection = $builder->get();
+        return $this->respondWithArray([
+            'total_risk_score' => $resultCollection->first()->total_risk_score,
+            'instances' => $this->fractalize($resultCollection, new InstanceTransformer())
+        ]);
     }
 
     /**
