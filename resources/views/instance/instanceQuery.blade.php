@@ -9,12 +9,12 @@
 
         <label>Vector</label>
         <select class="form-control" id="vectors">
-            <option value="">Select a vector</option>
+            <option value="">All vectors</option>
         </select>
 
         <label>Region</label>
         <select class="form-control" id="regions">
-            <option value="">Select a region</option>
+            <option value="">All regions</option>
         </select>
 
         <label>Start date</label>
@@ -45,7 +45,8 @@
             });
 
             $(function() {
-                $("#start_datetime").datepicker();
+                $("#start_datetime").datepicker({dateFormat:'yy-mm-dd'});
+                $("#end_datetime").datepicker({dateFormat:'yy-mm-dd'});
             });
         });
 
@@ -55,14 +56,17 @@
                 data: {
                     'companies_name': $("#companies").val(),
                     'vectors_name': $("#vectors").val(),
-                    'regions_name': $("#regions").val()
+                    'regions_name': $("#regions").val(),
+                    'start_datetime': $("#start_datetime").val(),
+                    'end_datetime': $("#end_datetime").val()
                 }
             }).done(function(data) {
                 if(data.data.instances.data.length == 0) {
                     $('#resultsDiv').html('<h2>No Results</h2>');
                 }
                 else {
-                    $('#resultsDiv').html('<h2>Results</h2><p>Total sentiment score: ' + data.data.total_sentiment_score + '</p>');
+                    $('#resultsDiv').html('<h2>Results</h2><p>Result count: ' + data.data.count + '</p>');
+                    $('#resultsDiv').append('<p>Total sentiment score: ' + data.data.total_sentiment_score + '</p>');
                     $.each(data.data.instances.data, function() {
                         var instanceContent = '<div class="well"';
                         for(var key in this) {
@@ -73,8 +77,7 @@
                     });
                 }
             }).fail(function(data) {
-
-                $('#resultsDiv').append('<p style="color:red;">'+data.responseText +'</p>');
+                $('#resultsDiv').append('<p style="color:red;">' + data.responseText + '</p>');
             });
         }
     </script>
