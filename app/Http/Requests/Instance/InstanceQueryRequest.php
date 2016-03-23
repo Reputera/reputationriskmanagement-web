@@ -18,9 +18,9 @@ class InstanceQueryRequest extends Request
         return [
             'start_datetime' => 'date',
             'end_datetime' => 'date',
-            'vectors.name' => 'exists:vectors,name',
-            'countries.name' => 'exists:countries,name',
-            'companies.name' => 'required|exists:companies,name'
+            'vectors_name' => 'exists:vectors,name',
+            'countries_name' => 'exists:countries,name',
+            'companies_name' => 'required|exists:companies,name'
         ];
     }
 

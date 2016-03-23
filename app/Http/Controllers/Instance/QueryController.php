@@ -40,10 +40,10 @@ class QueryController extends Controller
             ->leftJoin('regions', 'regions.id', '=', 'countries.region_id');
 
         $builder = $request->sendBuilderThroughPipeline($builder, [SortingPipeline::class]);
-        $builder->where($request->onlyArray([
-            'vectors.name',
-            'companies.name',
-            'regions.name',
+        $builder->where($request->getForQuery([
+            'vectors_name',
+            'companies_name',
+            'regions_name',
         ]));
 
         if($start = $request->input('start_datetime')) {
@@ -53,7 +53,11 @@ class QueryController extends Controller
             $builder->where('instances.start', '<', $end);
         }
 
-        return $this->respondWith($builder->get(), new InstanceTransformer());
+        $resultCollection = $builder->get();
+        return $this->respondWithArray([
+            'total_sentiment_score' => ($resultCollection->sum('positive_sentiment') - $resultCollection->sum('negative_sentiment')) / $resultCollection->count() * 100,
+            'instances' => $resultCollection->first()->id ? $this->fractalize($resultCollection, new InstanceTransformer()) : ['data'=>[]]
+        ]);
     }
 
     /**
@@ -69,11 +73,11 @@ class QueryController extends Controller
     public function getRiskScore(RiskScoreRequest $request)
     {
         $riskScore = \DB::table('instances')
-            ->selectRaw('(sum(positive_sentiment) - sum(negative_sentiment)) / count(*) as risk_score')
+            ->selectRaw('((sum(positive_sentiment) - sum(negative_sentiment)) / count(*)) * 100 as risk_score')
             ->where('instances.start', '>', $request->input('start_datetime'))
             ->where('instances.start', '<', $request->input('end_datetime'))
             ->where('company_id', '=', $request->input('company_id'))
             ->first();
-        return $this->respondWithArray(['risk_score' => $riskScore->risk_score * 100]);
+        return $this->respondWithArray(['risk_score' => $riskScore->risk_score]);
     }
 }

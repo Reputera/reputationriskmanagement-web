@@ -19,15 +19,15 @@ class QueryingTest extends \TestCase
 
         $this->beLoggedInAsAdmin();
         $this->apiCall('GET', 'instance', [
-            'start_datetime' => Carbon::now()->subDay(1),
-            'end_datetime' => Carbon::now()->addDay(1),
-            'vectors.name' => $returnedInstance->vector->name,
-            'regions.name' => $country->region->name,
-            'companies.name' => $returnedInstance->company->name,
+            'start_datetime' => $returnedInstance->start->subDay(1),
+            'end_datetime' => $returnedInstance->start->addDay(1),
+            'vectors_name' => $returnedInstance->vector->name,
+            'regions_name' => $country->region->name,
+            'companies_name' => $returnedInstance->company->name,
             'risk_score' => -100
         ]);
         $this->assertJsonResponseOkAndFormattedProperly();
-        $results = $this->response->getData(true)['data'];
+        $results = $this->response->getData(true)['data']['instances']['data'];
         $this->assertCount(1, $results);
         $this->assertEquals($returnedInstance->id, array_get($results, '0.id'), 'Assert correct instance returned');
     }

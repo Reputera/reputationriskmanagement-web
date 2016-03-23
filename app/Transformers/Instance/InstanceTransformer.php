@@ -15,7 +15,7 @@ class InstanceTransformer extends TransformerAbstract
             'company' => $instance->company->name,
             'vector' => $instance->vector->name ?? null,
             'type' => $instance->type,
-            'start' => $instance->start,
+            'start' => $instance->start->format('Y-m-d H:i:s'),
             'language' => $instance->language,
             'source' => $instance->source,
             'title' => $instance->title,
