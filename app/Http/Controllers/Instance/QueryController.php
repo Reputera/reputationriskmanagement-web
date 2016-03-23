@@ -7,12 +7,10 @@ use App\Http\Controllers\ApiController;
 use App\Http\Pipelines\Query\SortingPipeline;
 use App\Http\Requests\Instance\InstanceQueryRequest;
 use App\Http\Requests\Instance\RiskScoreRequest;
-use App\Http\Traits\PaginationTrait;
 use App\Transformers\Instance\InstanceTransformer;
 
 class QueryController extends ApiController
 {
-    use PaginationTrait;
 
     /**
      * @api {get} /instances/ List instances
@@ -53,9 +51,11 @@ class QueryController extends ApiController
         }
 
         $resultCollection = $builder->get();
+        $resultCount = $resultCollection->count();
         return $this->respondWithArray([
-            'total_sentiment_score' => ($resultCollection->sum('positive_sentiment') - $resultCollection->sum('negative_sentiment')) / $resultCollection->count() * 100,
-            'instances' => $resultCollection->first()->id ? $this->fractalize($resultCollection, new InstanceTransformer()) : ['data'=>[]]
+            'count' => $resultCount,
+            'total_sentiment_score' => $resultCount ? (int)((($resultCollection->sum('positive_sentiment') - $resultCollection->sum('negative_sentiment')) / $resultCount * 100)) : 0,
+            'instances' => $resultCount ? $this->fractalize($resultCollection, new InstanceTransformer()) : ['data'=>[]]
         ]);
     }
 
