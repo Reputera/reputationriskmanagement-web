@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property integer $id
  * @property string $name
  * @property string $email
+ * @property integer $company_id
  * @property string $role
  * @property string $password
  * @property string $remember_token
@@ -24,6 +25,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\User whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\User whereName($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\User whereEmail($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\User whereCompanyId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\User wherePassword($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\User whereRole($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\User whereRememberToken($value)
@@ -42,7 +44,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'role'
+        'name', 'email', 'password', 'role', 'company_id'
     ];
 
     /**
