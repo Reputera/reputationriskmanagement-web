@@ -6,6 +6,7 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::get('riskScore', 'Instance\QueryController@getRiskScore')->name('instance.getRiskScore');
     Route::get('instance', 'Instance\QueryController@getInstances')->name('instance.get');
+    Route::get('instanceCsv', 'Instance\QueryController@getInstancesCsv')->name('instance.getCsv');
 
     Route::get('instanceQuery', 'Instance\InstanceUIController@index')->name('instance.index');
 
