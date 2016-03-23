@@ -21,9 +21,9 @@ class InstanceTransformer extends TransformerAbstract
             'title' => $instance->title,
             'fragment' => $instance->fragment,
             'link' => $instance->link,
-            'positive_sentiment' => $instance->positive_sentiment * 100,
-            'negative_sentiment' => $instance->negative_sentiment * -100,
-            'risk_score' => ($instance->positive_sentiment - $instance->negative_sentiment) * 100
+            'positive_sentiment' => (int)($instance->positive_sentiment * 100),
+            'negative_sentiment' => (int)($instance->negative_sentiment * -100),
+            'risk_score' => (int)(($instance->positive_sentiment - $instance->negative_sentiment) * 100)
         ];
     }
 }
