@@ -63,9 +63,6 @@ class Handler extends ExceptionHandler
         } elseif ($e instanceof TokenInvalidException) {
             return $this->unauthorizedResponse(['token_invalid']);
         } elseif ($e instanceof TokenMismatchException) {
-            if ($this->isApiRequest($request)) {
-                return $this->errorResponse('Your session has expired please refresh this page to login again.', 400);
-            }
             return redirect()->route('get.login')
                 ->with('error_message', 'Your token has expired. Please re-try your request.');
         } elseif ($this->isApiRequest($request)) {
@@ -81,8 +78,6 @@ class Handler extends ExceptionHandler
 
     protected function isApiRequest($request)
     {
-        return ($request->route() && str_contains($request->route()->getPrefix(), '/api') ||
-            ($request->acceptsJson() || $request->isJson() || $request->wantsJson())
-        );
+        return ($request->route() && str_contains($request->route()->getPrefix(), '/api'));
     }
 }
