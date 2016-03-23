@@ -160,6 +160,7 @@ return [
          * 3rd Party Service Providers
          */
         Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
+        \Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class
     ],
 
     /*

@@ -13,17 +13,17 @@ class InstanceTransformer extends TransformerAbstract
         return [
             'id' => $instance->id,
             'company' => $instance->company->name,
-            'vector' => $instance->vector_id ? $instance->vector->name : null,
+            'vector' => $instance->vector->name ?? null,
             'type' => $instance->type,
             'start' => $instance->start,
             'language' => $instance->language,
             'source' => $instance->source,
             'title' => $instance->title,
             'fragment' => $instance->fragment,
-            'fragment_hash' => $instance->fragment_hash,
             'link' => $instance->link,
-            'positive_sentiment' => $instance->positive_sentiment,
-            'negative_sentiment' => $instance->negative_sentiment
+            'positive_sentiment' => $instance->positive_sentiment * 100,
+            'negative_sentiment' => $instance->negative_sentiment * -100,
+            'risk_score' => ($instance->positive_sentiment - $instance->negative_sentiment) * 100
         ];
     }
 }

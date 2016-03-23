@@ -26,4 +26,12 @@ class Instance extends Model
         return $this->belongsTo(Vector::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function countries()
+    {
+        return $this->belongsToMany(Country::class, 'instance_country');
+    }
+
 }

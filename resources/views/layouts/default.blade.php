@@ -11,11 +11,13 @@
         <section class="content">
             <div ui-view="main-content">
             </div>
+            @yield('content')
         </section>
     </div>
     @include('layouts.elements.footer')
 </div>
 <script src="{{elixir('js/jquery.js')}}"></script>
 <script src="{{elixir('js/adminlte.js')}}"></script>
+@yield('scripts')
 </body>
 </html>

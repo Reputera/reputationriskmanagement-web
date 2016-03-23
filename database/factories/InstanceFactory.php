@@ -11,7 +11,7 @@ $factory->define(App\Entities\Instance::class, function (Faker\Generator $faker)
         'source' => $faker->word,
         'title' => $faker->word,
         'fragment' => $faker->sentence(),
-        'fragment_hash' => $faker->word,
+        'fragment_hash' => $faker->unique()->word,
         'link' => $faker->url,
         'positive_sentiment' => $faker->numberBetween(0,100) / 100,
         'negative_sentiment' => $faker->numberBetween(0,100) / 100
