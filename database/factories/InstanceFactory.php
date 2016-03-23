@@ -13,7 +13,8 @@ $factory->define(App\Entities\Instance::class, function (Faker\Generator $faker)
         'fragment' => $faker->sentence(),
         'fragment_hash' => $faker->unique()->word,
         'link' => $faker->url,
-        'positive_sentiment' => $faker->numberBetween(0,100) / 100,
-        'negative_sentiment' => $faker->numberBetween(0,100) / 100
+        'sentiment' => ($faker->numberBetween(0, 100) / 100),
+        'positive_sentiment' => ($faker->numberBetween(0, 100) / 100),
+        'negative_sentiment' => ($faker->numberBetween(0, 100) / 100),
     ];
 });
