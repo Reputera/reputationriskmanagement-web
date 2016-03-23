@@ -50,6 +50,6 @@ class Request extends FormRequest
                 $returnArray[str_replace('_', '.', $param)] = $paramValue;
             }
         }
-        return $returnArray;
+        return array_filter($returnArray);
     }
 }
