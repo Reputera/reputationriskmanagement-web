@@ -29,12 +29,14 @@ class QueryController extends Controller
      */
     public function getInstances(InstanceQueryRequest $request, QueryBuilder $queryBuilder)
     {
-        $resultCollection = $queryBuilder->queryInstances($request)->get();
+        $resultCollection = $queryBuilder->queryInstances($request)
+            ->with('countries.region')
+            ->get();
         $resultCount = $resultCollection->count();
         return $this->respondWithArray([
             'count' => $resultCount,
             'total_sentiment_score' => $resultCount ? (int)((($resultCollection->sum('positive_sentiment') - $resultCollection->sum('negative_sentiment')) / $resultCount * 100)) : 0,
-            'instances' => $resultCount ? $this->fractalize($resultCollection, new InstanceTransformer()) : ['data'=>[]]
+            'instances' => $this->fractalize($resultCollection, new InstanceTransformer())
         ]);
     }
 
