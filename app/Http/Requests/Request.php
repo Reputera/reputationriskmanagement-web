@@ -45,8 +45,8 @@ class Request extends FormRequest
     public function getForQuery(array $params)
     {
         $returnArray = [];
-        foreach($params as $param) {
-            if($paramValue = $this->get($param)) {
+        foreach ($params as $param) {
+            if ($paramValue = $this->get($param)) {
                 $returnArray[str_replace('_', '.', $param)] = $paramValue;
             }
         }
