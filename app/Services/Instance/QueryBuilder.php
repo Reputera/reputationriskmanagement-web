@@ -14,12 +14,12 @@ class QueryBuilder
         $builder = Instance::select([
             'instances.*'
         ])
-            ->selectRaw('(instances.positive_sentiment - instances.negative_sentiment) as risk_score')
             ->join('vectors', 'vectors.id', '=', 'instances.vector_id')
             ->join('companies', 'companies.id', '=', 'instances.company_id')
             ->leftJoin('instance_country', 'instances.id', '=', 'instance_country.instance_id')
             ->leftJoin('countries', 'countries.id', '=', 'instance_country.country_id')
-            ->leftJoin('regions', 'regions.id', '=', 'countries.region_id');
+            ->leftJoin('regions', 'regions.id', '=', 'countries.region_id')
+            ->groupBy('instances.id');
 
         $builder = $request->sendBuilderThroughPipeline($builder, [SortingPipeline::class]);
         $builder->where($request->getForQuery([
