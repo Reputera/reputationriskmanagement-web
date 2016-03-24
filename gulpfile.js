@@ -13,6 +13,8 @@ var elixir = require('laravel-elixir');
 
 elixir(function(mix) {
     mix
+        .copy('node_modules/bootstrap/fonts', 'public/build/assets/fonts')
+        .copy('bower_components/jquery-ui/themes/base/images', 'public/build/css/images')
         .sass([
             'resources/assets/sass/app.scss'
         ], 'public/css')

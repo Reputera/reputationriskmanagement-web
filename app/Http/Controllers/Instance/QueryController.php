@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers\Instance;
 
+
 use App\Entities\Instance;
-use App\Http\Controllers\ApiController;
+use App\Http\Controllers\Controller;
 use App\Http\Pipelines\Query\SortingPipeline;
 use App\Http\Requests\Instance\InstanceQueryRequest;
 use App\Http\Requests\Instance\RiskScoreRequest;
+use App\Services\Instance\QueryBuilder;
 use App\Transformers\Instance\InstanceTransformer;
+use League\Csv\Writer;
 
-class QueryController extends ApiController
+class QueryController extends Controller
 {
 
     /**
@@ -24,39 +27,26 @@ class QueryController extends ApiController
      * @param InstanceQueryRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getInstances(InstanceQueryRequest $request)
+    public function getInstances(InstanceQueryRequest $request, QueryBuilder $queryBuilder)
     {
-        $builder = Instance::select([
-            'instances.*'
-        ])
-            ->selectRaw('(instances.positive_sentiment - instances.negative_sentiment) as risk_score')
-            ->join('vectors', 'vectors.id', '=', 'instances.vector_id')
-            ->join('companies', 'companies.id', '=', 'instances.company_id')
-            ->leftJoin('instance_country', 'instances.id', '=', 'instance_country.instance_id')
-            ->leftJoin('countries', 'countries.id', '=', 'instance_country.country_id')
-            ->leftJoin('regions', 'regions.id', '=', 'countries.region_id');
-
-        $builder = $request->sendBuilderThroughPipeline($builder, [SortingPipeline::class]);
-        $builder->where($request->getForQuery([
-            'vectors_name',
-            'companies_name',
-            'regions_name',
-        ]));
-
-        if ($start = $request->input('start_datetime')) {
-            $builder->where('instances.start', '>', $start);
-        }
-        if ($end = $request->input('end_datetime')) {
-            $builder->where('instances.start', '<', $end);
-        }
-
-        $resultCollection = $builder->get();
+        $resultCollection = $queryBuilder->queryInstances($request)->get();
         $resultCount = $resultCollection->count();
         return $this->respondWithArray([
             'count' => $resultCount,
             'total_sentiment_score' => $resultCount ? (int)((($resultCollection->sum('positive_sentiment') - $resultCollection->sum('negative_sentiment')) / $resultCount * 100)) : 0,
             'instances' => $resultCount ? $this->fractalize($resultCollection, new InstanceTransformer()) : ['data'=>[]]
         ]);
+    }
+
+    public function getInstancesCsv(InstanceQueryRequest $request, QueryBuilder $queryBuilder)
+    {
+        $resultCollection = $queryBuilder->queryInstances($request)->get();
+        $instances = $this->fractalize($resultCollection, new InstanceTransformer());
+        $csv = Writer::createFromFileObject(new \SplTempFileObject());
+        $csv->insertOne(array_keys(array_get($instances, 'data.0')));
+        $csv->insertAll($instances['data']);
+        $csv->output($request->get('companies_name') . '.csv');
+        die;
     }
 
     /**
