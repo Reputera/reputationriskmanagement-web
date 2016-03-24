@@ -28,10 +28,10 @@ class QueryBuilder
             'regions_name',
         ]));
 
-        if($start = $request->input('start_datetime')) {
+        if ($start = $request->input('start_datetime')) {
             $builder->where('instances.start', '>', $start);
         }
-        if($end = $request->input('end_datetime')) {
+        if ($end = $request->input('end_datetime')) {
             $builder->where('instances.start', '<', $end);
         }
         return $builder;
