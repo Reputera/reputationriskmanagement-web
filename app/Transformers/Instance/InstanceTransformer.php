@@ -20,9 +20,10 @@ class InstanceTransformer extends TransformerAbstract
             'source' => $instance->source,
             'fragment' => $instance->fragment,
             'link' => $instance->link,
+            'regions' => implode(', ', $instance->getRegions()),
             'positive_sentiment' => (int)($instance->positive_sentiment * 100),
             'negative_sentiment' => (int)($instance->negative_sentiment * -100),
-            'sentiment_score' => (int)(($instance->positive_sentiment - $instance->negative_sentiment) * 100)
+            'sentiment_score' => (int)($instance->sentiment * 100)
         ];
     }
 }

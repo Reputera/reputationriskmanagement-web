@@ -75,7 +75,15 @@ class Instance extends Model
      */
     public function countries()
     {
-        return $this->belongsToMany(Country::class, 'instance_country');
+        return $this->belongsToMany(Country::class, 'instance_country', 'instance_id', 'country_id');
     }
 
+    public function getRegions()
+    {
+        $regions = [];
+        foreach($this->countries as $country) {
+            $regions[] = $country->region->name;
+        }
+        return array_unique($regions);
+    }
 }
