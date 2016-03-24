@@ -72,8 +72,9 @@
                     $('#resultsDiv').html('<h2>Results</h2><p>Result count: ' + data.data.count + '</p>');
                     $('#resultsDiv').append('<p>Total sentiment score: ' + data.data.total_sentiment_score + '</p>');
                     $('#resultsDiv').append('<a class="btn btn-primary" target="_blank" href="/instanceCsv?'+$.param(getParameters())+'">Download CSV</a>');
-                    $.each(data.data.instances.data, function() {
-                        var instanceContent = '<div class="well"';
+                    var truncatedData = data.data.instances.data.slice(0,100);
+                    $.each(truncatedData, function() {
+                        var instanceContent = '<div class="well">';
                         for(var key in this) {
                             if(key == 'link') {
                                 instanceContent += '<p>link: <a target="_blank" href="'+this[key]+'">'+ this[key] + '</a></p>';
@@ -84,6 +85,9 @@
                         instanceContent += '</div>';
                         $("#resultsDiv").append(instanceContent);
                     });
+                    if(data.data.instances.data.length > 100) {
+                        $("#resultsDiv").append('Data truncated, more results in CSV download');
+                    }
                 }
             }).fail(function(data) {
                 $('#resultsDiv').append('<p style="color:red;">' + data.responseText + '</p>');
