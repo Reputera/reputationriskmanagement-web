@@ -15,6 +15,7 @@ Route::group(['middleware' => ['web']], function () {
         Route::get('riskScore', 'Instance\QueryController@getRiskScore')->name('instance.getRiskScore');
         Route::get('instanceCsv', 'Instance\QueryController@getInstancesCsv')->name('instance.getCsv');
         Route::get('instanceQuery', 'Instance\InstanceUIController@index')->name('instance.index');
+        Route::get('sentimentQuery', 'Instance\InstanceUIController@sentimentIndex')->name('instance.sentiment.index');
 
         Route::group(['middleware' => ['adminAccess']], function () {
             Route::get('create-user', 'Users\AdminUserController@get')->name('adminUser.get');
