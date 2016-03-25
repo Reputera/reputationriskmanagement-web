@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers\Instance;
 
-
-use App\Entities\Instance;
 use App\Http\Controllers\Controller;
-use App\Http\Pipelines\Query\SortingPipeline;
 use App\Http\Requests\Instance\InstanceQueryRequest;
 use App\Http\Requests\Instance\RiskScoreRequest;
 use App\Services\Instance\QueryBuilder;
@@ -25,6 +22,7 @@ class QueryController extends Controller
      */
     /**
      * @param InstanceQueryRequest $request
+     * @param QueryBuilder $queryBuilder
      * @return \Illuminate\Http\JsonResponse
      */
     public function getInstances(InstanceQueryRequest $request, QueryBuilder $queryBuilder)
@@ -40,6 +38,10 @@ class QueryController extends Controller
         ]);
     }
 
+    /**
+     * @param InstanceQueryRequest $request
+     * @param QueryBuilder $queryBuilder
+     */
     public function getInstancesCsv(InstanceQueryRequest $request, QueryBuilder $queryBuilder)
     {
         $resultCollection = $queryBuilder->queryInstances($request)->get();
