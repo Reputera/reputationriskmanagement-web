@@ -48,4 +48,9 @@ class Company extends Model
     {
         return $this->belongsTo(Industry::class);
     }
+
+    public function competitors()
+    {
+        return $this->belongsToMany(Company::class, 'company_competitor', 'company_id', 'competitor_company_id');
+    }
 }
