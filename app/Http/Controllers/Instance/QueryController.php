@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\Instance;
 
 
-use App\Entities\Instance;
 use App\Http\Controllers\Controller;
-use App\Http\Pipelines\Query\SortingPipeline;
 use App\Http\Requests\Instance\InstanceQueryRequest;
 use App\Http\Requests\Instance\RiskScoreRequest;
+use App\Http\Requests\Request;
 use App\Services\Instance\QueryBuilder;
 use App\Transformers\Instance\InstanceTransformer;
 use League\Csv\Writer;
@@ -29,9 +28,11 @@ class QueryController extends Controller
      */
     public function getInstances(InstanceQueryRequest $request, QueryBuilder $queryBuilder)
     {
-        $resultCollection = $queryBuilder->queryInstances($request)
-            ->with('countries.region')
+        $resultCollection = $queryBuilder->queryInstances($request, $request->getForQuery([
+            'vectors_name', 'companies_name', 'regions_name',
+        ]))->with('countries.region')
             ->get();
+
         $resultCount = $resultCollection->count();
         return $this->respondWithArray([
             'count' => $resultCount,
@@ -42,7 +43,9 @@ class QueryController extends Controller
 
     public function getInstancesCsv(InstanceQueryRequest $request, QueryBuilder $queryBuilder)
     {
-        $resultCollection = $queryBuilder->queryInstances($request)->get();
+        $resultCollection = $queryBuilder->queryInstances($request, $request->getForQuery([
+            'vectors_name', 'companies_name', 'regions_name'
+        ]))->get();
         $instances = $this->fractalize($resultCollection, new InstanceTransformer());
         $csv = Writer::createFromFileObject(new \SplTempFileObject());
         $csv->insertOne(array_keys(array_get($instances, 'data.0')));
@@ -58,17 +61,18 @@ class QueryController extends Controller
      * @apiGroup Instances
      */
     /**
-     * @param RiskScoreRequest $request
+     * @param InstanceQueryRequest $request
+     * @param QueryBuilder $queryBuilder
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getRiskScore(RiskScoreRequest $request)
+    public function getRiskScore(InstanceQueryRequest $request, QueryBuilder $queryBuilder)
     {
-        $riskScore = \DB::table('instances')
-            ->selectRaw('((sum(positive_sentiment) - sum(negative_sentiment)) / count(*)) * 100 as risk_score')
-            ->where('instances.start', '>', $request->input('start_datetime'))
-            ->where('instances.start', '<', $request->input('end_datetime'))
-            ->where('company_id', '=', $request->input('company_id'))
-            ->first();
-        return $this->respondWithArray(['risk_score' => $riskScore->risk_score]);
+        $resultCollection = $queryBuilder->queryInstances($request, $request->getForQuery([
+            'vectors_name', 'companies_name', 'regions_name'
+        ]))->get();
+        $resultCount = $resultCollection->count();
+        return $this->respondWithArray([
+            'risk_score' => $resultCount ? (int)($resultCollection->sum('sentiment') / $resultCount * 100) : 0
+        ]);
     }
 }
