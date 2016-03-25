@@ -31,6 +31,7 @@ class CreateInstancesTable extends Migration
             $table->timestamps();
 
             $table->foreign('company_id')->references('id')->on('companies');
+            $table->foreign('vector_id')->references('id')->on('vectors');
 
             $table->unique(['fragment_hash'], 'unique_fragment_hash');
         });
