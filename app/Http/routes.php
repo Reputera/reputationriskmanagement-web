@@ -17,6 +17,10 @@ Route::group(['middleware' => ['web']], function () {
         Route::get('instanceQuery', 'Instance\InstanceUIController@index')->name('instance.index');
         Route::get('sentimentQuery', 'Instance\InstanceUIController@sentimentIndex')->name('instance.sentiment.index');
 
+        Route::post('addCompetitor', 'Company\CompanyController@addCompetitor')->name('instance.addCompetitor');
+        Route::post('removeCompetitor', 'Company\CompanyController@removeCompetitor')->name('instance.removeCompetitor');
+
+
         Route::group(['middleware' => ['adminAccess']], function () {
             Route::get('create-user', 'Users\AdminUserController@get')->name('adminUser.get');
             Route::post('create-user', 'Users\AdminUserController@store')->name('adminUser.store');
