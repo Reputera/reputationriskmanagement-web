@@ -2,10 +2,6 @@
 
 namespace App\Http\Controllers\Instance;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> eb39ad45d7b6b83af511b67d5912048017efc75a
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Instance\InstanceQueryRequest;
 use App\Http\Requests\Instance\RiskScoreRequest;
