@@ -15,9 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        \Auth::provider('admin', function ($app, array $config) {
-            return new AdminUserProvider($app['hash'], $config['model']);
-        });
+
     }
 
     /**
