@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property \Carbon\Carbon $deleted_at
- * @property-read Collection|Company[] $companies
+ * @property-read \App\Entities\Company $company
  * @method static \App\Entities\User|null find($id)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\User whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\User whereName($value)
@@ -59,11 +59,11 @@ class User extends Authenticatable
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany|Collection
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|Company
      */
-    public function companies()
+    public function company()
     {
-        return $this->belongsToMany(Company::class, 'user_company', 'user_id', 'company_id');
+        return $this->belongsTo(Company::class);
     }
 
     /**

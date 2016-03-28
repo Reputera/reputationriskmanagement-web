@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Carbon\Carbon $updated_at
  * @property \Carbon\Carbon $deleted_at
  * @property-read \App\Entities\Industry $industry
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Entities\Company[] $competitors
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Company whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Company whereName($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Company whereCreatedAt($value)
