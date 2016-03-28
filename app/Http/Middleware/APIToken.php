@@ -31,7 +31,6 @@ class ApiToken extends GetUserFromToken
             return $next($request);
         }
 
-        /** @var ApiKey $token */
         $token = \DB::table('api_keys')
             ->where('username', $request->server('PHP_AUTH_USER'))
             ->where('key', $request->server('PHP_AUTH_PW'))
