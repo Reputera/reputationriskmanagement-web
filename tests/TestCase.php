@@ -55,6 +55,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
      */
     protected function apiCall($method, $uri, $parameters = [], $cookies = [], $files = [], $server = [], $content = null)
     {
+        $server = array_merge($server, ['HTTP_X-Requested-With' => 'XMLHttpRequest', 'HTTP_Accept' => 'application/json']);
         return parent::call($method, $this->apiVersionPrefix.$uri, $parameters, $cookies, $files, $server, $content);
     }
 

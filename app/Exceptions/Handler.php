@@ -78,6 +78,6 @@ class Handler extends ExceptionHandler
 
     protected function isApiRequest($request)
     {
-        return ($request->route() && str_contains($request->route()->getPrefix(), '/api'));
+        return ($request->route() && str_contains($request->route()->getPrefix(), '/api')  || $request->isJson() || $request->wantsJson());
     }
 }

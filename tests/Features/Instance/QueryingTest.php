@@ -29,7 +29,7 @@ class QueryingTest extends \TestCase
         $this->assertJsonResponseOkAndFormattedProperly();
         $results = $this->response->getData(true)['data']['instances']['data'];
         $this->assertCount(1, $results);
-        $this->assertEquals($returnedInstance->id, array_get($results, '0.id'), 'Assert correct instance returned');
+        $this->assertEquals($returnedInstance->title, array_get($results, '0.title'), 'Assert correct instance returned');
     }
 
 }

@@ -9,7 +9,7 @@ use App\Http\Requests\Request;
 
 class QueryBuilder
 {
-    public function queryInstances(Request $request)
+    public function queryInstances(Request $request, array $paramArray = [])
     {
         $builder = Instance::select([
             'instances.*'
@@ -22,11 +22,10 @@ class QueryBuilder
             ->groupBy('instances.id');
 
         $builder = $request->sendBuilderThroughPipeline($builder, [SortingPipeline::class]);
-        $builder->where($request->getForQuery([
-            'vectors_name',
-            'companies_name',
-            'regions_name',
-        ]));
+        $builder->where(array_only($paramArray, 'vectors.name', 'regions.name'));
+        if(array_has($paramArray, 'companies.name')) {
+            $builder->whereIn('companies.name', explode(',', $paramArray['companies.name']));
+        }
 
         if ($start = $request->input('start_datetime')) {
             $builder->where('instances.start', '>', $start);
