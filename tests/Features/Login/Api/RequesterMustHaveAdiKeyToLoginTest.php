@@ -6,7 +6,10 @@ class RequesterMustHaveAdiKeyToLoginTest extends \TestCase
 {
     public function testRequesterMustHaveAdiKeyToLogin()
     {
-        $this->apiCall('post', 'login', []);
-        $this->assertJsonResponseNotAuthorized();
+        $this->json('POST', 'api/login', [])
+            ->seeJson([
+                'message' => 'Not authorized',
+                'status_code' => 401
+            ]);
     }
 }
