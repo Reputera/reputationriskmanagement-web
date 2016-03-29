@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Instance;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Instance\InstanceQueryRequest;
-use App\Http\Requests\Instance\RiskScoreRequest;
-use App\Http\Requests\Request;
 use App\Services\Instance\QueryBuilder;
 use App\Transformers\Instance\InstanceTransformer;
 use League\Csv\Writer;
@@ -36,7 +34,7 @@ class QueryController extends Controller
         $resultCount = $resultCollection->count();
         return $this->respondWithArray([
             'count' => $resultCount,
-            'total_sentiment_score' => $resultCount ? (int)((($resultCollection->sum('positive_sentiment') - $resultCollection->sum('negative_sentiment')) / $resultCount * 100)) : 0,
+            'risk_score' => $resultCount ? round(($resultCollection->sum('risk_score') / $resultCount)) : 0,
             'instances' => $this->fractalize($resultCollection, new InstanceTransformer())
         ]);
     }
@@ -76,7 +74,7 @@ class QueryController extends Controller
         ]))->get();
         $resultCount = $resultCollection->count();
         return $this->respondWithArray([
-            'risk_score' => $resultCount ? (int)($resultCollection->sum('sentiment') / $resultCount * 100) : 0
+            'risk_score' => $resultCount ? ($resultCollection->sum('risk_score') / $resultCount) : 0
         ]);
     }
 }
