@@ -1,6 +1,9 @@
 <?php
 
 $factory->define(App\Entities\Instance::class, function (Faker\Generator $faker) {
+    $fragment = $faker->sentence();
+    $link = $faker->url;
+
     return [
         'company_id' => factory(\App\Entities\Company::class)->create()->id,
         'vector_id' => factory(\App\Entities\Vector::class)->create()->id,
@@ -10,10 +13,13 @@ $factory->define(App\Entities\Instance::class, function (Faker\Generator $faker)
         'language' => $faker->word,
         'source' => $faker->word,
         'title' => $faker->word,
-        'fragment' => $faker->sentence(),
-        'fragment_hash' => $faker->unique()->word,
-        'link' => $faker->url,
-        'sentiment' => ($faker->numberBetween(0, 100) / 100),
+        'fragment' => $fragment,
+        'fragment_hash' => sha1($fragment),
+        'link' => $link,
+        'link_hash' => sha1($link),
+        'risk_score' => $faker->numberBetween(0, 100),
+        'positive_risk_score' => $faker->numberBetween(0, 100),
+        'negative_risk_score' => $faker->numberBetween(0, 100),
         'positive_sentiment' => ($faker->numberBetween(0, 100) / 100),
         'negative_sentiment' => ($faker->numberBetween(0, 100) / 100),
     ];

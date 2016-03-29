@@ -23,7 +23,7 @@ class QueryBuilder
 
         $builder = $request->sendBuilderThroughPipeline($builder, [SortingPipeline::class]);
         $builder->where(array_only($paramArray, 'vectors.name', 'regions.name'));
-        if(array_has($paramArray, 'companies.name')) {
+        if (array_has($paramArray, 'companies.name')) {
             $builder->whereIn('companies.name', explode(',', $paramArray['companies.name']));
         }
 

@@ -61,7 +61,8 @@ class PopulateCompanyWithRecordedFutureData extends Command
             $companies = Company::all();
         }
 
-        if (!$companies) {
+        if ($companies->isEmpty()) {
+            $this->info('No company/companies found.');
             exit;
         }
 

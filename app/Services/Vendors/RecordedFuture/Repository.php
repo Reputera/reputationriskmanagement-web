@@ -8,36 +8,64 @@ use Illuminate\Support\Facades\DB;
 
 class Repository
 {
-    protected $error = null;
+    /** @var string */
+    protected $error = '';
 
+    /**
+     * Gets the error message that was generated from the insert attempt.
+     *
+     * @return string
+     */
     public function getError()
     {
         return $this->error;
     }
 
+    /**
+     * Attempts to save an instance for a given company.
+     *
+     * @param Instance $instance
+     * @param Company $company
+     * @return bool
+     */
     public function saveInstanceForCompany(Instance $instance, Company $company)
     {
         $this->resetError();
 
         $fragment = $instance->getFragment();
-        $hashedFragment = md5($fragment);
+        $hashedFragment = sha1($fragment);
         $attributes = $instance->getAttributes();
+        $document = $instance->getDocument();
+        $link = $document->getUrl();
+        $hashedLink = sha1($link);
 
-        if (DB::table('instances')->where('fragment_hash', $hashedFragment)->value('id') ||
-            $attributes->getPositiveSentiment() == $attributes->getNegativeSentiment()
-        ) {
+        $fragmentDupeQuery = DB::table('instances')->select(['id'])
+            ->where('fragment_hash', $hashedFragment)
+            ->where('company_id', $company->id);
+        $instanceDupeExists = DB::table('instances')->where('link_hash', $hashedLink)
+            ->where('company_id', $company->id)
+            ->union($fragmentDupeQuery)
+            ->select(['id'])
+            ->first();
+
+        if ($instanceDupeExists) {
+            $this->error = 'Duplicate Record: '.$instance->__toString();
             return false;
         }
 
-        $vectorId = DB::table('vector_event_types')->where('event_type', $instance->getType())->value('vector_id');
+        if ($attributes->getPositiveSentiment() == $attributes->getNegativeSentiment()) {
+            $this->error = 'Nullifed sentiment: '.$instance->__toString();
+            return false;
+        }
 
         $timestamp = (new Carbon())->toDateTimeString();
-        $document = $instance->getDocument();
-        
+        $positiveScore = round($attributes->getPositiveSentiment() * 100);
+        $negativeScore = round($attributes->getNegativeSentiment() * 100);
+
         try {
             $instanceId = DB::table('instances')->insertGetId([
                 'company_id' => $company->id,
-                'vector_id' => $vectorId,
+                'vector_id' => DB::table('vector_event_types')->where('event_type', $instance->getType())->value('vector_id'),
                 'entity_id' => $instance->getId(),
                 'type' => $instance->getType(),
                 'start' => (new Carbon($instance->getStart()))->toDateTimeString(),
@@ -45,9 +73,12 @@ class Repository
                 'source' => $document->getSource()->getName(),
                 'title' => $document->getTitle(),
                 'fragment' => $fragment,
-                'fragment_hash' => md5($fragment),
-                'link' => $document->getUrl(),
-                'sentiment' => (-$attributes->getNegativeSentiment() + $attributes->getPositiveSentiment()),
+                'fragment_hash' => $hashedFragment,
+                'link' => $link,
+                'link_hash' => $hashedLink,
+                'risk_score' => (-$negativeScore + $positiveScore),
+                'positive_risk_score' => $positiveScore,
+                'negative_risk_score' => $negativeScore,
                 'positive_sentiment' => $attributes->getPositiveSentiment(),
                 'negative_sentiment' => $attributes->getNegativeSentiment(),
                 'created_at' => $timestamp,
@@ -67,13 +98,20 @@ class Repository
                     ]);
                 }
             }
+
+            return true;
         } catch (\Exception $e) {
             $this->error = $e->getMessage();
         }
+
+        return false;
     }
 
+    /**
+     * Resets the error message to it's original state.
+     */
     protected function resetError()
     {
-        $this->error = null;
+        $this->error = '';
     }
 }

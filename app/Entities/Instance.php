@@ -13,14 +13,17 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $vector_id
  * @property string $entity_id
  * @property string $type
- * @property string $start
+ * @property \Carbon\Carbon $start
  * @property string $language
  * @property string $source
  * @property string $title
  * @property string $fragment
  * @property string $fragment_hash
  * @property string $link
- * @property float $sentiment
+ * @property string $link_hash
+ * @property integer $risk_score
+ * @property integer $positive_risk_score
+ * @property integer $negative_risk_score
  * @property float $positive_sentiment
  * @property float $negative_sentiment
  * @property \Carbon\Carbon $created_at
@@ -40,7 +43,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Instance whereFragment($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Instance whereFragmentHash($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Instance whereLink($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Entities\Instance whereSentiment($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Instance whereLinkHash($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Instance whereRiskScore($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Instance wherePositiveRiskScore($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Instance whereNegativeRiskScore($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Instance wherePositiveSentiment($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Instance whereNegativeSentiment($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Instance whereCreatedAt($value)

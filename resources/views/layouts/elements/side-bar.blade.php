@@ -6,7 +6,6 @@
                 <li><a href="{{route('adminUser.get')}}">Create User</a></li>
             @endif
             <li><a href="{{route('instance.index')}}">Data Query</a></li>
-            <li><a href="/instanceQuery">Data Query</a></li>
             <li><a href="/sentimentQuery">Sentiment Query</a></li>
         </ul>
     </section>
