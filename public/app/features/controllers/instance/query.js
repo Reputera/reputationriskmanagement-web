@@ -1,9 +1,10 @@
-app.controller('InstanceQueryController', ['$scope', '$http', 'toastr', 'helpers', 'Instance', 'NgTableParams', function($scope, $http, toastr, helpers, Instance, NgTableParams) {
+app.controller('InstanceQueryController', ['$scope', '$http', 'toastr', 'helpers', 'NgTableParams', function($scope, $http, toastr, helpers, NgTableParams) {
     $scope.helpers = helpers;
     $scope.instances = [];
     $scope.selectedCompany = {};
     $scope.selectedVector = {};
     $scope.selectedRegion = {};
+    $scope.hideFlagged = false;
 
     $scope.vectors = vectors;
     $scope.companies = companies;
@@ -13,6 +14,8 @@ app.controller('InstanceQueryController', ['$scope', '$http', 'toastr', 'helpers
             companies_name: $scope.selectedCompany.name,
             vectors_name: $scope.selectedVector.name,
             regions_name: $scope.selectedRegion.name,
+            hideFlagged: $scope.hideFlagged,
+            fragment: $scope.fragment,
             start_datetime: $("#start_datetime").val(),
             end_datetime: $("#end_datetime").val(),
             page: $scope.instanceTable.page(),
@@ -46,6 +49,16 @@ app.controller('InstanceQueryController', ['$scope', '$http', 'toastr', 'helpers
             url: '/riskScore?' + $.param($scope.getParameters())
         }).then(function(result) {
             $scope.riskScore = result.data.data.risk_score;
+        });
+    };
+
+    $scope.flag = function(id, flagged) {
+        $http({
+            method: 'POST',
+            url: '/flagInstance',
+            data: {id: id, flagged: flagged}
+        }).then(function(result) {
+            $scope.instanceTable.reload();
         });
     }
 }]);

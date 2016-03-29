@@ -17,6 +17,9 @@
             <option value=""></option>
         </select>
 
+        <label>Fragment Search</label>
+        <input type="text" class="form-control" ng-model="fragment" id="fragment">
+
         <label>Start date</label>
         <input type="text" class="form-control" id="start_datetime">
 
