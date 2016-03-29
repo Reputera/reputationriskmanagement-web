@@ -139,6 +139,14 @@ trait Transformer
         return $this->respondWithArray($rootScope->toArray());
     }
 
+    protected function fractalPaginate($paginator, $callback)
+    {
+        $collection = $paginator->getCollection();
+        $resource = new Collection($collection, $callback);
+        $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
+        return $this->fractal()->createData($resource)->toArray();
+    }
+
     /**
      * Gets the status code.
      *
