@@ -70,7 +70,7 @@
                 }
                 else {
                     $('#resultsDiv').html('<h2>Results</h2><p>Result count: ' + data.data.count + '</p>');
-                    $('#resultsDiv').append('<p>Total sentiment score: ' + data.data.total_sentiment_score + '</p>');
+                    $('#resultsDiv').append('<p>Total risk score: ' + data.data.risk_score + '</p>');
                     $('#resultsDiv').append('<a class="btn btn-primary" target="_blank" href="/instanceCsv?'+$.param(getParameters())+'">Download CSV</a>');
                     var truncatedData = data.data.instances.data.slice(0,100);
                     $.each(truncatedData, function() {
