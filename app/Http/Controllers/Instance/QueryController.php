@@ -32,7 +32,7 @@ class QueryController extends Controller
     public function getInstances(InstanceQueryRequest $request, QueryBuilder $queryBuilder)
     {
         $resultCollection = $this->paginateBuilder($queryBuilder->queryInstances($request, $request->getForQuery([
-            'vectors_name', 'companies_name', 'regions_name',
+            'vectors_name', 'companies_name', 'regions_name', 'hideFlagged'
             ]))->with('countries.region'), $request
         );
         return $this->respondWithArray([
@@ -49,7 +49,7 @@ class QueryController extends Controller
     public function getInstancesCsv(InstanceQueryRequest $request, QueryBuilder $queryBuilder)
     {
         $resultCollection = $queryBuilder->queryInstances($request, $request->getForQuery([
-            'vectors_name', 'companies_name', 'regions_name'
+            'vectors_name', 'companies_name', 'regions_name', 'hideFlagged'
         ]))->get();
         $instances = $this->fractalize($resultCollection, new InstanceTransformer());
         $csv = Writer::createFromFileObject(new \SplTempFileObject());
@@ -73,7 +73,7 @@ class QueryController extends Controller
     public function getRiskScore(InstanceQueryRequest $request, QueryBuilder $queryBuilder)
     {
         $resultCollection = $queryBuilder->queryInstances($request, $request->getForQuery([
-            'vectors_name', 'companies_name', 'regions_name'
+            'vectors_name', 'companies_name', 'regions_name', 'hideFlagged'
         ]))->get();
         $resultCount = $resultCollection->count();
         return $this->respondWithArray([

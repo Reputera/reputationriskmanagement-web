@@ -22,7 +22,12 @@ class QueryBuilder
             ->groupBy('instances.id');
 
         $builder = $request->sendBuilderThroughPipeline($builder, [SortingPipeline::class]);
-        $builder->where(array_only($paramArray, 'vectors.name', 'regions.name'));
+        $builder->where(array_only($paramArray, ['vectors.name', 'regions.name']));
+
+        if(array_get($paramArray, 'hideFlagged')) {
+            $builder->where('flagged', null);
+        }
+
         if (array_has($paramArray, 'companies.name')) {
             $builder->whereIn('companies.name', explode(',', $paramArray['companies.name']));
         }
