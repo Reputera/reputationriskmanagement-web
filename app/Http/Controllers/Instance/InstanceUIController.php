@@ -25,7 +25,7 @@ class InstanceUIController extends ApiController
     {
         \JavaScript::put([
             'vectors' => Vector::all(),
-            'competitors' => auth()->user()->company->competitors,
+            'competitors' => (auth()->user()->company) ? auth()->user()->company->competitors : [],
             'regions' => Region::all()
         ]);
         return view('instance.sentimentQuery');
