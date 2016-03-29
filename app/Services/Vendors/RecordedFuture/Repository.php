@@ -39,15 +39,22 @@ class Repository
         $link = $document->getUrl();
         $hashedLink = sha1($link);
 
+        $fragmentDupeQuery = DB::table('instances')->select(['id'])
+            ->where('fragment_hash', $hashedFragment)
+            ->where('company_id', $company->id);
         $instanceDupeExists = DB::table('instances')->where('link_hash', $hashedLink)
-            ->union(DB::table('instances')->select(['id'])->where('fragment_hash', $hashedFragment))
+            ->where('company_id', $company->id)
+            ->union($fragmentDupeQuery)
             ->select(['id'])
             ->first();
 
-        if ($instanceDupeExists ||
-            $attributes->getPositiveSentiment() == $attributes->getNegativeSentiment()
-        ) {
+        if ($instanceDupeExists) {
             $this->error = 'Duplicate Record: '.$instance->__toString();
+            return false;
+        }
+
+        if ($attributes->getPositiveSentiment() == $attributes->getNegativeSentiment()) {
+            $this->error = 'Nullifed sentiment: '.$instance->__toString();
             return false;
         }
 

@@ -24,25 +24,30 @@ class RepositoryTest extends \TestCase
         $this->repo = new Repository();
     }
 
-    public function test_no_saving_of_duplicate_records()
+    public function test_duplicate_based_on_fragment_does_not_save()
     {
+        $company = factory(Company::class)->create();
         $singleInstance = SingleInstance::get();
         $instance = new Instance($singleInstance['instances'][0]);
-        factory(\App\Entities\Instance::class)->create(['fragment_hash' => sha1($instance->getFragment())]);
+        factory(\App\Entities\Instance::class)->create([
+            'fragment_hash' => sha1($instance->getFragment()),
+            'company_id' => $company->id
+        ]);
+
+        $this->assertInstanceDoesNotSave($instance, $company, 'Duplicate Record:');
+    }
+
+    public function test_duplicate_based_on_link_does_not_save()
+    {
         $company = factory(Company::class)->create();
-
-        $this->assertFalse($this->repo->saveInstanceForCompany($instance, $company));
-        $this->assertTrue(starts_with($this->repo->getError(), 'Duplicate Record:'));
-        $this->assertTrue(str_contains($this->repo->getError(), $instance->__toString()));
-
         $singleInstance = SingleInstance::get();
         $instance = new Instance($singleInstance['instances'][0]);
-        factory(\App\Entities\Instance::class)->create(['link_hash' => sha1($instance->getDocument()->getUrl())]);
-        $company = factory(Company::class)->create();
+        factory(\App\Entities\Instance::class)->create([
+            'link_hash' => sha1($instance->getDocument()->getUrl()),
+            'company_id' => $company->id
+        ]);
 
-        $this->assertFalse($this->repo->saveInstanceForCompany($instance, $company));
-        $this->assertTrue(starts_with($this->repo->getError(), 'Duplicate Record:'));
-        $this->assertTrue(str_contains($this->repo->getError(), $instance->__toString()));
+        $this->assertInstanceDoesNotSave($instance, $company, 'Duplicate Record:');
     }
 
     public function test_no_saving_of_instance_with_zero_total_sentiment()
@@ -54,7 +59,14 @@ class RepositoryTest extends \TestCase
 
         $company = factory(Company::class)->create();
 
+        $this->assertInstanceDoesNotSave($instance, $company, 'Nullifed sentiment:');
+    }
+
+    protected function assertInstanceDoesNotSave(Instance $instance, Company $company, $message)
+    {
         $this->assertFalse($this->repo->saveInstanceForCompany($instance, $company));
+        $this->assertTrue(starts_with($this->repo->getError(), $message));
+        $this->assertTrue(str_contains($this->repo->getError(), $instance->__toString()));
     }
 
     public function test_saving_an_instance_when_country_cannot_be_found()
@@ -90,6 +102,26 @@ class RepositoryTest extends \TestCase
         $instance = new Instance($singleInstance['instances'][0]);
         $instance->setRelatedEntities([new Entity('B_FAG', $singleInstance['entities']['B_FAG'])]);
         $company = factory(Company::class)->create();
+
+        $this->assertTrue($this->repo->saveInstanceForCompany($instance, $company));
+        $this->assertInstanceInDb($company, $singleInstance['instances'][0], $eventType->vector, $country);
+    }
+
+    public function test_saving_an_instance_that_has_the_same_data_for_two_diffrent_companies_works()
+    {
+        $eventType = factory(VectorEventType::class)->create();
+        $singleInstance = SingleInstance::get(['type' => $eventType->event_type]);
+
+        $country = factory(Country::class)->create(['entity_id' => 'B_FAG']);
+
+        $instance = new Instance($singleInstance['instances'][0]);
+        $instance->setRelatedEntities([new Entity('B_FAG', $singleInstance['entities']['B_FAG'])]);
+        $company = factory(Company::class)->create();
+
+        factory(\App\Entities\Instance::class)->create([
+            'link_hash' => sha1($instance->getDocument()->getUrl()),
+            'company_id' => factory(Company::class)->create()->id
+        ]);
 
         $this->assertTrue($this->repo->saveInstanceForCompany($instance, $company));
         $this->assertInstanceInDb($company, $singleInstance['instances'][0], $eventType->vector, $country);
