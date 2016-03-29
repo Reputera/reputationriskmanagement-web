@@ -9,9 +9,12 @@ use App\Http\Requests\Request;
 use App\Services\Instance\QueryBuilder;
 use App\Transformers\Instance\InstanceTransformer;
 use League\Csv\Writer;
+use App\Http\Traits\PaginationTrait;
 
 class QueryController extends Controller
 {
+
+    use PaginationTrait;
 
     /**
      * @api {get} /instances/ List instances
@@ -28,16 +31,14 @@ class QueryController extends Controller
      */
     public function getInstances(InstanceQueryRequest $request, QueryBuilder $queryBuilder)
     {
-        $resultCollection = $queryBuilder->queryInstances($request, $request->getForQuery([
+        $resultCollection = $this->paginateBuilder($queryBuilder->queryInstances($request, $request->getForQuery([
             'vectors_name', 'companies_name', 'regions_name',
-        ]))->with('countries.region')
-            ->get();
-
-        $resultCount = $resultCollection->count();
+            ]))->with('countries.region'), $request
+        );
         return $this->respondWithArray([
-            'count' => $resultCount,
-            'total_sentiment_score' => $resultCount ? (int)((($resultCollection->sum('positive_sentiment') - $resultCollection->sum('negative_sentiment')) / $resultCount * 100)) : 0,
-            'instances' => $this->fractalize($resultCollection, new InstanceTransformer())
+            'count' => $resultCollection->total(),
+            'total_sentiment_score' => $resultCollection->total() ? (int)($resultCollection->sum('sentiment') / $resultCollection->total() * 100) : 0,
+            'instances' => $this->fractalPaginate($resultCollection, new InstanceTransformer())
         ]);
     }
 

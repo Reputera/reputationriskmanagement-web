@@ -2,27 +2,32 @@ app.controller('InstanceQueryController', ['$scope', '$http', 'toastr', 'helpers
     $scope.helpers = helpers;
     $scope.instances = [];
     $scope.selectedCompany = {};
+    $scope.selectedVector = {};
+    $scope.selectedRegion = {};
 
     $scope.vectors = vectors;
     $scope.companies = companies;
 
     $scope.getParameters  = function() {
         return {
-            'companies_name': $("#companies").val(),
-            'vectors_name': $("#vectors").val(),
-            'regions_name': $("#regions").val(),
-            'start_datetime': $("#start_datetime").val(),
-            'end_datetime': $("#end_datetime").val()
+            companies_name: $scope.selectedCompany.name,
+            vectors_name: $scope.selectedVector.name,
+            regions_name: $scope.selectedRegion.name,
+            start_datetime: $("#start_datetime").val(),
+            end_datetime: $("#end_datetime").val(),
+            page: $scope.instanceTable.page(),
+            count: $scope.instanceTable.count()
         }
     };
 
-    $scope.instanceTable = new NgTableParams({page:1,total:2}, {
+    $scope.instanceTable = new NgTableParams({count:10}, {
         getData: function($defer, params) {
             $http({
                 method: 'GET',
                 url: '/instance?' + $.param($scope.getParameters())
             }).then(function(result) {
                 $scope.instances = result.data.data.instances;
+                $scope.resultCount = $scope.instances.meta.pagination.total;
                 params.total($scope.instances.meta.pagination.total);
                 params.page($scope.instances.meta.pagination.current_page);
                 $defer.resolve($scope.instances.data);
@@ -33,8 +38,14 @@ app.controller('InstanceQueryController', ['$scope', '$http', 'toastr', 'helpers
         }
     });
 
+
     $scope.reload = function() {
-        console.log('adsf');
         $scope.instanceTable.reload();
+        $http({
+            method: 'GET',
+            url: '/riskScore?' + $.param($scope.getParameters())
+        }).then(function(result) {
+            $scope.riskScore = result.data.data.risk_score;
+        });
     }
 }]);

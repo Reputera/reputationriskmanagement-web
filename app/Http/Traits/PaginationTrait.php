@@ -1,6 +1,6 @@
 <?php
 
-namespace OptoView\Http\Traits;
+namespace App\Http\Traits;
 
 
 use Illuminate\Database\Eloquent\Builder;
@@ -47,14 +47,9 @@ trait PaginationTrait
         return $this->paginationLimit;
     }
 
-    /**
-     * @param Builder $builder
-     * @param Request $request
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
-     */
     public function paginateBuilder($builder, Request $request) {
         $paginator = $builder->paginate(
-            $request->input('count', $this->paginationLimit) < $this->getPaginationLimit() ?$request->input('count', $this->paginationLimit): $this->maxPaginationLimit,
+            $request->input('count', $this->paginationLimit),
             ['*'],
             'page',
             $request->input('page')
@@ -62,7 +57,7 @@ trait PaginationTrait
 //        This check needs to be done, so if a user selects a page outside range, page resets to 0.
         if(($paginator->currentPage() - 1) * $paginator->perPage() > $paginator->total()) {
             return $builder->paginate(
-                $request->input('count', $this->paginationLimit) < $this->getPaginationLimit() ?$request->input('count', $this->paginationLimit): $this->maxPaginationLimit,
+                $request->input('count', $this->paginationLimit),
                 ['*'],
                 'page',
                 1
