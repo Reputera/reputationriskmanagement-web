@@ -23,9 +23,12 @@ class CreateInstancesTable extends Migration
             $table->string('source');
             $table->string('title');
             $table->text('fragment');
-            $table->string('fragment_hash');
-            $table->string('link');
-            $table->double('sentiment', 18, 17);
+            $table->string('fragment_hash', 50)->index();
+            $table->string('link', 500);
+            $table->string('link_hash', 50)->index();
+            $table->integer('risk_score');
+            $table->unsignedInteger('positive_risk_score');
+            $table->unsignedInteger('negative_risk_score');
             $table->double('positive_sentiment', 18, 17)->unsigned();
             $table->double('negative_sentiment', 18, 17)->unsigned();
             $table->timestamps();
