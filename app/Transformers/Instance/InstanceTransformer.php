@@ -11,6 +11,7 @@ class InstanceTransformer extends TransformerAbstract
     public function transform(Instance $instance)
     {
         return [
+            'id' => $instance->id,
             'title' => $instance->title,
             'company' => $instance->company->name,
             'vector' => $instance->vector->name ?? null,
