@@ -19,7 +19,7 @@ class CompanyTableSeeder extends Seeder
 
         Company::create([
             'name' => 'General Mills',
-            'entity_id' => 'B_v7w'
+            'entity_id' => 'B_v7W'
         ]);
 
         Company::create([
