@@ -92,4 +92,9 @@ class Instance extends Model
         }
         return array_unique($regions);
     }
+
+    public function setFlagged(bool $flagged) {
+        $this->flagged = $flagged;
+        return $this;
+    }
 }

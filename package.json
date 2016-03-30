@@ -4,6 +4,12 @@
     "gulp": "^3.8.8"
   },
   "dependencies": {
-    "laravel-elixir": "^4.0.0"
+    "angular": "1.4.*",
+    "laravel-elixir": "^4.0.0",
+    "angular-ui-bootstrap": "1.1.*",
+    "ng-table": "~0.5.*",
+    "restangular": "1.5.*",
+    "angular-toastr": "1.6.*",
+    "underscore": "1.8.*"
   }
 }

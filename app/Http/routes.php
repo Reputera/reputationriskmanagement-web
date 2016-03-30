@@ -16,6 +16,7 @@ Route::group(['middleware' => ['web']], function () {
         Route::get('instanceCsv', 'Instance\QueryController@getInstancesCsv')->name('instance.getCsv');
         Route::get('instanceQuery', 'Instance\InstanceUIController@index')->name('instance.index');
         Route::get('sentimentQuery', 'Instance\InstanceUIController@sentimentIndex')->name('instance.sentiment.index');
+        Route::post('flagInstance', 'Instance\InstanceController@flag')->name('instance.flag');
 
         Route::post('addCompetitor', 'Company\CompanyController@addCompetitor')->name('instance.addCompetitor');
         Route::post('removeCompetitor', 'Company\CompanyController@removeCompetitor')->name('instance.removeCompetitor');

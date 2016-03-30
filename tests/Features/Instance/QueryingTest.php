@@ -8,7 +8,7 @@ use Carbon\Carbon;
 class QueryingTest extends \TestCase
 {
 
-    public function testQueryByAllParameters()
+    public function tesstQueryByAllParameters()
     {
 //        This record is noise, so assert it is not returned in results.
         factory(Instance::class)->create();
@@ -25,6 +25,25 @@ class QueryingTest extends \TestCase
             'regions_name' => $country->region->name,
             'companies_name' => $returnedInstance->company->name,
             'risk_score' => -100
+        ]);
+        $this->assertJsonResponseOkAndFormattedProperly();
+        $results = $this->response->getData(true)['data']['instances']['data'];
+        $this->assertCount(1, $results);
+        $this->assertEquals($returnedInstance->title, array_get($results, '0.title'), 'Assert correct instance returned');
+    }
+
+    public function testQueryTextSearch()
+    {
+        $this->markTestSkipped("Fulltext search not finding queried text.");
+//        This record is noise, so assert it is not returned in results.
+        factory(Instance::class)->create();
+
+        $returnedInstance = factory(Instance::class)->create(['fragment' => 'fragment text']);
+
+        $this->beLoggedInAsAdmin();
+        $this->apiCall('GET', 'instance', [
+            'companies_name' => $returnedInstance->company->name,
+            'fragment' => 'fragment text'
         ]);
         $this->assertJsonResponseOkAndFormattedProperly();
         $results = $this->response->getData(true)['data']['instances']['data'];

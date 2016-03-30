@@ -1,21 +1,24 @@
 @extends('layouts.default')
 
 @section('content')
-    <div>
+    <div ng-controller="InstanceQueryController">
         <label>Company</label>
-        <select class="form-control" id="companies">
-            <option value="">Select a company</option>
+        <select class="form-control" ng-model="selectedCompany" ng-options="company.name for company in companies">
+            <option value=""></option>
         </select>
 
         <label>Vector</label>
-        <select class="form-control" id="vectors">
-            <option value="">All vectors</option>
+        <select class="form-control" ng-model="selectedVector" ng-options="vector.name for vector in vectors">
+            <option value=""></option>
         </select>
 
         <label>Region</label>
-        <select class="form-control" id="regions">
-            <option value="">All regions</option>
+        <select class="form-control" ng-model="selectedRegion" ng-options="region.name for region in regions">
+            <option value=""></option>
         </select>
+
+        <label>Fragment Search</label>
+        <input type="text" class="form-control" ng-model="fragment" id="fragment">
 
         <label>Start date</label>
         <input type="text" class="form-control" id="start_datetime">
@@ -23,75 +26,33 @@
         <label>End date</label>
         <input type="text" class="form-control" id="end_datetime">
 
-        <button class="btn btn-primary form-control" id="submit" onclick="getInstances();">Query</button>
+        <label>Hide flagged</label>
+        <input type="checkbox" ng-model="hideFlagged" ng-false-value="0">
 
-        <div id="resultsDiv">
+        <button class="btn btn-primary form-control" id="submit" ng-click="reload()">Query</button>
 
+        <div ng-if="riskScore">
+            <p>Risk Score: <span ng-bind="riskScore"></span></p>
+            <p>Instance count: <span ng-bind="resultCount"></span></p>
+        </div>
+        <div ng-if="riskScore">
+            <table ng-cloak ng-table="instanceTable" class="table table-striped table-hover">
+                <tr ng-repeat="instance in $data track by instance.title">
+                    <td data-title="'Title'" sortable="'user_name'" ng-bind="instance.title"></td>
+                    <td data-title="'Vector'" ng-bind="instance.vector"></td>
+                    <td data-title="'Sentiment'" ng-bind="instance.sentiment_score"></td>
+                    <td data-title="'Source'" ng-bind="instance.source"></td>
+                    <td data-title="'Fragment'" ng-bind="instance.fragment"></td>
+                    <td data-title="'Flagged'">
+                        <button class="btn btn-primary" ng-if="instance.flagged" ng-click="flag(instance.id, 0)">Unflag</button>
+                        <button class="btn btn-danger" ng-if="!instance.flagged" ng-click="flag(instance.id, 1)">Flag</button>
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
 @endsection
 
 @section('scripts')
-    <script>
-        $(function() {
-            $.each(vectors, function() {
-                $("#vectors").append($("<option />").val(this.name).text(this.name));
-            });
-            $.each(companies, function() {
-                $("#companies").append($("<option />").val(this.name).text(this.name));
-            });
-            $.each(regions, function() {
-                $("#regions").append($("<option />").val(this.name).text(this.name));
-            });
 
-            $(function() {
-                $("#start_datetime").datepicker({dateFormat:'yy-mm-dd'});
-                $("#end_datetime").datepicker({dateFormat:'yy-mm-dd'});
-            });
-        });
-
-        function getParameters() {
-            return {
-                'companies_name': $("#companies").val(),
-                'vectors_name': $("#vectors").val(),
-                'regions_name': $("#regions").val(),
-                'start_datetime': $("#start_datetime").val(),
-                'end_datetime': $("#end_datetime").val()
-            }
-        }
-
-        function getInstances() {
-            $.ajax({
-                url: "instance",
-                data: getParameters()
-            }).done(function(data) {
-                if(data.data.instances.data.length == 0) {
-                    $('#resultsDiv').html('<h2>No Results</h2>');
-                }
-                else {
-                    $('#resultsDiv').html('<h2>Results</h2><p>Result count: ' + data.data.count + '</p>');
-                    $('#resultsDiv').append('<p>Total risk score: ' + data.data.risk_score + '</p>');
-                    $('#resultsDiv').append('<a class="btn btn-primary" target="_blank" href="/instanceCsv?'+$.param(getParameters())+'">Download CSV</a>');
-                    var truncatedData = data.data.instances.data.slice(0,100);
-                    $.each(truncatedData, function() {
-                        var instanceContent = '<div class="well">';
-                        for(var key in this) {
-                            if(key == 'link') {
-                                instanceContent += '<p>link: <a target="_blank" href="'+this[key]+'">'+ this[key] + '</a></p>';
-                            } else {
-                                instanceContent += '<p>' + key + ': ' + this[key] + '</p>';
-                            }
-                        }
-                        instanceContent += '</div>';
-                        $("#resultsDiv").append(instanceContent);
-                    });
-                    if(data.data.instances.data.length > 100) {
-                        $("#resultsDiv").append('Data truncated, more results in CSV download');
-                    }
-                }
-            }).fail(function(data) {
-                $('#resultsDiv').append('<p style="color:red;">' + data.responseText + '</p>');
-            });
-        }
-    </script>
 @endsection
