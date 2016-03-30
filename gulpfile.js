@@ -44,6 +44,7 @@ elixir(function(mix) {
         ],'public/js/adminlte.js', './')
         .styles([
             'bower_components/jquery-ui/themes/base/jquery-ui.min.css',
+            'node_modules/angular-toastr/dist/angular-toastr.css',
             'bower_components/jquery-ui/themes/base/all.css'
         ], 'public/css', './')
         .copy('bower_components/bootstrap-sass-official/assets/fonts', 'public/build/fonts')
