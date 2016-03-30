@@ -19,6 +19,8 @@ class RecordedFutureApiTest extends \TestCase
     /** @var GuzzleResponse|\Mockery\MockInterface */
     protected $mockedGuzzleResponse;
 
+    protected $queryUrl = 'https://api.recordedfuture.com/query?q=';
+
     /** @var string */
     protected $apiKey = 'someAPIToken';
 
@@ -38,27 +40,28 @@ class RecordedFutureApiTest extends \TestCase
         $this->mockedClient->shouldReceive('get')
             ->once()
             ->with(
-                'https://api.recordedfuture.com/query?q=',
-                [
-                    'json' => [
-                        'instance' => [
-                            'attributes' => [
-                                ['entity' => ['id' => $entityId]],
-                                [
-                                    'name' => ['general_positive', 'general_negative'],
-                                    'range' => ['gt' => 0]
-                                ]
-                            ],
-                            'time_range' => "-7d to +0d",
-                            'searchtype' => 'scan',
-                        ],
-                        'token' => 'someAPIToken',
-                    ]
-                ]
+                $this->queryUrl,
+                $this->buildJsonForGuzzleRFInstanceQuery($entityId, 7, 'd')
             )
             ->andReturn($this->mockedGuzzleResponse);
 
-        $this->recordedFutureApi->queryInstancesForEntity($entityId);
+        $this->recordedFutureApi->queryInstancesForEntityDaily($entityId);
+    }
+
+    public function test_querying_with_no_options_and_default_hours_used()
+    {
+        $this->mockedGuzzleResponse->shouldReceive('getBody')->once()->andReturn('{}');
+
+        $entityId = 'EntityId';
+        $this->mockedClient->shouldReceive('get')
+            ->once()
+            ->with(
+                $this->queryUrl,
+                $this->buildJsonForGuzzleRFInstanceQuery($entityId, 1, 'h')
+            )
+            ->andReturn($this->mockedGuzzleResponse);
+
+        $this->recordedFutureApi->queryInstancesForEntityHourly($entityId);
     }
 
     public function test_querying_with_non_default_days()
@@ -69,27 +72,28 @@ class RecordedFutureApiTest extends \TestCase
         $this->mockedClient->shouldReceive('get')
             ->once()
             ->with(
-                'https://api.recordedfuture.com/query?q=',
-                [
-                    'json' => [
-                        'instance' => [
-                            'attributes' => [
-                                ['entity' => ['id' => $entityId]],
-                                [
-                                    'name' => ['general_positive', 'general_negative'],
-                                    'range' => ['gt' => 0]
-                                ]
-                            ],
-                            'time_range' => "-1d to +0d",
-                            'searchtype' => 'scan',
-                        ],
-                        'token' => 'someAPIToken',
-                    ]
-                ]
+                $this->queryUrl,
+                $this->buildJsonForGuzzleRFInstanceQuery($entityId, 99, 'd')
             )
             ->andReturn($this->mockedGuzzleResponse);
 
-        $this->recordedFutureApi->queryInstancesForEntity($entityId, 1);
+        $this->recordedFutureApi->queryInstancesForEntityDaily($entityId, 99);
+    }
+
+    public function test_querying_with_non_default_hours()
+    {
+        $this->mockedGuzzleResponse->shouldReceive('getBody')->once()->andReturn('{}');
+
+        $entityId = 'EntityId';
+        $this->mockedClient->shouldReceive('get')
+            ->once()
+            ->with(
+                $this->queryUrl,
+                $this->buildJsonForGuzzleRFInstanceQuery($entityId, 99, 'h')
+            )
+            ->andReturn($this->mockedGuzzleResponse);
+
+        $this->recordedFutureApi->queryInstancesForEntityHourly($entityId, 99);
     }
 
     public function test_querying_with_options_specified_number_of_days_to_process()
@@ -100,28 +104,28 @@ class RecordedFutureApiTest extends \TestCase
         $this->mockedClient->shouldReceive('get')
             ->once()
             ->with(
-                'https://api.recordedfuture.com/query?q=',
-                [
-                    'json' => [
-                        'instance' => [
-                            'attributes' => [
-                                ['entity' => ['id' => $entityId]],
-                                [
-                                    'name' => ['general_positive', 'general_negative'],
-                                    'range' => ['gt' => 0]
-                                ]
-                            ],
-                            'time_range' => "-5d to +0d",
-                            'limit' => 5,
-                            'searchtype' => 'scan',
-                        ],
-                        'token' => 'someAPIToken',
-                    ]
-                ]
+                $this->queryUrl,
+                $this->buildJsonForGuzzleRFInstanceQuery($entityId, 5, 'd', ['limit' => 5])
             )
             ->andReturn($this->mockedGuzzleResponse);
 
-        $this->recordedFutureApi->queryInstancesForEntity($entityId, 5, ['limit' => 5]);
+        $this->recordedFutureApi->queryInstancesForEntityDaily($entityId, 5, ['limit' => 5]);
+    }
+
+    public function test_querying_with_options_specified_number_of_hours_to_process()
+    {
+        $this->mockedGuzzleResponse->shouldReceive('getBody')->once()->andReturn('{}');
+
+        $entityId = 'EntityId';
+        $this->mockedClient->shouldReceive('get')
+            ->once()
+            ->with(
+                $this->queryUrl,
+                $this->buildJsonForGuzzleRFInstanceQuery($entityId, 5, 'h', ['something' => 9])
+            )
+            ->andReturn($this->mockedGuzzleResponse);
+
+        $this->recordedFutureApi->queryInstancesForEntityHourly($entityId, 5, ['something' => 9]);
     }
 
     public function test_getting_entities_by_ids()
@@ -132,7 +136,7 @@ class RecordedFutureApiTest extends \TestCase
         $this->mockedClient->shouldReceive('get')
             ->once()
             ->with(
-                'https://api.recordedfuture.com/query?q=',
+                $this->queryUrl,
                 [
                     'json' => [
                         'entity' => ['id' => $entityIds, 'searchtype' => 'scan',],
@@ -143,5 +147,32 @@ class RecordedFutureApiTest extends \TestCase
             ->andReturn($this->mockedGuzzleResponse);
 
         $this->recordedFutureApi->getEntitiesByCodes($entityIds);
+    }
+
+    protected function buildJsonForGuzzleRFInstanceQuery($entityId, $measurement, $measurementUnits, array $options = [])
+    {
+        $returnArray = [
+            'json' => [
+                'instance' => [
+                    'attributes' => [
+                        ['entity' => ['id' => $entityId]],
+                        [
+                            'name' => ['general_positive', 'general_negative'],
+                            'range' => ['gt' => 0]
+                        ]
+                    ],
+                ],
+                'token' => $this->apiKey,
+            ]
+        ];
+
+        if ($options) {
+            $returnArray['json']['instance'] = array_merge($returnArray['json']['instance'], $options);
+        }
+
+        $returnArray['json']['instance']['time_range'] = "-{$measurement}{$measurementUnits} to +0{$measurementUnits}";
+        $returnArray['json']['instance']['searchtype'] = 'scan';
+
+        return $returnArray;
     }
 }

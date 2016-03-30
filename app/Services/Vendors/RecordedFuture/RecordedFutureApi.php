@@ -47,7 +47,45 @@ class RecordedFutureApi
         $this->token = $token;
     }
 
-    public function queryInstancesForEntity(string $entityId, int $daysBack = 7, array $options = []): Response
+    /**
+     * Queries Recorded Future for all instances of an entity from a number of days back in time.
+     *
+     * @param string $entityId
+     * @param int $daysBack
+     * @param array $options
+     * @return Response
+     */
+    public function queryInstancesForEntityDaily(string $entityId, int $daysBack = 7, array $options = []): Response
+    {
+        return $this->queryApi(['instance' => array_merge(
+            $this->buildInstanceQueryOptionsForEntity($entityId, $daysBack, 'd'),
+            $options
+        )]);
+    }
+
+    /**
+     * Queries Recorded Future for all instances of an entity from a number of hours back in time.
+     *
+     * @param string $entityId
+     * @param int $hoursBack
+     * @param array $options
+     * @return Response
+     */
+    public function queryInstancesForEntityHourly(string $entityId, int $hoursBack = 1, array $options = []): Response
+    {
+        return $this->queryApi(['instance' => array_merge(
+            $this->buildInstanceQueryOptionsForEntity($entityId, $hoursBack, 'h'),
+            $options
+        )]);
+    }
+
+    /**
+     * @param string $entityId
+     * @param int $measurement
+     * @param string $timeMeasurement
+     * @return array
+     */
+    protected function buildInstanceQueryOptionsForEntity(string $entityId, int $measurement, string $timeMeasurement): array
     {
         $defaultOptions = [
             'attributes' => [
@@ -57,10 +95,10 @@ class RecordedFutureApi
                     'range' => ['gt' => 0]
                 ]
             ],
-            'time_range' => "-{$daysBack}d to +0d",
+            'time_range' => "-{$measurement}{$timeMeasurement} to +0{$timeMeasurement}",
         ];
 
-        return $this->queryApi(['instance' => array_merge($defaultOptions, $options)]);
+        return $defaultOptions;
     }
 
     /**
