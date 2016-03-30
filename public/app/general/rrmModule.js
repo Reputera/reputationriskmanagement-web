@@ -1,7 +1,6 @@
 var app = angular
     .module('app', [
         'helpers',
-        //'ui.bootstrap',
         'restangular',
         'ngTable',
         'toastr',
@@ -22,12 +21,14 @@ var app = angular
                     toastr.error('Unauthorized: ' + response.data.message);
                 } else if (response.status == 422) {
                     try {
-                        if(response.data.message && response.data.message != 'Unprocessable Entity'){
-                            toastr.warning(response.data.message);
-                        }
+                        toastr.warning(JSON.stringify(response.data));
                     } catch(e) {}
                 }
                 return $q.reject(response);
             }
         }
     });
+
+app.config(function($httpProvider) {
+    $httpProvider.interceptors.push('errorInterceptor');
+});
