@@ -28,6 +28,10 @@ class QueryBuilder
             $builder->where('flagged', null);
         }
 
+        if (array_has($paramArray, 'fragment')) {
+            $builder->whereRaw('MATCH (fragment) AGAINST(? IN BOOLEAN MODE)', [$paramArray['fragment']]);
+        }
+
         if (array_has($paramArray, 'companies.name')) {
             $builder->whereIn('companies.name', explode(',', $paramArray['companies.name']));
         }

@@ -32,7 +32,7 @@ class QueryController extends Controller
     public function getInstances(InstanceQueryRequest $request, QueryBuilder $queryBuilder)
     {
         $resultCollection = $this->paginateBuilder($queryBuilder->queryInstances($request, $request->getForQuery([
-            'vectors_name', 'companies_name', 'regions_name', 'hideFlagged'
+            'vectors_name', 'companies_name', 'regions_name', 'hideFlagged', 'fragment'
             ]))->with('countries.region'), $request
         );
         return $this->respondWithArray([
@@ -40,6 +40,7 @@ class QueryController extends Controller
             'total_sentiment_score' => $resultCollection->total() ? (int)($resultCollection->sum('sentiment') / $resultCollection->total() * 100) : 0,
             'instances' => $this->fractalPaginate($resultCollection, new InstanceTransformer())
         ]);
+
     }
 
     /**
@@ -49,7 +50,7 @@ class QueryController extends Controller
     public function getInstancesCsv(InstanceQueryRequest $request, QueryBuilder $queryBuilder)
     {
         $resultCollection = $queryBuilder->queryInstances($request, $request->getForQuery([
-            'vectors_name', 'companies_name', 'regions_name', 'hideFlagged'
+            'vectors_name', 'companies_name', 'regions_name', 'hideFlagged', 'fragment'
         ]))->get();
         $instances = $this->fractalize($resultCollection, new InstanceTransformer());
         $csv = Writer::createFromFileObject(new \SplTempFileObject());
@@ -73,7 +74,7 @@ class QueryController extends Controller
     public function getRiskScore(InstanceQueryRequest $request, QueryBuilder $queryBuilder)
     {
         $resultCollection = $queryBuilder->queryInstances($request, $request->getForQuery([
-            'vectors_name', 'companies_name', 'regions_name', 'hideFlagged'
+            'vectors_name', 'companies_name', 'regions_name', 'hideFlagged', 'fragment'
         ]))->get();
         $resultCount = $resultCollection->count();
         return $this->respondWithArray([
