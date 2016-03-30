@@ -4,7 +4,7 @@ app.controller('InstanceQueryController', ['$scope', '$http', 'toastr', 'helpers
     $scope.selectedCompany = {};
     $scope.selectedVector = {};
     $scope.selectedRegion = {};
-    $scope.hideFlagged = false;
+    $scope.hideFlagged = 0;
 
     $scope.vectors = vectors;
     $scope.companies = companies;
@@ -35,8 +35,6 @@ app.controller('InstanceQueryController', ['$scope', '$http', 'toastr', 'helpers
                 params.page($scope.instances.meta.pagination.current_page);
                 $defer.resolve($scope.instances.data);
                 return $scope.instances.data;
-            }).then(function(errorResult) {
-                toastr.error('error');
             });
         }
     });
