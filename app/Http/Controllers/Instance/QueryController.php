@@ -4,12 +4,17 @@ namespace App\Http\Controllers\Instance;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Instance\InstanceQueryRequest;
+use App\Http\Requests\Instance\RiskScoreRequest;
+use App\Http\Requests\Request;
 use App\Services\Instance\QueryBuilder;
 use App\Transformers\Instance\InstanceTransformer;
 use League\Csv\Writer;
+use App\Http\Traits\PaginationTrait;
 
 class QueryController extends Controller
 {
+
+    use PaginationTrait;
 
     /**
      * @api {get} /instances/ List instances
@@ -26,17 +31,16 @@ class QueryController extends Controller
      */
     public function getInstances(InstanceQueryRequest $request, QueryBuilder $queryBuilder)
     {
-        $resultCollection = $queryBuilder->queryInstances($request, $request->getForQuery([
-            'vectors_name', 'companies_name', 'regions_name',
-        ]))->with('countries.region')
-            ->get();
-
-        $resultCount = $resultCollection->count();
+        $resultCollection = $this->paginateBuilder($queryBuilder->queryInstances($request, $request->getForQuery([
+            'vectors_name', 'companies_name', 'regions_name', 'hideFlagged', 'fragment'
+            ]))->with('countries.region'), $request
+        );
         return $this->respondWithArray([
-            'count' => $resultCount,
-            'risk_score' => $resultCount ? round(($resultCollection->sum('risk_score') / $resultCount)) : 0,
-            'instances' => $this->fractalize($resultCollection, new InstanceTransformer())
+            'count' => $resultCollection->total(),
+            'total_sentiment_score' => $resultCollection->total() ? (int)($resultCollection->sum('sentiment') / $resultCollection->total() * 100) : 0,
+            'instances' => $this->fractalPaginate($resultCollection, new InstanceTransformer())
         ]);
+
     }
 
     /**
@@ -46,7 +50,7 @@ class QueryController extends Controller
     public function getInstancesCsv(InstanceQueryRequest $request, QueryBuilder $queryBuilder)
     {
         $resultCollection = $queryBuilder->queryInstances($request, $request->getForQuery([
-            'vectors_name', 'companies_name', 'regions_name'
+            'vectors_name', 'companies_name', 'regions_name', 'hideFlagged', 'fragment'
         ]))->get();
         $instances = $this->fractalize($resultCollection, new InstanceTransformer());
         $csv = Writer::createFromFileObject(new \SplTempFileObject());
@@ -70,11 +74,11 @@ class QueryController extends Controller
     public function getRiskScore(InstanceQueryRequest $request, QueryBuilder $queryBuilder)
     {
         $resultCollection = $queryBuilder->queryInstances($request, $request->getForQuery([
-            'vectors_name', 'companies_name', 'regions_name'
+            'vectors_name', 'companies_name', 'regions_name', 'hideFlagged', 'fragment'
         ]))->get();
         $resultCount = $resultCollection->count();
         return $this->respondWithArray([
-            'risk_score' => $resultCount ? ($resultCollection->sum('risk_score') / $resultCount) : 0
+            'risk_score' => $resultCount ? (int)($resultCollection->sum('sentiment') / $resultCount * 100) : 0
         ]);
     }
 }

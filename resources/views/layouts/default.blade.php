@@ -18,6 +18,23 @@
 </div>
 <script src="{{elixir('js/jquery.js')}}"></script>
 <script src="{{elixir('js/adminlte.js')}}"></script>
+<script src="{{elixir('assets/all.js')}}"></script>
+<script>
+    var user = {!! json_encode(Auth::user()) !!};
+</script>
+<script>
+    app.controller('MainCtrl', function ($scope, toastr, currentUser) {
+        $scope.user = currentUser;
+
+        $scope.showErrorMessage = function (msg) {
+            toastr.error(msg);
+        };
+
+        $scope.showSuccessMessage = function (msg) {
+            toastr.success(msg);
+        };
+    });
+</script>
 @yield('scripts')
 </body>
 </html>

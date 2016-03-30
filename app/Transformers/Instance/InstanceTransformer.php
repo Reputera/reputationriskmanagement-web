@@ -11,6 +11,7 @@ class InstanceTransformer extends TransformerAbstract
     public function transform(Instance $instance)
     {
         return [
+            'id' => $instance->id,
             'title' => $instance->title,
             'company' => $instance->company->name,
             'vector' => $instance->vector->name ?? null,
@@ -21,7 +22,10 @@ class InstanceTransformer extends TransformerAbstract
             'fragment' => $instance->fragment,
             'link' => $instance->link,
             'regions' => implode(', ', $instance->getRegions()),
-            'risk_score' => $instance->risk_score,
+            'positive_sentiment' => (int)($instance->positive_sentiment * 100),
+            'negative_sentiment' => (int)($instance->negative_sentiment * -100),
+            'sentiment_score' => (int)($instance->sentiment * 100),
+            'flagged' => (bool)$instance->flagged
         ];
     }
 }
