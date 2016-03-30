@@ -2,7 +2,8 @@
 
 namespace App\Console;
 
-use App\Console\Commands\PopulateCompanyWithRecordedFutureData;
+use App\Console\Commands\RecordedFuture\Instances\PopulateCompanyDaily;
+use App\Console\Commands\RecordedFuture\Instances\PopulateCompanyHourly;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -14,7 +15,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        PopulateCompanyWithRecordedFutureData::class
+        PopulateCompanyDaily::class,
+        PopulateCompanyHourly::class
     ];
 
     /**
@@ -25,7 +27,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+         $schedule->command('recorded-future:populate-instances-hourly')
+                  ->hourly();
     }
 }

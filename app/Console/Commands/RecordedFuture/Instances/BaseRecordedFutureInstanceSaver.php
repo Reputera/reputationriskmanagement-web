@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\RecordedFuture\Instances;
 
 use App\Entities\Company;
 use App\Services\Vendors\RecordedFuture\RecordedFutureApi;
@@ -8,24 +8,8 @@ use App\Services\Vendors\RecordedFuture\Repository as RecordedFutureRepository;
 use App\Services\Vendors\RecordedFuture\Response;
 use Illuminate\Console\Command;
 
-class PopulateCompanyWithRecordedFutureData extends Command
+abstract class BaseRecordedFutureInstanceSaver extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'recorded-future:populate-instances
-                            {--days=1 : Number of days to be processed}
-                            {--company= : A specific company to be processed}';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Populates companies with Recorded Future instances for a given number of days.';
-
     /**
      * The Recorded Future API.
      *
@@ -63,7 +47,7 @@ class PopulateCompanyWithRecordedFutureData extends Command
 
         if ($companies->isEmpty()) {
             $this->info('No company/companies found.');
-            exit;
+            return;
         }
 
         foreach ($companies as $company) {
@@ -79,7 +63,7 @@ class PopulateCompanyWithRecordedFutureData extends Command
     protected function saveCompanyResults(Company $company)
     {
         $apiResponse = $this->queryApi($company);
-
+dd('??');
         $safetyValve = $apiResponse->countOfReferences();
         while ($apiResponse->getInstances() && $safetyValve) {
             $this->saveInstances($company, $apiResponse->getInstances());
@@ -100,13 +84,7 @@ class PopulateCompanyWithRecordedFutureData extends Command
      * @param array $options
      * @return Response
      */
-    protected function queryApi(Company $company, array $options = []): Response
-    {
-        $numberOfDays = $this->option('days');
-
-        return $this->recordedFutureApi
-            ->queryInstancesForEntity($company->entity_id, $numberOfDays, $options);
-    }
+    abstract protected function queryApi(Company $company, array $options = []): Response;
 
     /**
      * Save all instances for a company
