@@ -3,7 +3,7 @@
 namespace App\Console\Commands\RecordedFuture\Instances;
 
 use App\Entities\Company;
-use App\Services\Vendors\RecordedFuture\RecordedFutureApi;
+use App\Services\Vendors\RecordedFuture\Api\RecordedFutureApi;
 use App\Services\Vendors\RecordedFuture\Repository as RecordedFutureRepository;
 use App\Services\Vendors\RecordedFuture\Response;
 use Illuminate\Console\Command;

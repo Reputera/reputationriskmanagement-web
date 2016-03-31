@@ -1,19 +1,14 @@
 <?php
 
-namespace Tests\Unit\Services\Vendors\RecordedFuture;
+namespace Tests\Unit\Services\Vendors\RecordedFuture\Api;
 
-use App\Services\Vendors\RecordedFuture\Response;
-use App\Services\Vendors\RecordedFuture\Entity;
+use App\Services\Vendors\RecordedFuture\Api\Response;
+use App\Services\Vendors\RecordedFuture\Api\Entity;
 use GuzzleHttp\Psr7\Response as GuzzleResponse;
 use Tests\StubData\RecordedFuture\SingleInstance;
 
 class ResponseTest extends \TestCase
 {
-    /**
-     * @var \Mockery\MockInterface|GuzzleResponse
-     */
-    protected $mockedGuzzleResponse;
-
     public function test_the_response_has_more_pages()
     {
         $this->assertTrue($this->getResponse(['next_page_start' => '123456'])->hasMorePages());
@@ -73,12 +68,6 @@ class ResponseTest extends \TestCase
      */
     protected function getResponse(array $responseArray)
     {
-        $this->mockedGuzzleResponse = \Mockery::mock(GuzzleResponse::class);
-        $this->mockedGuzzleResponse
-            ->shouldReceive('getBody')
-            ->once()
-            ->withNoArgs()
-            ->andReturn(json_encode($responseArray));
-        return new Response($this->mockedGuzzleResponse);
+        return new Response($responseArray);
     }
 }

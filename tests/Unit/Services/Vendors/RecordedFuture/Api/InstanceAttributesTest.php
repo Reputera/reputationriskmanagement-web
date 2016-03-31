@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\Unit\Services\Vendors\RecordedFuture;
+namespace Tests\Unit\Services\Vendors\RecordedFuture\Api;
 
-use App\Services\Vendors\RecordedFuture\InstanceAttributes;
-use App\Services\Vendors\RecordedFuture\RecordedFutureApi;
+use App\Services\Vendors\RecordedFuture\Api\InstanceAttributes;
+use App\Services\Vendors\RecordedFuture\Api\RecordedFutureApi;
 use Tests\StubData\RecordedFuture\SingleInstance;
 
 class InstanceAttributesTest extends \TestCase

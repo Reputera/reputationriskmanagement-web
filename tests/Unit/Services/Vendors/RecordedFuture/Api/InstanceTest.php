@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\Unit\Services\Vendors\RecordedFuture;
+namespace Tests\Unit\Services\Vendors\RecordedFuture\Api;
 
-use App\Services\Vendors\RecordedFuture\Document;
-use App\Services\Vendors\RecordedFuture\Entity;
-use App\Services\Vendors\RecordedFuture\Instance;
-use App\Services\Vendors\RecordedFuture\InstanceAttributes;
+use App\Services\Vendors\RecordedFuture\Api\Document;
+use App\Services\Vendors\RecordedFuture\Api\Entity;
+use App\Services\Vendors\RecordedFuture\Api\Instance;
+use App\Services\Vendors\RecordedFuture\Api\InstanceAttributes;
 use Tests\StubData\RecordedFuture\SingleInstance;
 
 class InstanceTest extends \TestCase

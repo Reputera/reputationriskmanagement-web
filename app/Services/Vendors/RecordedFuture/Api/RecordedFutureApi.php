@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Vendors\RecordedFuture;
+namespace App\Services\Vendors\RecordedFuture\Api;
 
 use GuzzleHttp\Client;
 
@@ -131,7 +131,7 @@ class RecordedFutureApi
         ];
 
         $response = $this->client->get('https://api.recordedfuture.com/query?q=', $options);
-        return new Response($response);
+        return new Response(json_decode($response->getBody(), true));
     }
 
     protected function assembleExtraOptions(array $options): array

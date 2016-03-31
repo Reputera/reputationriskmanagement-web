@@ -1,16 +1,9 @@
 <?php
 
-namespace App\Services\Vendors\RecordedFuture;
-
-use GuzzleHttp\Psr7\Response as GuzzleResponse;
+namespace App\Services\Vendors\RecordedFuture\Api;
 
 class Response extends BaseRecord
 {
-    public function __construct(GuzzleResponse $response)
-    {
-        $this->record = json_decode($response->getBody(), true);
-    }
-
     /**
      * Determines if there are more results to be queried from the API.
      *

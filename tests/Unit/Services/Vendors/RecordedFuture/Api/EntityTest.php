@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Unit\Services\Vendors\RecordedFuture;
+namespace Tests\Unit\Services\Vendors\RecordedFuture\Api;
 
-use App\Services\Vendors\RecordedFuture\Entity;
+use App\Services\Vendors\RecordedFuture\Api\Entity;
 use Tests\StubData\RecordedFuture\SingleEntity;
 
 class EntityTest extends \TestCase

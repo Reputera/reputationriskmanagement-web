@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\Unit\Services\Vendors\RecordedFuture;
+namespace Tests\Unit\Services\Vendors\RecordedFuture\Api;
 
-use App\Services\Vendors\RecordedFuture\Document;
-use App\Services\Vendors\RecordedFuture\Source;
+use App\Services\Vendors\RecordedFuture\Api\Document;
+use App\Services\Vendors\RecordedFuture\Api\Source;
 
 class DocumentTest extends \TestCase
 {

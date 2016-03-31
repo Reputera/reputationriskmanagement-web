@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Vendors\RecordedFuture;
+namespace App\Services\Vendors\RecordedFuture\Api;
 
 class Source extends BaseRecord
 {

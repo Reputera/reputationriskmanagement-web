@@ -3,6 +3,7 @@
 namespace App\Services\Vendors\RecordedFuture;
 
 use App\Entities\Company;
+use App\Services\Vendors\RecordedFuture\Api\Instance;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 

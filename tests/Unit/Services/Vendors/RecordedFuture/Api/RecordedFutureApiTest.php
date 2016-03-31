@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\Unit\Services\Vendors\RecordedFuture;
+namespace Tests\Unit\Services\Vendors\RecordedFuture\Api;
 
-use App\Services\Vendors\RecordedFuture\Entity;
-use App\Services\Vendors\RecordedFuture\RecordedFutureApi;
+use App\Services\Vendors\RecordedFuture\Api\Entity;
+use App\Services\Vendors\RecordedFuture\Api\RecordedFutureApi;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response as GuzzleResponse;
 use Tests\StubData\RecordedFuture\SingleEntity;
