@@ -34,7 +34,6 @@ class QueryingTest extends \TestCase
 
     public function testQueryTextSearch()
     {
-        $this->markTestSkipped("Fulltext search not finding queried text.");
 //        This record is noise, so assert it is not returned in results.
         factory(Instance::class)->create();
 

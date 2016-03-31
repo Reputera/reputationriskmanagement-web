@@ -29,7 +29,7 @@ class QueryBuilder
         }
 
         if (array_has($paramArray, 'fragment')) {
-            $builder->whereRaw('MATCH (fragment) AGAINST(? IN BOOLEAN MODE)', [$paramArray['fragment']]);
+            $builder->where('fragment', 'LIKE', '%' . $paramArray['fragment'] . '%');
         }
 
         if (array_has($paramArray, 'companies.name')) {
