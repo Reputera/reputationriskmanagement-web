@@ -63,7 +63,7 @@ abstract class BaseRecordedFutureInstanceSaver extends Command
     protected function saveCompanyResults(Company $company)
     {
         $apiResponse = $this->queryApi($company);
-dd('??');
+
         $safetyValve = $apiResponse->countOfReferences();
         while ($apiResponse->getInstances() && $safetyValve) {
             $this->saveInstances($company, $apiResponse->getInstances());
