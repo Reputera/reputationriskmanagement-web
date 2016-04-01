@@ -40,7 +40,7 @@
                 <tr ng-repeat="instance in $data track by instance.title">
                     <td data-title="'Title'" sortable="'user_name'" ng-bind="instance.title"></td>
                     <td data-title="'Vector'" ng-bind="instance.vector"></td>
-                    <td data-title="'Sentiment'" ng-bind="instance.sentiment_score"></td>
+                    <td data-title="'Risk Score'" ng-bind="instance.risk_score"></td>
                     <td data-title="'Source'" ng-bind="instance.source"></td>
                     <td data-title="'Fragment'" ng-bind="instance.fragment"></td>
                     <td data-title="'Flagged'">
