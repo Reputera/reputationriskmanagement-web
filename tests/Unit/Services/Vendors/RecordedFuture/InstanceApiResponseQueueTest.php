@@ -43,8 +43,6 @@ class InstanceApiResponseQueueTest extends \TestCase
         $this->setupMocks('queryInstancesForEntityHourly', $company, $hoursToProcess);
 
         $this->responseQueue->processHourly($company, $hoursToProcess);
-
-        $this->assertRecordInDb($company);
     }
 
     public function testProcessDaily()
@@ -55,8 +53,6 @@ class InstanceApiResponseQueueTest extends \TestCase
         $this->setupMocks('queryInstancesForEntityDaily', $company, $daysToProcess);
 
         $this->responseQueue->processDaily($company, $daysToProcess);
-
-        $this->assertRecordInDb($company);
     }
 
     protected function setupMocks(string $functionName, Company $company, int $measurement)
@@ -104,21 +100,5 @@ class InstanceApiResponseQueueTest extends \TestCase
                 $this->mockedNextStartPageString.'-'.$company->entity_id.'.log/', '123')
             ->once()
             ->andReturnSelf();
-    }
-
-    protected function assertRecordInDb(Company $company)
-    {
-        $this->assertNotEmpty(
-            \DB::table('recorded_future_response_queue')
-                ->where('company_id', $company->id)
-                ->where(
-                    'response_location',
-                    'RLIKE',
-                    $this->responseQueue->getPath().
-                    '\/[0-9]{4}-[0-9]{2}-[0-9]{2}_[0-9]{2}-[0-9]{2}-[0-9]{2}_'.
-                    $this->mockedNextStartPageString.'-'.$company->entity_id.'.log'
-                )
-                ->first()
-        );
     }
 }

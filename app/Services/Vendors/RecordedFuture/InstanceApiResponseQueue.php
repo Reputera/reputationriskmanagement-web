@@ -70,8 +70,6 @@ class InstanceApiResponseQueue
         while ($apiResponse->countOfReferences()) {
             $filePath = $this->writeToFileSystem($apiResponse, $company);
 
-            $this->queueResponseFileForCompany($filePath, $company);
-
             $apiResponse = $this->api->{$function}(
                 $company->entity_id,
                 $frequency,
@@ -93,19 +91,5 @@ class InstanceApiResponseQueue
         $path = $this->path.'/'.$fileName;
         Storage::disc($this->fileSystem)->put($path, $response->recordAsJson());
         return $path;
-    }
-
-    /**
-     * Writes the necessary data to the database table.
-     *
-     * @param string $filePath
-     * @param Company $company
-     */
-    protected function queueResponseFileForCompany(string $filePath, Company $company)
-    {
-        DB::table('recorded_future_response_queue')->insert([
-            'company_id' => $company->id,
-            'response_location' => $filePath
-        ]);
     }
 }
