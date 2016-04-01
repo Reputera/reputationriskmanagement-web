@@ -83,7 +83,7 @@ class InstanceApiResponseQueueTest extends \TestCase
             ->once()
             ->andReturn($secondResponse);
 
-        Storage::shouldReceive('disc')
+        Storage::shouldReceive('disk')
             ->with('local')
             ->once()
             ->andReturnSelf();

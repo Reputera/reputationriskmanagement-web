@@ -92,7 +92,7 @@ class InstanceApiResponseQueue
     {
         $fileName = date('Y-m-d_H-i-s').'_'.$response->getNextPageStart().'-'.$company->entity_id.'.log';
         $path = $this->path.'/'.$fileName;
-        Storage::disc($this->fileSystem)->put($path, $response->recordAsJson());
+        Storage::disk($this->fileSystem)->put($path, $response->recordAsJson());
         return $path;
     }
 }
