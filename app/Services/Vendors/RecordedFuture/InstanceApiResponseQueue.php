@@ -5,8 +5,6 @@ namespace App\Services\Vendors\RecordedFuture;
 use App\Entities\Company;
 use App\Services\Vendors\RecordedFuture\Api\RecordedFutureApi;
 use App\Services\Vendors\RecordedFuture\Api\Response;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class InstanceApiResponseQueue
@@ -30,6 +28,11 @@ class InstanceApiResponseQueue
         $this->api = $api;
     }
 
+    /**
+     * Get the path in relation to the storage folder (app/storage)
+     *
+     * @return string
+     */
     public function getPath()
     {
         return $this->path;
@@ -68,7 +71,7 @@ class InstanceApiResponseQueue
         $apiResponse = $this->api->{$function}($company->entity_id, $frequency);
 
         while ($apiResponse->countOfReferences()) {
-            $filePath = $this->writeToFileSystem($apiResponse, $company);
+            $this->writeToFileSystem($apiResponse, $company);
 
             $apiResponse = $this->api->{$function}(
                 $company->entity_id,
