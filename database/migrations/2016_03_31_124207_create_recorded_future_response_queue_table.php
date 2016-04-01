@@ -15,7 +15,8 @@ class CreateRecordedFutureResponseQueueTable extends Migration
         Schema::create('recorded_future_response_queue', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('company_id');
-            $table->longText('response');
+            $table->string('response_location');
+            $table->timestamps();
 
             $table->foreign('company_id')->references('id')->on('companies');
         });
