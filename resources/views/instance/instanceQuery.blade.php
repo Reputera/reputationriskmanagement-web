@@ -54,5 +54,13 @@
 @endsection
 
 @section('scripts')
+    <script>
+        $(function() {
+            $(function() {
+                $("#start_datetime").datepicker({dateFormat:'yy-mm-dd'});
+                $("#end_datetime").datepicker({dateFormat:'yy-mm-dd'});
+            });
+        });
+    </script>
 
 @endsection
