@@ -64,4 +64,14 @@ class Company extends Model
     {
         app(InstanceApiResponseQueue::class)->processHourly($this, $hours);
     }
+
+    /**
+     * Queues the responses from the Recorded Future API for a given number of days.
+     *
+     * @param int $days
+     */
+    public function queueInstancesDaily(int $days = 1)
+    {
+        app(InstanceApiResponseQueue::class)->processDaily($this, $days);
+    }
 }

@@ -7,7 +7,7 @@ use App\Services\Vendors\RecordedFuture\InstanceApiResponseQueue;
 
 class CompanyTest extends \TestCase
 {
-    public function testQueueingInstancesByHour()
+    public function testQueueingInstancesByHours()
     {
         /** @var Company $company */
         $company = factory(Company::class)->create();
@@ -22,5 +22,22 @@ class CompanyTest extends \TestCase
         app()->instance(InstanceApiResponseQueue::class, $mockInstanceQueuer);
 
         $company->queueInstancesHourly($cadence);
+    }
+
+    public function testQueueingInstancesByDays()
+    {
+        /** @var Company $company */
+        $company = factory(Company::class)->create();
+        /** @var \Mockery\MockInterface $mockInstanceQueuer */
+        $mockInstanceQueuer = \Mockery::mock(InstanceApiResponseQueue::class);
+        $cadence = 3;
+
+        $mockInstanceQueuer->shouldReceive('processDaily')
+            ->once()
+            ->with(\Mockery::type(Company::class), $cadence);
+
+        app()->instance(InstanceApiResponseQueue::class, $mockInstanceQueuer);
+
+        $company->queueInstancesDaily($cadence);
     }
 }
