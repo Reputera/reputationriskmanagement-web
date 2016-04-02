@@ -2,8 +2,8 @@
 
 namespace App\Console;
 
-use App\Console\Commands\RecordedFuture\Instances\PopulateCompanyDaily;
-use App\Console\Commands\RecordedFuture\Instances\PopulateCompanyHourly;
+use App\Console\Commands\RecordedFuture\Instances\RetrieveInstanceResponsesDaily;
+use App\Console\Commands\RecordedFuture\Instances\RetrieveInstanceResponsesHourly;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -15,8 +15,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        PopulateCompanyDaily::class,
-        PopulateCompanyHourly::class
+        RetrieveInstanceResponsesDaily::class,
+        RetrieveInstanceResponsesHourly::class
     ];
 
     /**
