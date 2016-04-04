@@ -5,6 +5,7 @@ app.controller('InstanceQueryController', ['$scope', '$http', 'toastr', 'helpers
     $scope.selectedVector = {};
     $scope.selectedRegion = {};
     $scope.hideFlagged = 0;
+    $scope.csvUrl = '';
 
     $scope.vectors = vectors;
     $scope.companies = companies;
@@ -35,6 +36,7 @@ app.controller('InstanceQueryController', ['$scope', '$http', 'toastr', 'helpers
                 params.total($scope.instances.meta.pagination.total);
                 params.page($scope.instances.meta.pagination.current_page);
                 $defer.resolve($scope.instances.data);
+                $scope.csvUrl = '/instanceCsv?'+$.param($scope.getParameters());
                 return $scope.instances.data;
             });
         }
