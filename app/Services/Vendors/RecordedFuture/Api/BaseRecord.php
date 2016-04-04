@@ -39,7 +39,19 @@ abstract class BaseRecord
         return array_get($this->record, $field, []);
     }
 
-    public function __toString(): string
+    /**
+     * List of acceptable options: JSON_HEX_QUOT, JSON_HEX_TAG, JSON_HEX_AMP, JSON_HEX_APOS, JSON_NUMERIC_CHECK,
+     * JSON_PRETTY_PRINT, JSON_UNESCAPED_SLASHES, JSON_FORCE_OBJECT, JSON_UNESCAPED_UNICODE
+     *
+     * @param int $options
+     * @return string
+     */
+    public function recordAsJson(int $options = 0)
+    {
+        return json_encode($this->record, $options);
+    }
+
+    public function __toString()
     {
         return json_encode($this->record, JSON_PRETTY_PRINT);
     }

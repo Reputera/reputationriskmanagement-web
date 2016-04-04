@@ -2,7 +2,7 @@
 
 namespace App\Entities;
 
-use Illuminate\Database\Eloquent\Collection;
+use App\Services\Vendors\RecordedFuture\InstanceApiResponseQueue;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -53,5 +53,25 @@ class Company extends Model
     public function competitors()
     {
         return $this->belongsToMany(Company::class, 'company_competitor', 'company_id', 'competitor_company_id');
+    }
+
+    /**
+     * Queues the responses from the Recorded Future API for a given number of hours.
+     *
+     * @param int $hours
+     */
+    public function queueInstancesHourly(int $hours = 1)
+    {
+        app(InstanceApiResponseQueue::class)->processHourly($this, $hours);
+    }
+
+    /**
+     * Queues the responses from the Recorded Future API for a given number of days.
+     *
+     * @param int $days
+     */
+    public function queueInstancesDaily(int $days = 1)
+    {
+        app(InstanceApiResponseQueue::class)->processDaily($this, $days);
     }
 }

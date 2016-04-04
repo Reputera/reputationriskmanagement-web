@@ -60,25 +60,18 @@ class InstanceApiResponseQueueTest extends \TestCase
         $firstResponse = clone $this->mockedApiResponse;
         $secondResponse = clone $this->mockedApiResponse;
 
-        $firstResponse->shouldReceive('countOfReferences')
+        $firstResponse->shouldReceive([
+                'countOfReferences' => 10,
+                'getNextPageStart' => $this->mockedNextStartPageString,
+                'recordAsJson' => 123
+            ])
             ->withNoArgs()
-            ->once()
-            ->andReturn(10);
+            ->once();
 
         $secondResponse->shouldReceive('countOfReferences')
             ->withNoArgs()
             ->once()
             ->andReturn(0);
-
-        $firstResponse->shouldReceive('getNextPageStart')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->mockedNextStartPageString);
-
-        $firstResponse->shouldReceive('recordAsJson')
-            ->withNoArgs()
-            ->once()
-            ->andReturn('123');
 
         $this->mockedApi->shouldReceive($functionName)
             ->with($company->entity_id, $measurement)
@@ -90,7 +83,7 @@ class InstanceApiResponseQueueTest extends \TestCase
             ->once()
             ->andReturn($secondResponse);
 
-        Storage::shouldReceive('disc')
+        Storage::shouldReceive('disk')
             ->with('local')
             ->once()
             ->andReturnSelf();
