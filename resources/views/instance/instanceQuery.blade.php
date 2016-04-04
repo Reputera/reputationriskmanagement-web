@@ -27,7 +27,7 @@
         <input type="text" class="form-control" id="end_datetime">
 
         <label>Hide flagged</label>
-        <input type="checkbox" ng-model="hideFlagged" ng-false-value="0">
+        <input type="checkbox" ng-model="hideFlagged" ng-false-value="0" ng-true-value="1">
 
         <button class="btn btn-primary form-control" id="submit" ng-click="reload()">Query</button>
 
