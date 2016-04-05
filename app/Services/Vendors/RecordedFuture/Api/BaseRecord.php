@@ -46,7 +46,7 @@ abstract class BaseRecord
      * @param int $options
      * @return string
      */
-    public function recordAsJson(int $options = 0)
+    public function asJson(int $options = 0)
     {
         return json_encode($this->record, $options);
     }
