@@ -11,7 +11,8 @@
         "tymon/jwt-auth": "@dev",
         "guzzlehttp/guzzle": "^6.1",
         "laracasts/utilities": "~2.0",
-        "league/csv": "^8.0"
+        "league/csv": "^8.0",
+        "rap2hpoutre/laravel-log-viewer": "^0.5.3"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
