@@ -16,7 +16,7 @@ class CreateCompaniesTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('stock_symbol', 5)->nullable();
-            $table->string('entity_id')->nullable();
+            $table->string('entity_id')->index()->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
