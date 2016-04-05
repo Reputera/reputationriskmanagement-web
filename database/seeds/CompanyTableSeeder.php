@@ -28,8 +28,8 @@ class CompanyTableSeeder extends Seeder
         ]);
 
         Company::create([
-            'name' => 'Heinz Corporation',
-            'entity_id' => 'LbbFzW'
+            'name' => 'HJ Heinz Co',
+            'entity_id' => 'CAN20'
         ]);
 
         Company::create([
