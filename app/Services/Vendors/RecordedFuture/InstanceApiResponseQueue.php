@@ -13,7 +13,7 @@ class InstanceApiResponseQueue
     protected $api;
 
     /** @var string */
-    protected $path = 'RecordedFuture-responses';
+    protected static $path = 'RecordedFuture-responses';
 
     /** @var string */
     protected $fileSystem = 'local';
@@ -29,13 +29,18 @@ class InstanceApiResponseQueue
     }
 
     /**
-     * Get the path in relation to the storage folder (app/storage)
+     * Get the path in relation to the storage folder (storage/app)
      *
      * @return string
      */
-    public function getPath()
+    public static function getFullPath()
     {
-        return $this->path;
+        return storage_path('app/'.self::$path);
+    }
+
+    public static function getRelativePath()
+    {
+        return self::$path;
     }
 
     /**
@@ -91,8 +96,8 @@ class InstanceApiResponseQueue
     protected function writeToFileSystem(Response $response, Company $company): string
     {
         $fileName = date('Y-m-d_H-i-s').'_'.$response->getNextPageStart().'-'.$company->entity_id.'.log';
-        $path = $this->path.'/'.$fileName;
-        Storage::disk($this->fileSystem)->put($path, $response->recordAsJson());
+        $path = $this->getRelativePath().'/'.$company->entity_id.'/'.$fileName;
+        Storage::disk($this->fileSystem)->put($path, $response->asJson());
         return $path;
     }
 }

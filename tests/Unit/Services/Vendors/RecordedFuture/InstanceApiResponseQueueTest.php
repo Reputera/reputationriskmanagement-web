@@ -30,9 +30,17 @@ class InstanceApiResponseQueueTest extends \TestCase
         $this->responseQueue = new InstanceApiResponseQueue($this->mockedApi);
     }
 
+    public function testPathIsRelativeToStoragePath()
+    {
+        $this->assertEquals('RecordedFuture-responses', $this->responseQueue->getRelativePath());
+    }
+
     public function testPathIsLocalStoragePath()
     {
-        $this->assertEquals('RecordedFuture-responses', $this->responseQueue->getPath());
+        $this->assertEquals(
+            storage_path('app/'.$this->responseQueue->getRelativePath()),
+            $this->responseQueue->getFullPath()
+        );
     }
 
     public function testProcessHourly()
@@ -63,7 +71,7 @@ class InstanceApiResponseQueueTest extends \TestCase
         $firstResponse->shouldReceive([
                 'countOfReferences' => 10,
                 'getNextPageStart' => $this->mockedNextStartPageString,
-                'recordAsJson' => 123
+                'asJson' => 123
             ])
             ->withNoArgs()
             ->once();
@@ -89,7 +97,8 @@ class InstanceApiResponseQueueTest extends \TestCase
             ->andReturnSelf();
 
         Storage::shouldReceive('put')
-            ->with('/'.$this->responseQueue->getPath().'\/[0-9]{4}-[0-9]{2}-[0-9]{2}_[0-9]{2}-[0-9]{2}-[0-9]{2}_'.
+            ->with('/^'.$this->responseQueue->getRelativePath().'\/'.$company->entity_id.
+                '\/[0-9]{4}-[0-9]{2}-[0-9]{2}_[0-9]{2}-[0-9]{2}-[0-9]{2}_'.
                 $this->mockedNextStartPageString.'-'.$company->entity_id.'.log/', '123')
             ->once()
             ->andReturnSelf();
