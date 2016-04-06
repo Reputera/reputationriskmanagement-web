@@ -5,15 +5,17 @@ app.controller('InstanceQueryController', ['$scope', '$http', 'toastr', 'helpers
     $scope.selectedVector = {};
     $scope.selectedRegion = {};
     $scope.hideFlagged = 0;
+    $scope.csvUrl = '';
 
     $scope.vectors = vectors;
     $scope.companies = companies;
+    $scope.regions = regions;
 
     $scope.getParameters  = function() {
         return {
-            companies_name: $scope.selectedCompany.name,
-            vectors_name: $scope.selectedVector.name,
-            regions_name: $scope.selectedRegion.name,
+            companies_name: $scope.selectedCompany ? $scope.selectedCompany.name : '',
+            vectors_name: $scope.selectedVector ? $scope.selectedVector.name : '',
+            regions_name: $scope.selectedRegion ? $scope.selectedRegion.name : '',
             hideFlagged: $scope.hideFlagged,
             fragment: $scope.fragment,
             start_datetime: $("#start_datetime").val(),
@@ -34,6 +36,7 @@ app.controller('InstanceQueryController', ['$scope', '$http', 'toastr', 'helpers
                 params.total($scope.instances.meta.pagination.total);
                 params.page($scope.instances.meta.pagination.current_page);
                 $defer.resolve($scope.instances.data);
+                $scope.csvUrl = '/instanceCsv?'+$.param($scope.getParameters());
                 return $scope.instances.data;
             });
         }
