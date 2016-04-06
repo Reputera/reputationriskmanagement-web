@@ -4,6 +4,7 @@ namespace App\Console;
 
 use App\Console\Commands\RecordedFuture\Instances\RetrieveInstanceResponsesDaily;
 use App\Console\Commands\RecordedFuture\Instances\RetrieveInstanceResponsesHourly;
+use App\Console\Commands\RecordedFuture\Instances\QueueProcessor;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -16,7 +17,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         RetrieveInstanceResponsesDaily::class,
-        RetrieveInstanceResponsesHourly::class
+        RetrieveInstanceResponsesHourly::class,
+        QueueProcessor::class
     ];
 
     /**
