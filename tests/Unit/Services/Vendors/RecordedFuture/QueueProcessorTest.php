@@ -7,6 +7,7 @@ use App\Services\Vendors\RecordedFuture\Api\Instance;
 use App\Services\Vendors\RecordedFuture\QueueProcessor;
 use App\Services\Vendors\RecordedFuture\InstanceApiResponseQueue;
 use App\Services\Vendors\RecordedFuture\Repository;
+use org\bovigo\vfs\vfsStream;
 use Symfony\Component\Finder\SplFileInfo;
 use Tests\StubData\RecordedFuture\SingleInstance;
 
@@ -30,28 +31,39 @@ class QueueProcessorTest extends \TestCase
         $this->mockedFile = \Mockery::mock(SplFileInfo::class);
         $this->mockedInstanceRepo  = \Mockery::mock(Repository::class);
         $this->queueProcessor =  new QueueProcessor($this->mockedInstanceRepo);
+        $this->storageFolder = vfsStream::setup(InstanceApiResponseQueue::getFullPath());
     }
 
     public function testProcessingWhenFilesExist()
     {
         $company = factory(Company::class)->create();
 
-        $returnArrayOfFiles = [
-            $this->setupFileMockForCompany($company),
-            $this->setupFileMockForCompany($company)
-        ];
+        $companyDir = vfsStream::newDirectory($company->entity_id)->at($this->storageFolder);
+
+        vfsStream::newFile('logfile1.log')->at($companyDir)
+            ->setContent(SingleInstance::get([], true));
+        vfsStream::newFile('logfile2.log')->at($companyDir)
+            ->setContent(SingleInstance::get([], true));
+
+        $allFiles = \File::allFiles(vfsStream::url($this->storageFolder->path()));
 
         $this->mockedInstanceRepo
             ->shouldReceive('saveInstanceForCompany')
-            ->times(count($returnArrayOfFiles))
+            ->times(2)
             ->with(\Mockery::type(Instance::class), \Mockery::type(Company::class));
 
         \File::shouldReceive('allFiles')
             ->once()
             ->with(InstanceApiResponseQueue::getFullPath())
-            ->andReturn($returnArrayOfFiles);
+            ->andReturn($allFiles);
 
-        $this->assertEquals([$company->name.'file1', $company->name.'file2'], $this->queueProcessor->process());
+        $this->assertTrue($companyDir->hasChild('logfile1.log'));
+        $this->assertTrue($companyDir->hasChild('logfile2.log'));
+
+        $this->assertEquals(['logfile1.log', 'logfile2.log'], $this->queueProcessor->process());
+
+        $this->assertFalse($companyDir->hasChild('logfile1.log'));
+        $this->assertFalse($companyDir->hasChild('logfile2.log'));
     }
 
     public function testProcessingWhenNoFilesExist()
@@ -77,50 +89,42 @@ class QueueProcessorTest extends \TestCase
     public function testProcessingFilesForDifferentCompanies()
     {
         $company1 = factory(Company::class)->create();
-        $company2 = factory(Company::class)->create();
-        $company3 = factory(Company::class)->create();
-        $returnArrayOfFiles = [
-            $this->setupFileMockForCompany($company1),
-            $this->setupFileMockForCompany($company2),
-            $this->setupFileMockForCompany($company3),
-        ];
+        $company1Dir = vfsStream::newDirectory($company1->entity_id)->at($this->storageFolder);
+        vfsStream::newFile('Company1logfile.log')->at($company1Dir)
+            ->setContent(SingleInstance::get([], true));
 
+        $company2 = factory(Company::class)->create();
+        $company2Dir = vfsStream::newDirectory($company2->entity_id)->at($this->storageFolder);
+        vfsStream::newFile('Company2logfile.log')->at($company2Dir)
+            ->setContent(SingleInstance::get([], true));
+
+        $company3 = factory(Company::class)->create();
+        $company3Dir = vfsStream::newDirectory($company3->entity_id)->at($this->storageFolder);
+        vfsStream::newFile('Company3logfile.log')->at($company3Dir)
+            ->setContent(SingleInstance::get([], true));
+
+        $allFiles = \File::allFiles(vfsStream::url($this->storageFolder->path()));
         $this->mockedInstanceRepo
             ->shouldReceive('saveInstanceForCompany')
-            ->times(count($returnArrayOfFiles))
+            ->times(count($allFiles))
             ->with(\Mockery::type(Instance::class), \Mockery::type(Company::class));
 
         \File::shouldReceive('allFiles')
             ->once()
             ->with(InstanceApiResponseQueue::getFullPath())
-            ->andReturn($returnArrayOfFiles);
+            ->andReturn($allFiles);
+
+        $this->assertTrue($company1Dir->hasChild('Company1logfile.log'));
+        $this->assertTrue($company2Dir->hasChild('Company2logfile.log'));
+        $this->assertTrue($company3Dir->hasChild('Company3logfile.log'));
 
         $this->assertEquals(
-            [$company1->name.'file1', $company2->name.'file1', $company3->name.'file1'],
+            ['Company1logfile.log', 'Company2logfile.log', 'Company3logfile.log'],
             $this->queueProcessor->process()
         );
-    }
 
-    protected function setupFileMockForCompany(Company $company)
-    {
-        $this->companyCounterArray[$company->name][] = $company->name;
-
-        $file = $this->mockedFile;
-        $file->shouldReceive('getRelativePath')
-            ->once()
-            ->withNoArgs()
-            ->andReturn($company->entity_id);
-
-        $file->shouldReceive('getContents')
-            ->once()
-            ->withNoArgs()
-            ->andReturn(SingleInstance::get([], true));
-
-        $file->shouldReceive('getFilename')
-            ->once()
-            ->withNoArgs()
-            ->andReturn($company->name.'file'.count($this->companyCounterArray[$company->name]));
-
-        return $file;
+        $this->assertFalse($company1Dir->hasChild('Company1logfile.log'));
+        $this->assertFalse($company2Dir->hasChild('Company2logfile.log'));
+        $this->assertFalse($company3Dir->hasChild('Company3logfile.log'));
     }
 }

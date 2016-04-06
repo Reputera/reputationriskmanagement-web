@@ -22,11 +22,12 @@ class QueueProcessor
     }
 
     /**
-     * Process all the instance responses for each company
+     * Process all the instance responses for each company.
      *
-     * @return array $filesProcessed
+     * @param bool $deleteProcessedFiles
+     * @return array
      */
-    public function process()
+    public function process(bool $deleteProcessedFiles = true)
     {
         $filesProcessed = [];
         foreach (File::allFiles(InstanceApiResponseQueue::getFullPath()) as $queuedResponseFile) {
@@ -38,6 +39,9 @@ class QueueProcessor
                 $filesProcessed[] = $queuedResponseFile->getFilename();
                 foreach ($response->getInstances() as $instance) {
                     $this->recordedFutureRepo->saveInstanceForCompany($instance, $company);
+                }
+                if ($deleteProcessedFiles) {
+                    unlink($queuedResponseFile);
                 }
             }
         }
