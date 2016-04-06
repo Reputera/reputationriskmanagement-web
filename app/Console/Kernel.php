@@ -29,7 +29,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-         $schedule->command('recorded-future:populate-instances-hourly')
-                  ->hourly();
+        $schedule->command('recorded-future:queue-instances-hourly')
+            ->hourly();
+
+        $schedule->command('recorded-future:process-instance-queue')
+            ->everyThirtyMinutes();
     }
 }
