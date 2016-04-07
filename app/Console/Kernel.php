@@ -5,6 +5,7 @@ namespace App\Console;
 use App\Console\Commands\RecordedFuture\Instances\RetrieveInstanceResponsesDaily;
 use App\Console\Commands\RecordedFuture\Instances\RetrieveInstanceResponsesHourly;
 use App\Console\Commands\RecordedFuture\Instances\QueueProcessor;
+use App\Console\Commands\SystemCleanup\Instance as SystemCleanupInstance;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -18,7 +19,8 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         RetrieveInstanceResponsesDaily::class,
         RetrieveInstanceResponsesHourly::class,
-        QueueProcessor::class
+        QueueProcessor::class,
+        SystemCleanupInstance::class
     ];
 
     /**
@@ -29,6 +31,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $schedule->command('system-cleanup:instances')
+            ->dailyAt('00:00')
+            ->after(function () {
+                \Log::info('Command system-cleanup:instances ran');
+            });
+
         $schedule->command('recorded-future:queue-instances-hourly', ['--hours' => 1])
             ->hourly()
             ->after(function () {
