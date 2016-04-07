@@ -7,6 +7,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('create-user', 'Users\UserController@store')->name('user.store');
 
     Route::group(['middleware' => ['auth']], function () {
+        Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+
         Route::get('/', function () {
             return view('layouts.default');
         })->name('admin.landing');
