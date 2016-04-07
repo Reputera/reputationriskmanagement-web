@@ -30,9 +30,15 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('recorded-future:queue-instances-hourly')
-            ->hourly();
+            ->hourly()
+            ->after(function () {
+                \Log::info('Command recorded-future:queue-instances-hourly ran');
+            });
 
         $schedule->command('recorded-future:process-instance-queue')
-            ->everyThirtyMinutes();
+            ->everyThirtyMinutes()
+            ->after(function () {
+                \Log::info('Command recorded-future:process-instance-queue ran');
+            });
     }
 }
