@@ -29,7 +29,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('recorded-future:queue-instances-hourly')
+        $schedule->command('recorded-future:queue-instances-hourly', ['--hours' => 1])
             ->hourly()
             ->after(function () {
                 \Log::info('Command recorded-future:queue-instances-hourly ran');
