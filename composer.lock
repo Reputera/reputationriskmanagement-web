@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "25f260abd3c22e35b0c7c5bb9e90c0ea",
-    "content-hash": "1c28a87e7075a74d0cb1d5fb4b398719",
+    "hash": "6aebcd2840240eb2a5c7fcfeaaea3be5",
+    "content-hash": "729d9f9a00653a6a1592a785f74fd9be",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.17.3",
+            "version": "3.17.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "4d70cbe397c03e84907e10436358f627aab428e6"
+                "reference": "9899865dda8e388a6f9aa7425af50730eabf5ffd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/4d70cbe397c03e84907e10436358f627aab428e6",
-                "reference": "4d70cbe397c03e84907e10436358f627aab428e6",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/9899865dda8e388a6f9aa7425af50730eabf5ffd",
+                "reference": "9899865dda8e388a6f9aa7425af50730eabf5ffd",
                 "shasum": ""
             },
             "require": {
@@ -85,7 +85,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-03-29 22:53:44"
+            "time": "2016-04-06 00:39:52"
         },
         {
             "name": "classpreloader/classpreloader",
@@ -870,6 +870,53 @@
             "time": "2016-03-14 21:54:11"
         },
         {
+            "name": "league/flysystem-aws-s3-v3",
+            "version": "1.0.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/flysystem-aws-s3-v3.git",
+                "reference": "595e24678bf78f8107ebc9355d8376ae0eb712c6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-aws-s3-v3/zipball/595e24678bf78f8107ebc9355d8376ae0eb712c6",
+                "reference": "595e24678bf78f8107ebc9355d8376ae0eb712c6",
+                "shasum": ""
+            },
+            "require": {
+                "aws/aws-sdk-php": "^3.0.0",
+                "league/flysystem": "~1.0",
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "henrikbjorn/phpspec-code-coverage": "~1.0.1",
+                "phpspec/phpspec": "^2.0.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\Flysystem\\AwsS3v3\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Frank de Jonge",
+                    "email": "info@frenky.net"
+                }
+            ],
+            "description": "Flysystem adapter for the AWS S3 SDK v3.x",
+            "time": "2015-11-19 08:44:16"
+        },
+        {
             "name": "league/fractal",
             "version": "0.13.0",
             "source": {
@@ -931,52 +978,6 @@
                 "rest"
             ],
             "time": "2015-10-07 14:48:58"
-        },
-        {
-            "name": "mikey179/vfsStream",
-            "version": "v1.6.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/mikey179/vfsStream.git",
-                "reference": "fefd182fa739d4e23d9dc7c80d3344f528d600ab"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/mikey179/vfsStream/zipball/fefd182fa739d4e23d9dc7c80d3344f528d600ab",
-                "reference": "fefd182fa739d4e23d9dc7c80d3344f528d600ab",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.5"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.6.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "org\\bovigo\\vfs\\": "src/main/php"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Frank Kleine",
-                    "homepage": "http://frankkleine.de/",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Virtual file system to mock the real file system in unit tests.",
-            "homepage": "http://vfs.bovigo.org/",
-            "time": "2016-01-13 09:41:49"
         },
         {
             "name": "monolog/monolog",
@@ -3222,17 +3223,63 @@
             "time": "2016-01-20 08:20:44"
         },
         {
+            "name": "mikey179/vfsStream",
+            "version": "v1.6.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mikey179/vfsStream.git",
+                "reference": "fefd182fa739d4e23d9dc7c80d3344f528d600ab"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mikey179/vfsStream/zipball/fefd182fa739d4e23d9dc7c80d3344f528d600ab",
+                "reference": "fefd182fa739d4e23d9dc7c80d3344f528d600ab",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.6.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "org\\bovigo\\vfs\\": "src/main/php"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Frank Kleine",
+                    "homepage": "http://frankkleine.de/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Virtual file system to mock the real file system in unit tests.",
+            "homepage": "http://vfs.bovigo.org/",
+            "time": "2016-01-13 09:41:49"
+        },
+        {
             "name": "mockery/mockery",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/padraic/mockery.git",
-                "reference": "f9c911059ec3d9216758fbaa6b8983a71e07a64e"
+                "reference": "35c679e3a91a7cfcb289d6cf7779da3bb84d01e3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/padraic/mockery/zipball/eeeb37c8885a308b57db1362e430d2e5089776f4",
-                "reference": "f9c911059ec3d9216758fbaa6b8983a71e07a64e",
+                "url": "https://api.github.com/repos/padraic/mockery/zipball/35c679e3a91a7cfcb289d6cf7779da3bb84d01e3",
+                "reference": "35c679e3a91a7cfcb289d6cf7779da3bb84d01e3",
                 "shasum": ""
             },
             "require": {
@@ -3284,7 +3331,7 @@
                 "test double",
                 "testing"
             ],
-            "time": "2016-04-01 13:59:40"
+            "time": "2016-04-07 08:04:19"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
