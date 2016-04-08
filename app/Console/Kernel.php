@@ -32,21 +32,12 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('system-cleanup:instances')
-            ->dailyAt('00:00')
-            ->after(function () {
-                \Log::info('Command system-cleanup:instances ran');
-            });
+            ->dailyAt('00:00');
 
         $schedule->command('recorded-future:queue-instances-hourly', ['--hours' => 1])
-            ->hourly()
-            ->after(function () {
-                \Log::info('Command recorded-future:queue-instances-hourly ran');
-            });
+            ->hourly();
 
         $schedule->command('recorded-future:process-instance-queue')
-            ->everyThirtyMinutes()
-            ->after(function () {
-                \Log::info('Command recorded-future:process-instance-queue ran');
-            });
+            ->everyThirtyMinutes();
     }
 }
