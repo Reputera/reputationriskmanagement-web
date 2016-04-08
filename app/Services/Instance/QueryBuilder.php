@@ -2,7 +2,6 @@
 
 namespace App\Services\Instance;
 
-
 use App\Entities\Instance;
 use App\Http\Pipelines\Query\SortingPipeline;
 use App\Http\Requests\Request;
