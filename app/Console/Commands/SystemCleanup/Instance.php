@@ -59,8 +59,8 @@ class Instance extends Command
     protected function getLocalPath()
     {
         $localStoragePath = storage_path('temp_instance_backups');
-        if (!\Storage::disk('local')->isDirectory($localStoragePath)) {
-            \Storage::disk('local')->makeDirectory($localStoragePath);
+        if (!\File::isDirectory($localStoragePath)) {
+            \File::makeDirectory($localStoragePath);
         }
 
         return $localStoragePath;
@@ -90,7 +90,7 @@ class Instance extends Command
 
         \Storage::disk('s3')->put(
             $remoteStoragePath.'/'.$instanceCountriesFileName,
-            \Storage::disk('local')->get($localStoragePath.'/'.$instanceCountriesFileName)
+            \File::get($localStoragePath.'/'.$instanceCountriesFileName)
         );
 
         $instanceFileName = 'instances-backup-'.$dateToday->toDateString().'.sql';
@@ -100,10 +100,10 @@ class Instance extends Command
 
         \Storage::disk('s3')->put(
             $remoteStoragePath.'/'.$instanceFileName,
-            \Storage::disk('local')->get($localStoragePath.'/'.$instanceFileName)
+            \File::get($localStoragePath.'/'.$instanceFileName)
         );
 
-        \Storage::disk('local')->delete([$localStoragePath.'/'.$instanceCountriesFileName, $localStoragePath.'/'.$instanceFileName]);
+        \File::deleteDirectory($localStoragePath);
     }
 
     protected function deleteRecords($dateLastYear)
