@@ -87,13 +87,14 @@ class Instance extends Model
     public function getRegions()
     {
         $regions = [];
-        foreach($this->countries as $country) {
+        foreach ($this->countries as $country) {
             $regions[] = $country->region->name;
         }
         return array_unique($regions);
     }
 
-    public function setFlagged(bool $flagged) {
+    public function setFlagged(bool $flagged)
+    {
         $this->flagged = $flagged;
         return $this;
     }
