@@ -35,7 +35,7 @@ class InstanceApiResponseQueue
      */
     public static function getFullPath()
     {
-        return storage_path('app/'.self::$path);
+        return \Config::get('filesystems.disks.local.root').'/'.self::$path;
     }
 
     public static function getRelativePath()

@@ -38,7 +38,7 @@ class InstanceApiResponseQueueTest extends \TestCase
     public function testPathIsLocalStoragePath()
     {
         $this->assertEquals(
-            storage_path('app/'.$this->responseQueue->getRelativePath()),
+            \Config::get('filesystems.disks.local.root').'/'.$this->responseQueue->getRelativePath(),
             $this->responseQueue->getFullPath()
         );
     }
