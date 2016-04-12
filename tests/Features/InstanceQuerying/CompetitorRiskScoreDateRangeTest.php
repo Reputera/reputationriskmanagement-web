@@ -35,20 +35,20 @@ class CompetitorRiskScoreDateRangeTest extends \TestCase
         $this->assertEquals(5, json_decode($this->response->getContent(), true)['data']['average_competitor_risk_score']);
     }
 
-    public function testAverageCompetitorRiskScoreForSixtyDaysBackFromToday()
+    public function testAverageCompetitorRiskScoreForThirtyDaysBackFromToday()
     {
         /** @var Company $company */
         $company = factory(Company::class)->create();
 
         $now = Carbon::now();
         $this->createCompetitorWithInstanceScoreAndDateTimeForCompany(6, $company, $now->toDateTimeString());
-        $this->createCompetitorWithInstanceScoreAndDateTimeForCompany(25, $company, $now->subDays(60)->toDateTimeString());
+        $this->createCompetitorWithInstanceScoreAndDateTimeForCompany(25, $company, $now->subDays(30)->toDateTimeString());
         $this->createCompetitorWithInstanceScoreAndDateTimeForCompany(31, $company, $now->subYear(1)->toDateTimeString());
 
         $this->beLoggedInAsAdmin();
         $this->apiCall('GET', 'competitors-average-risk-score', [
             'company_name' => $company->name,
-            'lastDays' => 60
+            'lastDays' => 30
         ]);
 
         $this->assertJsonResponseOkAndFormattedProperly();
