@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Instance;
 
 use App\Entities\Company;
 use App\Entities\Region;
-use App\Entities\User;
 use App\Entities\Vector;
 use App\Http\Controllers\ApiController;
 
