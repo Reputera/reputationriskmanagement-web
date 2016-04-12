@@ -2,7 +2,7 @@
 
 namespace App\Entities;
 
-
+use App\Http\Queries\Instance as InstanceQuery;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -26,6 +26,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $negative_risk_score
  * @property float $positive_sentiment
  * @property float $negative_sentiment
+ * @property boolean $flagged
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property-read \App\Entities\Company $company
@@ -49,8 +50,11 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Instance whereNegativeRiskScore($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Instance wherePositiveSentiment($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Instance whereNegativeSentiment($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Instance whereFlagged($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Instance whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Instance whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Instance competitorRiskScoreForCompany($company)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Instance filter($filter)
  * @mixin \Eloquent
  */
 class Instance extends Model
@@ -97,5 +101,28 @@ class Instance extends Model
     {
         $this->flagged = $flagged;
         return $this;
+    }
+
+    public static function scopeCompetitorRiskScoreForCompany($builder, Company $company)
+    {
+        $builder->select(\DB::raw('sum(risk_score) / COUNT(instances.id) as company_risk_scores'))
+            ->whereIn('instances.company_id', function ($query) use ($company) {
+                $query->select('competitor_company_id')
+                    ->from($company->competitors()->getTable())
+                    ->where('company_id', $company->id);
+            })
+            ->groupBy('instances.company_id');
+
+        return $builder;
+    }
+
+    /**
+     * @param $builder
+     * @param InstanceQuery $filter
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeFilter($builder, InstanceQuery $filter)
+    {
+        return $filter->apply($builder);
     }
 }
