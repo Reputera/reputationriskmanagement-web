@@ -17,6 +17,7 @@ class InstanceTransformerTest extends \TestCase
         $instance->countries()->attach($countries);
 
         $expectedResults = [
+            'id' => $instance->id,
             'title' => $instance->title,
             'company' => $instance->company->name,
             'vector' => $instance->vector->name,
@@ -27,9 +28,10 @@ class InstanceTransformerTest extends \TestCase
             'fragment' => $instance->fragment,
             'link' => $instance->link,
             'regions' => $countries[0]->region->name . ', ' . $countries[1]->region->name,
-            'positive_sentiment' => (int)($instance->positive_sentiment * 100),
-            'negative_sentiment' => (int)($instance->negative_sentiment * -100),
-            'sentiment_score' => (int)($instance->sentiment * 100)
+            'positive_risk_score' => $instance->positive_risk_score,
+            'negative_risk_score' => $instance->negative_risk_score,
+            'risk_score' => $instance->risk_score,
+            'flagged' => (bool)$instance->flagged
         ];
 
         $transformedData = (new InstanceTransformer())->transform($instance);
