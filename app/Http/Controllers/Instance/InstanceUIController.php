@@ -9,7 +9,6 @@ use App\Http\Controllers\ApiController;
 
 class InstanceUIController extends ApiController
 {
-
     public function index()
     {
         \JavaScript::put([
@@ -24,9 +23,8 @@ class InstanceUIController extends ApiController
     {
         \JavaScript::put([
             'vectors' => Vector::all(),
-            'competitors' => (auth()->user()->company) ? auth()->user()->company->competitors : [],
-            'regions' => Region::all()
+            'companies' => Company::all()
         ]);
-        return view('instance.sentimentQuery');
+        return view('instance.companyCompetitorsRiskScore');
     }
 }
