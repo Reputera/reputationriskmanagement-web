@@ -2,6 +2,8 @@
 
 namespace App\Entities;
 
+use App\Http\Queries\Instance as InstanceQuery;
+use App\Http\QueryFilter;
 use App\Services\Vendors\RecordedFuture\InstanceApiResponseQueue;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,7 +15,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $name
  * @property string $stock_symbol
  * @property string $entity_id
- * @property integer $industry_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property \Carbon\Carbon $deleted_at
@@ -21,13 +22,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Entities\Company[] $competitors
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Company whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Company whereName($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Company whereStockSymbol($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Company whereEntityId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Company whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Company whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Company whereDeletedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Entities\Company whereStockSymbol($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Entities\Company whereEntityId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Entities\Company whereIndustryId($value)
- * @method static \App\Entities\Company find($id)
  * @mixin \Eloquent
  */
 class Company extends Model
@@ -73,5 +72,20 @@ class Company extends Model
     public function queueInstancesDaily(int $days = 1)
     {
         app(InstanceApiResponseQueue::class)->processDaily($this, $days);
+    }
+
+    /**
+     * @param InstanceQuery $filter
+     * @return int
+     */
+    public function competitorsAverageRiskScore(InstanceQuery $filter): int
+    {
+        $builder = app(Instance::class)->filter($filter)->competitorRiskScoreForCompany($this);
+        
+        if ($averageRiskScores = $builder->pluck('company_risk_scores')->toArray()) {
+            return (int) round(array_sum($averageRiskScores) / count($averageRiskScores));
+        }
+
+        return 0;
     }
 }
