@@ -6,6 +6,7 @@ use App\Entities\Company;
 use App\Http\Controllers\Controller;
 use App\Http\Queries\Instance as InstanceQuery;
 use App\Http\Requests\Instance\InstanceQueryRequest;
+use App\Http\Requests\Instance\RiskScoreRequest;
 use App\Http\Traits\PaginationTrait;
 use App\Services\Instance\QueryBuilder;
 use App\Transformers\Instance\InstanceTransformer;
@@ -62,37 +63,30 @@ class QueryController extends Controller
     }
 
     /**
-     * @api {get} /riskScore/ Return the risk score for a company within a datetime range
+     * @api {get} /competitors-average-risk-score Return the risk score for a company.
      * @apiName RiskScore
-     * @apiDescription Return the risk score for a company within a datetime range
+     * @apiDescription Return the risk score for a company.
      * @apiGroup Instances
      */
     /**
-     * @param InstanceQueryRequest $request
-     * @param QueryBuilder $queryBuilder
+     * @param RiskScoreRequest $request
+     * @param InstanceQuery $query
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getRiskScore(InstanceQueryRequest $request, QueryBuilder $queryBuilder)
+    public function competitorsAverageRiskScore(RiskScoreRequest $request, InstanceQuery $query)
     {
-        $resultCollection = $queryBuilder->queryInstances($request, $request->getForQuery([
-            'vectors_name', 'companies_name', 'regions_name', 'hideFlagged', 'fragment'
-        ]))->get();
-        $resultCount = $resultCollection->count();
-        return $this->respondWithArray([
-            'risk_score' => $resultCount ? (int)($resultCollection->sum('risk_score') / $resultCount) : 0
-        ]);
-    }
+        $companyRiskScore = '';
+        $competitorRiskScore = '';
 
-    public function competitorsAverageRiskScore(Request $request, InstanceQuery $query)
-    {
-        $score = '';
         /** @var Company $company */
         if ($company = Company::whereName($request->get('company_name'))->first()) {
-            $score = $company->competitorsAverageRiskScore($query);
+            $companyRiskScore = $company->averageRiskScore($query);
+            $competitorRiskScore = $company->competitorsAverageRiskScore($query);
         }
 
         return $this->respondWithArray([
-            'average_competitor_risk_score' => $score
+            'company_risk_score' => $companyRiskScore,
+            'average_competitor_risk_score' => $competitorRiskScore
         ]);
     }
 }
