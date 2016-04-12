@@ -103,6 +103,15 @@ class Instance extends Model
         return $this;
     }
 
+    public static function scopeCompanyRiskScore($builder, Company $company)
+    {
+        $builder->select(\DB::raw('sum(risk_score) / COUNT(instances.id) as company_risk_scores'))
+            ->where('instances.company_id', $company->id)
+            ->groupBy('instances.company_id');
+
+        return $builder;
+    }
+
     public static function scopeCompetitorRiskScoreForCompany($builder, Company $company)
     {
         $builder->select(\DB::raw('sum(risk_score) / COUNT(instances.id) as company_risk_scores'))

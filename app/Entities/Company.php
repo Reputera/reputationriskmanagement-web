@@ -78,6 +78,21 @@ class Company extends Model
      * @param InstanceQuery $filter
      * @return int
      */
+    public function averageRiskScore(InstanceQuery $filter): int
+    {
+        $builder = app(Instance::class)->filter($filter)->companyRiskScore($this);
+
+        if ($averageRiskScores = $builder->pluck('company_risk_scores')->toArray()) {
+            return (int) round(array_sum($averageRiskScores) / count($averageRiskScores));
+        }
+
+        return 0;
+    }
+
+    /**
+     * @param InstanceQuery $filter
+     * @return int
+     */
     public function competitorsAverageRiskScore(InstanceQuery $filter): int
     {
         $builder = app(Instance::class)->filter($filter)->competitorRiskScoreForCompany($this);
