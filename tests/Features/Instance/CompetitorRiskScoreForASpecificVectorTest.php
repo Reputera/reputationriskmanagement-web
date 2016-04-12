@@ -1,10 +1,11 @@
 <?php
 
-namespace Tests\Features\InstanceQuerying;
+namespace Tests\Features\Instance;
 
 use App\Entities\Company;
 use App\Entities\Instance;
 use App\Entities\Vector;
+use Carbon\Carbon;
 
 class CompetitorRiskScoreForASpecificVectorTest extends \TestCase
 {
@@ -23,6 +24,7 @@ class CompetitorRiskScoreForASpecificVectorTest extends \TestCase
         $this->beLoggedInAsAdmin();
         $this->apiCall('GET', 'competitors-average-risk-score', [
             'company_name' => $company->name,
+            'lastDays' => 7,
             'vector' => $vectorToTest->id
         ]);
 
@@ -40,6 +42,7 @@ class CompetitorRiskScoreForASpecificVectorTest extends \TestCase
         $company->competitors()->attach($companyCompetitor->id);
         factory(Instance::class)->create([
             'risk_score' => $score,
+            'start' => Carbon::now()->subDay(1)->toDateTimeString(),
             'company_id' => $companyCompetitor->id,
             'vector_id' => $vector->id
         ]);

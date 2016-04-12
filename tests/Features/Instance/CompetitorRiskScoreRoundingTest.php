@@ -4,6 +4,7 @@ namespace Tests\Features\Instance;
 
 use App\Entities\Company;
 use App\Entities\Instance;
+use Carbon\Carbon;
 
 class CompetitorRiskScoreRoundingTest extends \TestCase
 {
@@ -19,6 +20,7 @@ class CompetitorRiskScoreRoundingTest extends \TestCase
         $this->beLoggedInAsAdmin();
         $this->apiCall('GET', 'competitors-average-risk-score', [
             'company_name' => $company->name,
+            'lastDays' => 7,
         ]);
 
         $this->assertJsonResponseOkAndFormattedProperly();
@@ -41,6 +43,7 @@ class CompetitorRiskScoreRoundingTest extends \TestCase
         $this->beLoggedInAsAdmin();
         $this->apiCall('GET', 'competitors-average-risk-score', [
             'company_name' => $company->name,
+            'lastDays' => 7,
         ]);
 
         $this->assertJsonResponseOkAndFormattedProperly();
@@ -55,6 +58,10 @@ class CompetitorRiskScoreRoundingTest extends \TestCase
     {
         $companyCompetitor = factory(Company::class)->create();
         $company->competitors()->attach($companyCompetitor->id);
-        factory(Instance::class)->create(['risk_score' => $score, 'company_id' => $companyCompetitor->id]);
+        factory(Instance::class)->create([
+            'start' => Carbon::now()->subDay(1)->toDateTimeString(),
+            'risk_score' => $score,
+            'company_id' => $companyCompetitor->id
+        ]);
     }
 }
