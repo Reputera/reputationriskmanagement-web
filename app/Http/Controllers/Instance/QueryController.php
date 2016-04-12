@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Instance;
 
+use App\Entities\Company;
 use App\Http\Controllers\Controller;
+use App\Http\Queries\Instance as InstanceQuery;
 use App\Http\Requests\Instance\InstanceQueryRequest;
-use App\Http\Requests\Instance\RiskScoreRequest;
-use App\Http\Requests\Request;
+use App\Http\Traits\PaginationTrait;
 use App\Services\Instance\QueryBuilder;
 use App\Transformers\Instance\InstanceTransformer;
+use Illuminate\Http\Request;
 use League\Csv\Writer;
-use App\Http\Traits\PaginationTrait;
 
 class QueryController extends Controller
 {
@@ -79,6 +80,19 @@ class QueryController extends Controller
         $resultCount = $resultCollection->count();
         return $this->respondWithArray([
             'risk_score' => $resultCount ? (int)($resultCollection->sum('risk_score') / $resultCount) : 0
+        ]);
+    }
+
+    public function competitorsAverageRiskScore(Request $request, InstanceQuery $query)
+    {
+        $score = '';
+        /** @var Company $company */
+        if ($company = Company::whereName($request->get('company_name'))->first()) {
+            $score = $company->competitorsAverageRiskScore($query);
+        }
+
+        return $this->respondWithArray([
+            'average_competitor_risk_score' => $score
         ]);
     }
 }
