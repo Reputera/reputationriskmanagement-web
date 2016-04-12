@@ -47,7 +47,8 @@ trait PaginationTrait
         return $this->paginationLimit;
     }
 
-    public function paginateBuilder($builder, Request $request) {
+    public function paginateBuilder($builder, Request $request)
+    {
         $paginator = $builder->paginate(
             $request->input('count', $this->paginationLimit),
             ['*'],
@@ -55,7 +56,7 @@ trait PaginationTrait
             $request->input('page')
         );
 //        This check needs to be done, so if a user selects a page outside range, page resets to 0.
-        if(($paginator->currentPage() - 1) * $paginator->perPage() > $paginator->total()) {
+        if (($paginator->currentPage() - 1) * $paginator->perPage() > $paginator->total()) {
             return $builder->paginate(
                 $request->input('count', $this->paginationLimit),
                 ['*'],
