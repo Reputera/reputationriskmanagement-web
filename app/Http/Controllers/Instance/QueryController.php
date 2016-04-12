@@ -47,6 +47,22 @@ class QueryController extends Controller
     /**
      * @param InstanceQueryRequest $request
      * @param QueryBuilder $queryBuilder
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getRiskScore(InstanceQueryRequest $request, QueryBuilder $queryBuilder)
+    {
+        $resultCollection = $queryBuilder->queryInstances($request, $request->getForQuery([
+            'vectors_name', 'companies_name', 'regions_name', 'hideFlagged', 'fragment'
+        ]))->get();
+        $resultCount = $resultCollection->count();
+        return $this->respondWithArray([
+            'risk_score' => $resultCount ? (int)($resultCollection->sum('risk_score') / $resultCount) : 0
+        ]);
+    }
+
+    /**
+     * @param InstanceQueryRequest $request
+     * @param QueryBuilder $queryBuilder
      */
     public function getInstancesCsv(InstanceQueryRequest $request, QueryBuilder $queryBuilder)
     {
