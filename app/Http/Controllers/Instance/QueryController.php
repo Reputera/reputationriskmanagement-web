@@ -15,7 +15,6 @@ use League\Csv\Writer;
 
 class QueryController extends Controller
 {
-
     use PaginationTrait;
 
     /**
