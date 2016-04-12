@@ -11,5 +11,11 @@
     "restangular": "1.5.*",
     "angular-toastr": "1.6.*",
     "underscore": "1.8.*"
+  },
+  "apidoc": {
+    "title": "RRM: API",
+    "url": "/api",
+    "description": "Welcome to the RRM API documentation page.",
+    "name": "RRM: API Documentation"
   }
 }
