@@ -13,20 +13,19 @@ Route::group(['middleware' => ['web']], function () {
             return view('layouts.default');
         })->name('admin.landing');
 
-        Route::get('instance', 'Instance\QueryController@getInstances')->name('instance.get');
-        Route::get('riskScore', 'Instance\QueryController@getRiskScore')->name('instance.getRiskScore');
-        Route::get('instanceCsv', 'Instance\QueryController@getInstancesCsv')->name('instance.getCsv');
-        Route::get('instanceQuery', 'Instance\InstanceUIController@index')->name('instance.index');
-        Route::get('sentimentQuery', 'Instance\InstanceUIController@sentimentIndex')->name('instance.sentiment.index');
-        Route::post('flagInstance', 'Instance\InstanceController@flag')->name('instance.flag');
-
-        Route::post('addCompetitor', 'Company\CompanyController@addCompetitor')->name('instance.addCompetitor');
-        Route::post('removeCompetitor', 'Company\CompanyController@removeCompetitor')->name('instance.removeCompetitor');
-
-
         Route::group(['middleware' => ['adminAccess']], function () {
             Route::get('create-user', 'Users\AdminUserController@get')->name('adminUser.get');
             Route::post('create-user', 'Users\AdminUserController@store')->name('adminUser.store');
+
+            Route::get('instance', 'Instance\QueryController@getInstances')->name('instance.get');
+            Route::get('riskScore', 'Instance\QueryController@getRiskScore')->name('instance.getRiskScore');
+            Route::get('instanceCsv', 'Instance\QueryController@getInstancesCsv')->name('instance.getCsv');
+            Route::get('instanceQuery', 'Instance\InstanceUIController@index')->name('instance.index');
+            Route::get('sentimentQuery', 'Instance\InstanceUIController@sentimentIndex')->name('instance.sentiment.index');
+            Route::post('flagInstance', 'Instance\InstanceController@flag')->name('instance.flag');
+
+            Route::post('addCompetitor', 'Company\CompanyController@addCompetitor')->name('instance.addCompetitor');
+            Route::post('removeCompetitor', 'Company\CompanyController@removeCompetitor')->name('instance.removeCompetitor');
         });
     });
 
