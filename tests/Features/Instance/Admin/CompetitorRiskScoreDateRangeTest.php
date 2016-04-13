@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Features\Instance;
+namespace Tests\Features\Instance\Admin;
 
 use App\Entities\Company;
 use App\Entities\Instance;
