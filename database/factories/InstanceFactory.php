@@ -5,8 +5,12 @@ $factory->define(App\Entities\Instance::class, function (Faker\Generator $faker)
     $link = $faker->url;
 
     return [
-        'company_id' => factory(\App\Entities\Company::class)->create()->id,
-        'vector_id' => factory(\App\Entities\Vector::class)->create()->id,
+        'company_id' => function () {
+            return factory(\App\Entities\Company::class)->create()->id;
+        },
+        'vector_id' => function () {
+            return factory(\App\Entities\Vector::class)->create()->id;
+        },
         'entity_id' => $faker->numberBetween(),
         'type' => $faker->word,
         'start' => $faker->date(),
