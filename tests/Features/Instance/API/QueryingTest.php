@@ -1,5 +1,4 @@
-<?php namespace Tests\Features\Instance;
-
+<?php namespace Tests\Features\Instance\API;
 
 use App\Entities\Country;
 use App\Entities\Instance;
@@ -49,5 +48,4 @@ class QueryingTest extends \TestCase
         $this->assertCount(1, $results);
         $this->assertEquals($returnedInstance->title, array_get($results, '0.title'), 'Assert correct instance returned');
     }
-
 }
