@@ -72,6 +72,33 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
         return $user;
     }
 
+    /**
+     * Makes a "normal" user in the DB and logs them in.
+     *
+     * @param array $attributes
+     * @return User
+     */
+    protected function beLoggedInAsUser(array $attributes = [])
+    {
+        $user = factory(User::class, 'user')->create($attributes);
+        $this->be($user);
+        return $user;
+    }
+
+    /**
+     * Makes a "user admin" in the DB and logs them in. Note an "user admin" is NOT a system admin, but a user
+     * that can control users under them.
+     *
+     * @param array $attributes
+     * @return User
+     */
+    protected function beLoggedInAsUserAdmin(array $attributes = [])
+    {
+        $user = factory(User::class, 'user_admin')->create($attributes);
+        $this->be($user);
+        return $user;
+    }
+
     protected function assertJsonUnprocessableEntity($assertErrors = true)
     {
         $this->assertResponseStatus(422); // Asserts Status code is 422.
