@@ -10,7 +10,6 @@ use App\Http\Requests\Instance\RiskScoreRequest;
 use App\Http\Traits\PaginationTrait;
 use App\Services\Instance\QueryBuilder;
 use App\Transformers\Instance\InstanceTransformer;
-use Illuminate\Http\Request;
 use League\Csv\Writer;
 
 class QueryController extends Controller
