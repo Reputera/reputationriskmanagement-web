@@ -88,5 +88,38 @@ define({ "api": [
     "version": "0.0.0",
     "filename": "app/Http/Controllers/Auth/ApiAuthController.php",
     "groupTitle": "Users"
+  },
+  {
+    "type": "get",
+    "url": "/vector-risk-scores-by-month/",
+    "title": "Per month",
+    "name": "VectorRiskScorePerMonth",
+    "description": "<p>Retrieves risk score broken down for each year/month given for the customer's assigned company.</p>",
+    "group": "Vectors",
+    "version": "0.0.0",
+    "filename": "app/Http/Controllers/Vector/MonthlyRiskScoreController.php",
+    "groupTitle": "Vectors",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Array",
+            "optional": false,
+            "field": "dates",
+            "description": "<p>Acceptable formats: 2015-04, 2015-4</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"message\": \"Invalid request\",\n    \"status_code\": 422,\n    \"errors\":\n    {\n        \"dates\": [\n            \"The dates field is required.\"\n        ],\n        \"dates.0\": [ // Note the 0 will be the key of the failing array value.\n            \"The expected format is YYYY-MM.\"\n        ]\n    }\n}",
+          "type": "json"
+        }
+      ]
+    }
   }
 ] });
