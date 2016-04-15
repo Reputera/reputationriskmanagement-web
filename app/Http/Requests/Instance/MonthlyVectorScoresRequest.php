@@ -9,6 +9,8 @@ class MonthlyVectorScoresRequest extends Request
     /**
      * @apiDefine MonthlyVectorRiskScoresParams
      * @apiParam {Array} dates Acceptable formats: 2015-04, 2015-4
+     * @apiExample {json} Example request:
+     *  {dates: ["2015-03", "2015-4"]}
      */
     /**
      * @apiDefine MonthlyVectorRiskScoresErrors

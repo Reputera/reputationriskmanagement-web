@@ -96,6 +96,15 @@ define({ "api": [
     "name": "VectorRiskScorePerMonth",
     "description": "<p>Retrieves risk score broken down for each year/month given for the customer's assigned company.</p>",
     "group": "Vectors",
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n    \"data\": {\n        \"2016-04\": {\n            \"Vector 1\": 10,\n            \"Vector 2\": 20,\n            \"Vector 3\": 30,\n        },\n        \"2016-7\": {\n            \"Vector 1\": 20,\n            \"Vector 2\": 30,\n            \"Vector 3\": 10,\n        },\n        ...\n    },\n    \"status_code\": 200,\n    \"message\": \"Success\"\n}",
+          "type": "json"
+        }
+      ]
+    },
     "version": "0.0.0",
     "filename": "app/Http/Controllers/Vector/MonthlyRiskScoreController.php",
     "groupTitle": "Vectors",
@@ -112,6 +121,13 @@ define({ "api": [
         ]
       }
     },
+    "examples": [
+      {
+        "title": "Example request:",
+        "content": "{dates: [\"2015-03\", \"2015-4\"]}",
+        "type": "json"
+      }
+    ],
     "error": {
       "examples": [
         {
