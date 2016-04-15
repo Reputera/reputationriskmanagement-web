@@ -161,6 +161,13 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
         $this->assertEquals($message, $data['message']);
     }
 
+    protected function assertJsonResponseHasDataKeys(array $keys)
+    {
+        foreach ($keys as $key) {
+            $this->assertJsonResponseHasDataKey($key);
+        }
+    }
+
     protected function assertJsonResponseHasDataKey($key)
     {
         $data = $this->response->getData(true);
