@@ -36,7 +36,7 @@ class MonthlyVectorScoresRequest extends Request
     public function rules()
     {
         return [
-            'dates' => 'required',
+            'dates' => 'required|array',
             'dates.*' => 'regex:/^[0-9]{4}-[0-9]{1,2}$/',
         ];
     }
