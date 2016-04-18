@@ -1,6 +1,6 @@
 <header class="main-header">
         <span class="logo">
-            <b>Home</b>
+            <b>Reputera</b>
         </span>
     <nav class="navbar navbar-static-top" role="navigation">
         <div class="navbar-custom-menu">
