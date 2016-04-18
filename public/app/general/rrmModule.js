@@ -6,7 +6,8 @@ var app = angular
         'toastr',
         'easyTable',
         'currentUser',
-        'singleClick'
+        'singleClick',
+        'angularModalService'
     ])
     .factory('errorInterceptor', function($q, toastr) {
         return {
