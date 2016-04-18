@@ -11,7 +11,8 @@
     "ng-table": "~0.5.*",
     "restangular": "1.5.*",
     "angular-toastr": "1.6.*",
-    "underscore": "1.8.*"
+    "underscore": "1.8.*",
+    "angular-modal-service": "0.6.10"
   },
   "apidoc": {
     "title": "Reputera: API",

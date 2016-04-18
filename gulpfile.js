@@ -29,6 +29,7 @@ elixir(function(mix) {
             'node_modules/angular-toastr/dist/angular-toastr.tpls.min.js',
             'node_modules/restangular/dist/restangular.min.js',
             'node_modules/ng-table/dist/ng-table.min.js',
+            'node_modules/angular-modal-service/dst/angular-modal-service.min.js',
             'public/app/general/rrmModule.js',
             'public/app/features',
             'public/app/general/directives',
