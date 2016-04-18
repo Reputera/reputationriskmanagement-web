@@ -13,5 +13,10 @@ class AdminCanCreateNewIndustriesTest extends \TestCase
         $this->dontSeeInDatabase('industries', ['name' => $newIndustryName]);
         $this->apiCall('POST', 'industry', ['industry_name' => $newIndustryName]);
         $this->seeInDatabase('industries', ['name' => $newIndustryName]);
+        
+        $responseJsonString = $this->response->getContent();
+        $this->assertJsonResponseOkAndFormattedProperly();
+        $this->assertContains('"id"', $responseJsonString);
+        $this->assertContains('"name":"'.$newIndustryName.'"', $responseJsonString);
     }
 }
