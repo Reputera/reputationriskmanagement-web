@@ -17,6 +17,8 @@ Route::group(['middleware' => ['web']], function () {
             Route::get('create-user', 'Users\AdminUserController@get')->name('adminUser.get');
             Route::post('create-user', 'Users\AdminUserController@store')->name('adminUser.store');
 
+            Route::get('create-company', 'Company\CompanyController@createIndex')->name('companyCreate.get');
+
             Route::get('instance', 'Instance\QueryController@getInstances')->name('instance.get');
             Route::get('riskScore', 'Instance\QueryController@getRiskScore')->name('instance.getRiskScore');
             Route::get('instanceCsv', 'Instance\QueryController@getInstancesCsv')->name('instance.getCsv');

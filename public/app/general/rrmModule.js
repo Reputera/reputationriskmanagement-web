@@ -21,9 +21,19 @@ var app = angular
                 } else if(response.status == 401) {
                     toastr.error('Unauthorized: ' + response.data.message);
                 } else if (response.status == 422) {
-                    try {
-                        toastr.warning(JSON.stringify(response.data));
-                    } catch(e) {}
+                    if (response.data.hasOwnProperty('errors')) {
+                        var errors = '';
+                        for (var error_field in response.data.errors) {
+                            errors += errors + response.data.errors[error_field] + "\n";
+                        }
+                        try {
+                            toastr.warning(errors);
+                        } catch(e) {}
+                    } else {
+                        try {
+                            toastr.warning(JSON.stringify(response.data));
+                        } catch(e) {}
+                    }
                 }
                 return $q.reject(response);
             }
