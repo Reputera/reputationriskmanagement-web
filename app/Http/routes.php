@@ -45,5 +45,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['api']], function () {
         Route::get('instanceCsv', 'Instance\QueryController@getInstancesCsv')->name('instance.getCsv');
         Route::get('competitors-average-risk-score', 'Instance\QueryController@competitorsAverageRiskScore')
             ->name('instance.competitorAverageRiskScore');
+
+        Route::post('industry', 'Industry\IndustryController@store')->name('industry.post');
     });
 });
