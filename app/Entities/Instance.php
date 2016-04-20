@@ -53,6 +53,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Instance whereFlagged($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Instance whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Instance whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Instance companyRiskScore($company)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Instance competitorRiskScoreForCompany($company)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Instance filter($filter)
  * @mixin \Eloquent
