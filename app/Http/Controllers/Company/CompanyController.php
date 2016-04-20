@@ -3,19 +3,26 @@
 namespace App\Http\Controllers\Company;
 
 use App\Entities\Company;
-use App\Entities\Industry;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
+use App\Http\Requests\Company\NewCompanyRequest;
+use App\Transformers\Company\CompanyTransformer;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
-class CompanyController extends Controller
+class CompanyController extends ApiController
 {
-    public function createIndex()
+    public function createPost(NewCompanyRequest $request)
     {
-        \JavaScript::put([
-            'industries' => Industry::orderBy('name', 'ASC')->get(['id', 'name'])
-        ]);
+        $companies = new Collection;
+        \DB::transaction(function () use ($request, $companies) {
+            foreach ($request->get('companies') as $companyArray) {
+                $company = Company::create($companyArray);
+                $company->industries()->attach($companyArray['industry_id']);
+                $companies->add($company);
+            }
+        });
 
-        return view('company.create');
+        return $this->respondWithCollection($companies, new CompanyTransformer);
     }
 
     public function addCompetitor(Request $request)
