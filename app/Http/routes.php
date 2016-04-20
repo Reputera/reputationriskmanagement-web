@@ -17,7 +17,7 @@ Route::group(['middleware' => ['web']], function () {
             Route::get('create-user', 'Users\AdminUserController@get')->name('adminUser.get');
             Route::post('create-user', 'Users\AdminUserController@store')->name('adminUser.store');
 
-            Route::get('create-company', 'Company\CompanyController@createIndex')->name('companyCreate.get');
+            Route::get('create-company', 'Company\CompanyUIController@createIndex')->name('companyCreate.get');
 
             Route::get('instance', 'Instance\QueryController@getInstances')->name('instance.get');
             Route::get('riskScore', 'Instance\QueryController@getRiskScore')->name('instance.getRiskScore');
@@ -38,7 +38,7 @@ Route::group(['middleware' => ['web']], function () {
 
 Route::group(['prefix' => 'api', 'middleware' => ['api']], function () {
     Route::post('login', 'Auth\ApiAuthController@authenticate')->name('api.login.post');
-    Route::group(['middleware' => 'auth'], function () {
+    Route::group(['middleware' => ['auth', 'adminAccess']], function () {
         Route::get('vector-risk-scores-by-month', 'Vector\MonthlyRiskScoreController@byCompany')
             ->name('instance.getMonthlyVectorComparison');
 //        Instance routes
@@ -49,5 +49,6 @@ Route::group(['prefix' => 'api', 'middleware' => ['api']], function () {
             ->name('instance.competitorAverageRiskScore');
 
         Route::post('industry', 'Industry\IndustryController@store')->name('industry.post');
+        Route::post('create-company', 'Company\CompanyController@createPost')->name('companyCreate.post');
     });
 });
