@@ -187,4 +187,11 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
         $data = $this->response->getData(true);
         $this->assertEquals(array_get($data, 'errors.'. $key), $error);
     }
+
+    protected function assertArrayHasKeys(array $keys, array $data, $message = '')
+    {
+        foreach ($keys as $key) {
+            $this->assertArrayHasKey($key, $data, $message);
+        }
+    }
 }
