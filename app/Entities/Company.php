@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property \Carbon\Carbon $deleted_at
- * @property-read \App\Entities\Industry $industry
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Entities\Industry[] $industries
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Entities\Company[] $competitors
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Company whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Company whereName($value)
@@ -39,14 +39,14 @@ class Company extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'stock_name'
+        'name', 'stock_name', 'entity_id'
     ];
 
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 
-    public function industry()
+    public function industries()
     {
-        return $this->belongsTo(Industry::class);
+        return $this->belongsToMany(Industry::class);
     }
 
     public function competitors()
