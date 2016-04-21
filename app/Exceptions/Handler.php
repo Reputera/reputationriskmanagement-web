@@ -67,7 +67,7 @@ class Handler extends ExceptionHandler
                 ->with('error_message', 'Your token has expired. Please re-try your request.');
         } elseif ($this->isApiRequest($request)) {
             if ($e instanceof ValidationException) {
-                return $this->unprocessableEntyResponse($e);
+                return $this->unprocessableEntityResponse($e);
             } elseif ($e instanceof ModelNotFoundException || $e instanceof NotFoundHttpException) {
                 return $this->notFoundResponse();
             }

@@ -87,7 +87,7 @@ trait ErrorResponses
      * @param ValidationException $exception
      * @return JsonResponse
      */
-    protected function unprocessableEntyResponse(ValidationException $exception)
+    protected function unprocessableEntityResponse(ValidationException $exception)
     {
         return $this->unprocessableEntyArrayResponse($exception->validator->errors()->toArray());
     }
