@@ -13,7 +13,7 @@ class AdminCanCreateMultipleNewCompaniesTest extends \TestCase
 
         $postData = ['companies' => [
             ['name' => 'Company 1', 'entity_id' => '1', 'industry_id' => $industry->id],
-            ['name' => 'Company 1', 'entity_id' => '2', 'industry_id' => $industry->id]
+            ['name' => 'Company 2', 'entity_id' => '2', 'industry_id' => $industry->id]
         ]];
         $this->apiCall('POST', 'create-company', $postData);
 
