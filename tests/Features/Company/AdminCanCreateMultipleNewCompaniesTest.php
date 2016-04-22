@@ -3,18 +3,26 @@
 namespace Tests\Features\Company;
 
 use App\Entities\Industry;
+use App\Jobs\QueueYearlyRecordedFutureInstances;
+use Illuminate\Contracts\Bus\Dispatcher;
 
 class AdminCanCreateMultipleNewCompaniesTest extends \TestCase
 {
     public function testAnAdminCanCreateMultipleCompanies()
     {
+        $mockedDispatcher = \Mockery::mock(Dispatcher::class);
         $this->beLoggedInAsAdmin();
         $industry = factory(Industry::class)->create();
+        $mockedDispatcher->shouldReceive('dispatch')
+            ->twice()
+            ->with(\Mockery::type(QueueYearlyRecordedFutureInstances::class));
 
         $postData = ['companies' => [
             ['name' => 'Company 1', 'entity_id' => '1', 'industry_id' => $industry->id],
             ['name' => 'Company 2', 'entity_id' => '2', 'industry_id' => $industry->id]
         ]];
+
+        app()->instance(Dispatcher::class, $mockedDispatcher);
         $this->apiCall('POST', 'create-company', $postData);
 
         $this->assertJsonResponseOkAndFormattedProperly();

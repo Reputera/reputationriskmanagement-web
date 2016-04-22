@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Company;
 use App\Entities\Company;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Company\NewCompanyRequest;
+use App\Jobs\QueueYearlyRecordedFutureInstances;
+use App\Jobs\YearlyRecordedFutureInstances;
 use App\Transformers\Company\CompanyTransformer;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -21,6 +23,11 @@ class CompanyController extends ApiController
                 $companies->add($company);
             }
         });
+
+        // Did this to allow the DB transaction to complete since the command will look up the entity_id to use.
+        foreach ($companies as $company) {
+            $this->dispatch(new QueueYearlyRecordedFutureInstances($company));
+        }
 
         return $this->respondWithCollection($companies, new CompanyTransformer);
     }
