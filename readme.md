@@ -1,27 +1,31 @@
-# Laravel PHP Framework
+### Setup for Reputera
+__*If you are using the "sync" option for your local queue, then there is no need to follow this setup.*__
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
+If running on a local VM, like vagrant, you will need to add the following so beanstalkd will work as a daemon on your local machine. You may also use ```php artisan queue:listen``` to sit and listen like a daemon does (but the daemon does not need multiple terminal windows open like this will to listen and do other commands). You can also use ```php artisan queue:work``` to process the first thing in the queue. If several things are in the queue, you will need to run this several times. If you are using a diffrent queuing mechanism, like redis, this will still work, but you will need to edit the config below to use redis instead.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
+1. Create a file called ```laravel-worker.conf``` under the ```/etc/supervisor/conf.d/``` directory.
 
-Laravel is accessible, yet powerful, providing powerful tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+    One way this can be done is like such: ```sudo vim /etc/supervisor/conf.d/laravel-worker.conf``` - This will create an empty file.
 
-## Official Documentation
+2. Next we need to populate the file with supervisor data to allow it to constantly run Please make note of the ```command```, ```user``` and ```stdout_logfile```. Additionally, I set my number of prcoesses to a low number because I set this up in a VM. A Larger number may be a better choice for production.
 
-Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
+        [program:laravel-worker]
+        process_name=%(program_name)s_%(process_num)02d
+        command=php {pathToYourReputeraProject}/artisan queue:work beanstalkd --sleep=3     --tries=3 --daemon
+        autostart=true
+        autorestart=true
+        user=vagrant
+        numprocs=1
+        redirect_stderr=true
+        stdout_logfile={pathToYourReputeraProject}/storage/logs/worker.log
 
-## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+3. Once the file is saved, we can make sure supervisor sees the new file we created (or updated) with ```sudo supervisorctl reread```.
 
-## Security Vulnerabilities
+4. We will then need to run ```sudo supervisorctl update``` to update supervisor.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+5. Finally we will need to run ```sudo supervisorctl start laravel-worker:*``` to have the worker "put into action", so to speak.
 
-## License
+If you need to adjust the file, do so and do steps 3 - 5 again.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+To stop the worker, ```sudo supervisorctl stop laravel-worker:*```. After a few moments you will get output like this to tell you it's complete: ```laravel-worker_00: stopped```
