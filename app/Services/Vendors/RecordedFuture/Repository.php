@@ -50,12 +50,12 @@ class Repository
             ->first();
 
         if ($instanceDupeExists) {
-            $this->error = 'Duplicate Record: '.$instance->__toString();
+            $this->error = 'Duplicate Record: '.(string) $instance;
             return false;
         }
 
         if ($attributes->getPositiveSentiment() == $attributes->getNegativeSentiment()) {
-            $this->error = 'Nullifed sentiment: '.$instance->__toString();
+            $this->error = 'Nullifed sentiment: '.(string) $instance;
             return false;
         }
 
