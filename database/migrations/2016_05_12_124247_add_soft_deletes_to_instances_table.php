@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddFlaggedToInstancesTable extends Migration
+class AddSoftDeletesToInstancesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,7 @@ class AddFlaggedToInstancesTable extends Migration
     public function up()
     {
         Schema::table('instances', function (Blueprint $table) {
-            $table->boolean('flagged')->after('negative_sentiment')->nullable();
-            $table->index('flagged');
+            $table->softDeletes();
         });
     }
 
@@ -26,7 +25,7 @@ class AddFlaggedToInstancesTable extends Migration
     public function down()
     {
         Schema::table('instances', function (Blueprint $table) {
-            $table->dropColumn('flagged');
+            $table->dropColumn('deleted_at');
         });
     }
 }

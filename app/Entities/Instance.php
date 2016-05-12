@@ -4,6 +4,7 @@ namespace App\Entities;
 
 use App\Http\Queries\Instance as InstanceQuery;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Entities\Instance
@@ -60,10 +61,11 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Instance extends Model
 {
+    use SoftDeletes;
 
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
-    protected $dates = ['created_at', 'updated_at', 'start'];
+    protected $dates = ['created_at', 'updated_at', 'deleted_at', 'start'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
