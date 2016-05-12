@@ -32,9 +32,10 @@ class QueryController extends Controller
     public function getInstances(InstanceQueryRequest $request, QueryBuilder $queryBuilder)
     {
         $resultCollection = $this->paginateBuilder($queryBuilder->queryInstances($request, $request->getForQuery([
-            'vectors_name', 'companies_name', 'regions_name', 'hideFlagged', 'fragment'
+            'vectors_name', 'companies_name', 'regions_name', 'fragment'
             ]))->with('countries.region'), $request
         );
+
         return $this->respondWithArray([
             'count' => $resultCollection->total(),
             'total_sentiment_score' => $resultCollection->total() ? (int)($resultCollection->sum('sentiment') / $resultCollection->total() * 100) : 0,

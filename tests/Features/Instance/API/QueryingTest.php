@@ -6,8 +6,7 @@ use Carbon\Carbon;
 
 class QueryingTest extends \TestCase
 {
-
-    public function tesstQueryByAllParameters()
+    public function testQueryByAllParametersAndDeletedIsNotObserved()
     {
 //        This record is noise, so assert it is not returned in results.
         factory(Instance::class)->create();
@@ -16,6 +15,15 @@ class QueryingTest extends \TestCase
         $returnedInstance = factory(Instance::class)->create();
         $returnedInstance->countries()->attach($country);
 
+        $deletedInstance = factory(Instance::class)->create([
+            'start' => $returnedInstance->start,
+            'vector_id' => $returnedInstance->vector->id,
+            'company_id' => $returnedInstance->company->id,
+        ]);
+        $deletedInstance->countries()->attach($country);
+        // Delete it to show it won't be pulled.
+        $deletedInstance->delete();
+
         $this->beLoggedInAsAdmin();
         $this->apiCall('GET', 'instance', [
             'start_datetime' => $returnedInstance->start->subDay(1),
@@ -23,11 +31,43 @@ class QueryingTest extends \TestCase
             'vectors_name' => $returnedInstance->vector->name,
             'regions_name' => $country->region->name,
             'companies_name' => $returnedInstance->company->name,
-            'risk_score' => -100
         ]);
         $this->assertJsonResponseOkAndFormattedProperly();
         $results = $this->response->getData(true)['data']['instances']['data'];
         $this->assertCount(1, $results);
+        $this->assertEquals($returnedInstance->title, array_get($results, '0.title'), 'Assert correct instance returned');
+    }
+
+    public function testQueryByAllParametersAndDeletedIsObserved()
+    {
+//        This record is noise, so assert it is not returned in results.
+        factory(Instance::class)->create();
+
+        $country = factory(Country::class)->create();
+        $returnedInstance = factory(Instance::class)->create();
+        $returnedInstance->countries()->attach($country);
+
+        $deletedInstance = factory(Instance::class)->create([
+            'start' => $returnedInstance->start,
+            'vector_id' => $returnedInstance->vector->id,
+            'company_id' => $returnedInstance->company->id,
+        ]);
+        $deletedInstance->countries()->attach($country);
+        // Deleted, but should be pulled
+        $deletedInstance->delete();
+
+        $this->beLoggedInAsAdmin();
+        $this->apiCall('GET', 'instance', [
+            'showFlagged' => true,
+            'start_datetime' => $returnedInstance->start->subDay(1),
+            'end_datetime' => $returnedInstance->start->addDay(1),
+            'vectors_name' => $returnedInstance->vector->name,
+            'regions_name' => $country->region->name,
+            'companies_name' => $returnedInstance->company->name,
+        ]);
+        $this->assertJsonResponseOkAndFormattedProperly();
+        $results = $this->response->getData(true)['data']['instances']['data'];
+        $this->assertCount(2, $results);
         $this->assertEquals($returnedInstance->title, array_get($results, '0.title'), 'Assert correct instance returned');
     }
 

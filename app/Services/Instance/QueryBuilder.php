@@ -23,8 +23,8 @@ class QueryBuilder
         $builder = $request->sendBuilderThroughPipeline($builder, [SortingPipeline::class]);
         $builder->where(array_only($paramArray, ['vectors.name', 'regions.name']));
 
-        if (array_get($paramArray, 'hideFlagged')) {
-            $builder->where('flagged', null);
+        if ($request->get('showFlagged')) {
+            $builder->withTrashed();
         }
 
         if (array_has($paramArray, 'fragment')) {
