@@ -9,7 +9,7 @@ use App\Http\Requests\Request;
 class InstanceController extends Controller
 {
 
-    public function flag(Request $request)
+    public function toggleDelete(Request $request)
     {
         Instance::where('id', $request->get('id'))
             ->withTrashed()

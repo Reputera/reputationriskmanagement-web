@@ -23,7 +23,7 @@ class QueryBuilder
         $builder = $request->sendBuilderThroughPipeline($builder, [SortingPipeline::class]);
         $builder->where(array_only($paramArray, ['vectors.name', 'regions.name']));
 
-        if ($request->get('showFlagged')) {
+        if ($request->get('showDeleted')) {
             $builder->withTrashed();
         }
 

@@ -26,8 +26,8 @@
         <label>End date</label>
         <input type="text" class="form-control" id="end_datetime">
 
-        <label>Hide flagged</label>
-        <input type="checkbox" ng-model="hideFlagged" ng-false-value="0" ng-true-value="1">
+        <label>Show deleted</label>
+        <input type="checkbox" ng-model="showDeleted" ng-false-value="0" ng-true-value="1">
 
         <button class="btn btn-primary form-control" id="submit" ng-click="reload()">Query</button>
 
@@ -47,8 +47,8 @@
                     <td data-title="'Region'" ng-bind="instance.regions"></td>
                     <td data-title="'Fragment'" ng-bind="instance.fragment"></td>
                     <td data-title="'Flagged'">
-                        <button class="btn btn-primary" ng-if="instance.flagged" ng-click="flag(instance.id, 0)">Unflag</button>
-                        <button class="btn btn-danger" ng-if="!instance.flagged" ng-click="flag(instance.id, 1)">Flag</button>
+                        <button class="btn btn-primary" ng-if="instance.deleted_at" ng-click="flag(instance.id)">Undelete</button>
+                        <button class="btn btn-danger" ng-if="!instance.deleted_at" ng-click="flag(instance.id)">Delete</button>
                     </td>
                 </tr>
             </table>

@@ -4,7 +4,7 @@ app.controller('InstanceQueryController', ['$scope', '$http', 'toastr', 'helpers
     $scope.selectedCompany = {};
     $scope.selectedVector = {};
     $scope.selectedRegion = {};
-    $scope.hideFlagged = 0;
+    $scope.showDeleted = 0;
     $scope.csvUrl = '';
 
     $scope.vectors = vectors;
@@ -16,7 +16,7 @@ app.controller('InstanceQueryController', ['$scope', '$http', 'toastr', 'helpers
             companies_name: $scope.selectedCompany ? $scope.selectedCompany.name : '',
             vectors_name: $scope.selectedVector ? $scope.selectedVector.name : '',
             regions_name: $scope.selectedRegion ? $scope.selectedRegion.name : '',
-            hideFlagged: $scope.hideFlagged,
+            showDeleted: $scope.showDeleted,
             fragment: $scope.fragment,
             start_datetime: $("#start_datetime").val(),
             end_datetime: $("#end_datetime").val(),
@@ -42,7 +42,6 @@ app.controller('InstanceQueryController', ['$scope', '$http', 'toastr', 'helpers
         }
     });
 
-
     $scope.reload = function() {
         $scope.instanceTable.reload();
         $http({
@@ -53,11 +52,11 @@ app.controller('InstanceQueryController', ['$scope', '$http', 'toastr', 'helpers
         });
     };
 
-    $scope.flag = function(id, flagged) {
+    $scope.flag = function(id) {
         $http({
             method: 'POST',
-            url: '/flagInstance',
-            data: {id: id, flagged: flagged}
+            url: '/toggleInstance',
+            data: {id: id}
         }).then(function(result) {
             $scope.instanceTable.reload();
         });

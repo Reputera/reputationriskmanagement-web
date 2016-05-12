@@ -58,7 +58,7 @@ class QueryingTest extends \TestCase
 
         $this->beLoggedInAsAdmin();
         $this->apiCall('GET', 'instance', [
-            'showFlagged' => true,
+            'showDeleted' => true,
             'start_datetime' => $returnedInstance->start->subDay(1),
             'end_datetime' => $returnedInstance->start->addDay(1),
             'vectors_name' => $returnedInstance->vector->name,

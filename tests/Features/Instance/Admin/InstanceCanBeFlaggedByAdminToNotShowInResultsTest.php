@@ -11,7 +11,7 @@ class InstanceCanBeFlaggedByAdminToNotShowInResultsTest extends \TestCase
         $instance = factory(Instance::class)->create();
 
         $this->beLoggedInAsAdmin();
-        $this->call('POST', 'flagInstance', ['id' => $instance->id]);
+        $this->call('POST', 'toggleInstance', ['id' => $instance->id]);
 
         $this->assertResponseOk();
         $this->seeIsSoftDeletedInDatabase('instances', ['id' => $instance->id]);
@@ -22,7 +22,7 @@ class InstanceCanBeFlaggedByAdminToNotShowInResultsTest extends \TestCase
         $instance = factory(Instance::class)->create(['deleted_at' => date('Y-m-d H:i:s')]);
 
         $this->beLoggedInAsAdmin();
-        $this->call('POST', 'flagInstance', ['id' => $instance->id]);
+        $this->call('POST', 'toggleInstance', ['id' => $instance->id]);
 
         $this->assertResponseOk();
         $this->seeIsNotSoftDeletedInDatabase('instances', ['id' => $instance->id]);

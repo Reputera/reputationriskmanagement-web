@@ -31,7 +31,7 @@ class InstanceTransformerTest extends \TestCase
             'positive_risk_score' => $instance->positive_risk_score,
             'negative_risk_score' => $instance->negative_risk_score,
             'risk_score' => $instance->risk_score,
-            'flagged' => (bool)$instance->flagged
+            'deleted_at' => $instance->deleted_at
         ];
 
         $transformedData = (new InstanceTransformer())->transform($instance);
