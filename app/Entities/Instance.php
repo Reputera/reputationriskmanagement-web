@@ -100,9 +100,13 @@ class Instance extends Model
         return array_unique($regions);
     }
 
-    public function setFlagged(bool $flagged)
+    public function toggleTrashed()
     {
-        $this->flagged = $flagged;
+        if ($this->trashed()) {
+            $this->restore();
+        } else {
+            $this->delete();
+        }
         return $this;
     }
 

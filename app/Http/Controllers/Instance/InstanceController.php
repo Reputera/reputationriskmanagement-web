@@ -12,8 +12,8 @@ class InstanceController extends Controller
     public function flag(Request $request)
     {
         Instance::where('id', $request->get('id'))
+            ->withTrashed()
             ->firstOrFail()
-            ->setFlagged($request->get('flagged'))
-            ->save();
+            ->toggleTrashed();
     }
 }
