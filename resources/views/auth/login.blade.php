@@ -1,7 +1,7 @@
 @extends('layouts.auth')
 
 @section('content')
-    <form action="{{ action('Auth\AuthController@postLogin') }}" method="post">
+    <form action="{{ route('login.post') }}" method="post">
         <input type="hidden" name="_token" value="{{ csrf_token() }}" />
         <div class="form-group has-feedback">
             <input type="email" name="email" required class="form-control" placeholder="Email"/>
@@ -24,4 +24,5 @@
             </div><!-- /.col -->
         </div>
     </form>
+    <a class="text-red" href="{{ route('password.reset.get') }}">Forgot Password?</a>
 @endsection
