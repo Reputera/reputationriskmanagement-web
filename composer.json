@@ -38,7 +38,7 @@
     "autoload-dev": {
         "classmap": [
             "tests/TestCase.php",
-            "tests/ApiLoginTrait.php",
+            "tests/ApiAccessTrait.php",
             "tests/SoftDeleteTestTrait.php"
         ]
     },
