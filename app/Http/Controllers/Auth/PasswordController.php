@@ -20,13 +20,15 @@ class PasswordController extends Controller
 
     use ResetsPasswords;
 
+    // The path to redirect to after login.
+    protected $redirectTo;
+
     /**
      * Create a new password controller instance.
-     *
-     * @return void
      */
     public function __construct()
     {
         $this->middleware('guest');
+        $this->redirectTo = route('admin.landing');
     }
 }
