@@ -7,7 +7,7 @@ use App\Entities\User;
 
 class UserCanLoginTest extends \TestCase
 {
-    use \ApiLoginTrait;
+    use \ApiAccessTrait;
 
     public function testUserCanLoginWithValidCredentials()
     {

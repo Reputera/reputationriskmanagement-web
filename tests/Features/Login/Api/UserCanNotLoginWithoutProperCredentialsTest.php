@@ -7,7 +7,7 @@ use App\Entities\User;
 
 class UserCanNotLoginWithoutProperCredentialsTest extends \TestCase
 {
-    use \ApiLoginTrait;
+    use \ApiAccessTrait;
 
     public function testCannotLoginWithoutValidCredentials()
     {
