@@ -5,9 +5,9 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('login', 'Auth\AuthController@postLogin')->name('login.post');
 
     // Password Reset Routes...
-    $this->get('password/reset/{token?}', 'Auth\PasswordController@showResetForm')->name('password.reset.get');
-    $this->post('password/email', 'Auth\PasswordController@sendResetLinkEmail')->name('password.email.post');
-    $this->post('password/reset', 'Auth\PasswordController@reset')->name('password.reset.post');
+    Route::get('password/reset/{token?}', 'Auth\PasswordController@showResetForm')->name('password.reset.get');
+    Route::post('password/email', 'Auth\PasswordController@sendResetLinkEmail')->name('password.email.post');
+    Route::post('password/reset', 'Auth\PasswordController@reset')->name('password.reset.post');
 
     Route::post('create-user', 'Users\UserController@store')->name('user.store');
 
