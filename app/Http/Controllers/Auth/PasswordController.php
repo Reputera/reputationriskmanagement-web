@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Entities\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Support\Facades\Request;
 
 class PasswordController extends Controller
 {
@@ -30,5 +32,21 @@ class PasswordController extends Controller
     {
         $this->middleware('guest');
         $this->redirectTo = route('admin.landing');
+    }
+
+    /**
+     * Get the response for after a successful password reset.
+     *
+     * @param  string  $response
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function getResetSuccessResponse($response)
+    {
+        $user = User::whereEmail(Request::get('email'))->first();
+
+        if ($user->isAdmin()) {
+            return redirect($this->redirectPath())->with('status', trans($response));
+        }
+        return view('auth.passwords.successfullyReset', ['email' => $user->email]);
     }
 }
