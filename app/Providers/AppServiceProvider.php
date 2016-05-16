@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Providers\Auth\AdminUserProvider;
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
 use Illuminate\Support\ServiceProvider;
 
