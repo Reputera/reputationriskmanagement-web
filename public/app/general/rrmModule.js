@@ -28,12 +28,16 @@ var app = angular
                         toastr.error('Unauthorized: ' + response.data.message);
                     } else if (response.status == 422) {
                         if (response.data.hasOwnProperty('errors')) {
-                            var errors = '';
+                            var errors = [];
                             for (var error_field in response.data.errors) {
-                                errors += errors + response.data.errors[error_field] + "\n";
+                                if (Array.isArray(response.data.errors[error_field])) {
+                                    errors = errors.concat(response.data.errors[error_field]);
+                                } else {
+                                    errors.push(response.data.errors[error_field]);
+                                }
                             }
                             try {
-                                toastr.warning(errors);
+                                toastr.warning(errors.join("<br />"));
                             } catch (e) {
                             }
                         } else {
@@ -50,6 +54,10 @@ var app = angular
         }
     });
 
-app.config(function($httpProvider) {
+app.config(function($httpProvider, toastrConfig) {
     $httpProvider.interceptors.push('errorInterceptor');
+
+    angular.extend(toastrConfig, {
+        allowHtml: true
+    });
 });
