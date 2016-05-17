@@ -7,7 +7,8 @@ var app = angular
         'easyTable',
         'currentUser',
         'singleClick',
-        'angularModalService'
+        'angularModalService',
+        'ui.mask'
     ])
     .factory('ApplicationConfig', function($log) {
         return {

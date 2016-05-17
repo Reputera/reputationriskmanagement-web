@@ -22,6 +22,7 @@ elixir(function(mix) {
             'node_modules/angular/angular.min.js',
             'node_modules/underscore/underscore-min.js',
             'bower_components/jquery-ui/jquery-ui.min.js',
+            'bower_components/angular-ui-mask/dist/mask.min.js',
             'node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js',
             'node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js',
             'node_modules/moment/min/moment.min.js',
