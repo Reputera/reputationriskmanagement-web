@@ -2,14 +2,12 @@
 
 namespace Tests\Unit\Entities;
 
-
 use App\Entities\Country;
 use App\Entities\Instance;
 use App\Transformers\Instance\InstanceTransformer;
 
 class InstanceTransformerTest extends \TestCase
 {
-
     public function testPresent()
     {
         $countries = factory(Country::class)->times(2)->create();
