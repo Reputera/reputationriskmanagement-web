@@ -6,7 +6,7 @@
                 <li class="treeview">
                     <a href="#"><span>User Management</span> <i class="fa fa-angle-left pull-right"></i></a>
                     <ul class="treeview-menu">
-                        <li><a href="{{route('adminUser.get')}}">Create User</a></li>
+                        <li><a href="{{route('admin.users.create.get')}}">Create User</a></li>
                     </ul>
                 </li>
                 <li class="treeview">

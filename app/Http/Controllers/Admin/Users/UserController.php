@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Users;
+namespace App\Http\Controllers\Admin\Users;
 
 use App\Entities\User;
 use App\Http\Requests\Users\NewUserRequest;

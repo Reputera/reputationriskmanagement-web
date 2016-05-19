@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Users;
+namespace App\Http\Controllers\Admin\Users;
 
 use App\Entities\Company;
 use App\Entities\Role;
@@ -10,7 +10,7 @@ class UserUIController extends Controller
 {
     public function get()
     {
-        return view('adminUsers.create', [
+        return view('admin.users.create', [
             'companies' => Company::all(),
             'userRoles' => [Role::ADMIN, Role::USER]
         ]);
