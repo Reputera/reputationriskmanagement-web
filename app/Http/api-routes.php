@@ -16,5 +16,6 @@ Route::group(['prefix' => 'api', 'middleware' => ['api']], function () {
 
         Route::post('industry', 'Industry\IndustryController@store')->name('industry.post');
         Route::post('create-company', 'Company\CompanyController@createPost')->name('companyCreate.post');
+        Route::post('create-user', 'Users\UserController@store')->name('adminUser.store');
     });
 });
