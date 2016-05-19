@@ -2,7 +2,7 @@
 
 @section('content')
     <div ng-controller="CompanyCreateController">
-        <h3>Company Creation</h3>
+        <h3>Create Company</h3>
         <button type="button" class="btn btn-primary pull-right" ng-click="addIndustry()">Add New Industry</button>
         <br /><br />
         <table class="table">

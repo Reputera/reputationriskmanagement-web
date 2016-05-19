@@ -3,22 +3,29 @@
 @section('content')
     <div ng-controller="UserCreateController" class="col-sm-4">
         <h3>Create User</h3>
+        <br /><br />
 
         <div class="form-group" ng-class="{ 'has-error' : addErrors['role'] }">
             <label for="roleSelect">Role</label>
             <select class="form-control" id="roleSelect" name="role" ng-model="user['role']">
-                @foreach($userRoles as $userRole)
-                    <option value="{{$userRole}}">{{$userRole}}</option>
-                @endforeach
+                <option value="" selected="selected">Select Role</option>
+                <option ng-repeat="role in roles"
+                        value="@{{ role }}"
+                >
+                    @{{ role }}
+                </option>
             </select>
         </div>
 
         <div class="form-group" ng-show="user['role'] != 'Admin'" ng-class="{ 'has-error' : addErrors['company_id'] }">
             <label for="companySelect">Company</label>
             <select class="form-control" id="company_id" name="company_id" ng-model="user['company_id']">
-                @foreach($companies as $company)
-                    <option value="{{$company->id}}" "{{(old('company_id') != $company->id) ? '' : 'selected="selected"'}}">{{$company->name}}</option>
-                @endforeach
+                <option value="" selected="selected">Select Company</option>
+                <option ng-repeat="company in companies"
+                        value="@{{ company.id }}"
+                >
+                    @{{ company.name }}
+                </option>
             </select>
         </div>
 
@@ -36,8 +43,8 @@
             </div>
             <div class="form-group">
                 <label>Extension</label>
-                <input type="text" class="form-control" style="width: 80px;"
-                       ng-model="user['phone_number_ext']" ui-mask="9999999999" ui-options="{clearOnBlur: false}">
+                <input type="text" class="form-control" style="width: 80px;" ui-options="{clearOnBlur: false}"
+                       ng-model="user['phone_number_extension']" ui-mask="?9?9?9?9?9?9?9?9?9?9">
             </div>
         </div>
 
@@ -64,9 +71,11 @@
 @section('scripts')
     <script>
         app.controller('UserCreateController',
-        ['$scope', '$http', 'toastr', 'ModalService', function($scope, $http, toastr, ModalService)
+        ['$scope', '$http', 'toastr', function($scope, $http, toastr)
         {
             $scope.addErrors = [];
+            $scope.roles = roles;
+            $scope.companies = companies;
             initializeUser();
 
             $scope.saveUser = function () {
