@@ -12,17 +12,21 @@ class AdminCanNotExceedFieldLimitsTest extends \TestCase
         $company = factory(Company::class)->create();
         $this->beLoggedInAsAdmin();
 
-        $this->call('post', 'create-user', [
+        $this->apiCall('post', 'create-user', [
             'name' => str_repeat('l', 256),
             'email' => 'test',
             'password' => str_repeat('l', 2),
             'role' => Role::USER,
-            'company_id' => $company->id
+            'company_id' => $company->id,
+            'phone_number' => str_repeat(1, 11),
+            'phone_number_extension' => str_repeat(1, 51)
         ]);
+
+        $this->assertJsonUnprocessableEntity();
 
         $this->assertEquals(
             $this->getFieldLimitValidationErrors(),
-            \Session::get('errors')->toArray()
+            $this->response->getData(true)['errors']
         );
     }
 
@@ -31,7 +35,9 @@ class AdminCanNotExceedFieldLimitsTest extends \TestCase
         return [
             'name' => ['The name may not be greater than 255 characters.'],
             'email' => ['The email must be a valid email address.'],
-            'password' => ['The password confirmation does not match.', 'The password must be at least 6 characters.'],
+            'password' => ['The password must be at least 6 characters.'],
+            'phone_number' => ['The phone number must be 10 numbers only.'],
+            'phone_number_extension' => ['The phone number extension must be a maximum of 10 numbers only.'],
         ];
     }
 }
