@@ -8,7 +8,7 @@ class ProperFieldsRequiredForCreatingNewIndustryTest extends \TestCase
     {
         $this->beLoggedInAsAdmin();
 
-        $this->apiCall('POST', 'industry');
+        $this->ajaxCall('POST', 'industry');
 
         $this->assertJsonUnprocessableEntity();
         $this->assertContains(

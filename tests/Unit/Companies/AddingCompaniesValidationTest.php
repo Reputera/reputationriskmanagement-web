@@ -11,12 +11,12 @@ class AddingCompaniesValidationTest extends \TestCase
     {
         $this->beLoggedInAsAdmin();
 
-        $this->apiCall('POST', 'create-company', []);
+        $this->ajaxCall('POST', 'create-company', []);
 
         $this->assertJsonUnprocessableEntity();
         $this->assertContains('["Please enter all the company(s) data."]', $this->response->getContent());
 
-        $this->apiCall('POST', 'create-company', ['companies' => []]);
+        $this->ajaxCall('POST', 'create-company', ['companies' => []]);
 
         $this->assertJsonUnprocessableEntity();
         $this->assertContains('["Please enter all the company(s) data."]', $this->response->getContent());
@@ -31,7 +31,7 @@ class AddingCompaniesValidationTest extends \TestCase
             $data['companies'][] = [];
         }
 
-        $this->apiCall('POST', 'create-company', $data);
+        $this->ajaxCall('POST', 'create-company', $data);
 
         $this->assertJsonUnprocessableEntity();
         $this->assertContains(
@@ -49,7 +49,7 @@ class AddingCompaniesValidationTest extends \TestCase
             ['name' => 'Name 1'],
         ]];
 
-        $this->apiCall('POST', 'create-company', $data);
+        $this->ajaxCall('POST', 'create-company', $data);
 
         $this->assertJsonUnprocessableEntity();
         $this->assertContains(
@@ -62,7 +62,7 @@ class AddingCompaniesValidationTest extends \TestCase
             ['name' => 'Name 1']
         ]];
 
-        $this->apiCall('POST', 'create-company', $data);
+        $this->ajaxCall('POST', 'create-company', $data);
 
         $this->assertJsonUnprocessableEntity();
         $this->assertContains(
@@ -80,7 +80,7 @@ class AddingCompaniesValidationTest extends \TestCase
             ['entity_id' => 'Name 1'],
         ]];
 
-        $this->apiCall('POST', 'create-company', $data);
+        $this->ajaxCall('POST', 'create-company', $data);
 
         $this->assertJsonUnprocessableEntity();
         $this->assertContains(
@@ -93,7 +93,7 @@ class AddingCompaniesValidationTest extends \TestCase
             ['entity_id' => 'Name 1']
         ]];
 
-        $this->apiCall('POST', 'create-company', $data);
+        $this->ajaxCall('POST', 'create-company', $data);
 
         $this->assertJsonUnprocessableEntity();
         $this->assertContains(
@@ -111,7 +111,7 @@ class AddingCompaniesValidationTest extends \TestCase
             ['entity_id' => 'Name 1', 'industry_id' => 99]
         ]];
 
-        $this->apiCall('POST', 'create-company', $data);
+        $this->ajaxCall('POST', 'create-company', $data);
 
         $this->assertJsonUnprocessableEntity();
         $this->assertContains(
@@ -127,7 +127,7 @@ class AddingCompaniesValidationTest extends \TestCase
             []
         ]];
 
-        $this->apiCall('POST', 'create-company', $data);
+        $this->ajaxCall('POST', 'create-company', $data);
 
         $this->assertJsonUnprocessableEntity();
         $responseContent = $this->response->getContent();

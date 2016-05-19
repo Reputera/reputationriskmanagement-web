@@ -2,19 +2,17 @@
 
 namespace Tests\Features\Company;
 
-
 use App\Entities\Company;
 
 class CompetitorTest extends \TestCase
 {
-
     public function testAddCompetitor()
     {
         $company = factory(Company::class)->create();
         $competitor = factory(Company::class)->create();
 
         $this->beLoggedInAsAdmin();
-        $this->call('POST', 'addCompetitor', [
+        $this->ajaxCall('POST', 'addCompetitor', [
             'company_id' => $company->id,
             'competitor_id' => $competitor->id
         ]);
@@ -29,12 +27,12 @@ class CompetitorTest extends \TestCase
         $company->competitors()->attach($competitor);
 
         $this->beLoggedInAsAdmin();
-        $this->call('POST', 'removeCompetitor', [
+        $this->ajaxCall('POST', 'removeCompetitor', [
             'company_id' => $company->id,
             'competitor_id' => $competitor->id
         ]);
+
         $this->assertJsonResponseOkAndFormattedProperly();
         $this->assertEmpty($company->competitors);
     }
-
 }

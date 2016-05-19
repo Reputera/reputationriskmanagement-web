@@ -22,10 +22,10 @@ Route::group(['middleware' => ['web']], function () {
             Route::get('create-user', 'Admin\Users\UserUIController@get')->name('admin.users.create.get');
             Route::post('create-user', 'Admin\Users\UserController@store')->name('admin.users.create.store');
 
-            Route::get('create-company', 'Company\CompanyUIController@createIndex')->name('companyCreate.get');
-            Route::post('create-company', 'Company\CompanyController@createPost')->name('companyCreate.post');
+            Route::get('create-company', 'Admin\Company\CompanyUIController@createIndex')->name('admin.company.create.get');
+            Route::post('create-company', 'Admin\Company\CompanyController@createPost')->name('admin.company.create.store');
 
-            Route::post('industry', 'Industry\IndustryController@store')->name('industry.post');
+            Route::post('industry', 'Admin\Industry\IndustryController@store')->name('admin.industry.create.store');
 
             Route::get('instance', 'Instance\QueryController@getInstances')->name('instance.get');
             Route::get('riskScore', 'Instance\QueryController@getRiskScore')->name('instance.getRiskScore');
@@ -35,8 +35,8 @@ Route::group(['middleware' => ['web']], function () {
                 ->name('instance.sentiment.index');
             Route::post('toggleInstance', 'Instance\InstanceController@toggleDelete')->name('instance.toggleDelete');
 
-            Route::post('addCompetitor', 'Company\CompanyController@addCompetitor')->name('instance.addCompetitor');
-            Route::post('removeCompetitor', 'Company\CompanyController@removeCompetitor')
+            Route::post('addCompetitor', 'Admin\Company\CompanyController@addCompetitor')->name('instance.addCompetitor');
+            Route::post('removeCompetitor', 'Admin\Company\CompanyController@removeCompetitor')
                 ->name('instance.removeCompetitor');
         });
     });

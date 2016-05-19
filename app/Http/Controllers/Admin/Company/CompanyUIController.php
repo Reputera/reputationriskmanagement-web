@@ -1,12 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Company;
+namespace App\Http\Controllers\Admin\Company;
 
-use App\Entities\Company;
 use App\Entities\Industry;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Company\NewCompanyRequest;
-use Illuminate\Http\Request;
 
 class CompanyUIController extends Controller
 {
@@ -16,6 +13,6 @@ class CompanyUIController extends Controller
             'industries' => Industry::orderBy('name', 'ASC')->get(['id', 'name'])
         ]);
 
-        return view('company.create');
+        return view('admin.company.create');
     }
 }

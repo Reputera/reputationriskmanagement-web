@@ -23,7 +23,7 @@ class AdminCanCreateMultipleNewCompaniesTest extends \TestCase
         ]];
 
         app()->instance(Dispatcher::class, $mockedDispatcher);
-        $this->apiCall('POST', 'create-company', $postData);
+        $this->call('POST', 'create-company', $postData);
 
         $this->assertJsonResponseOkAndFormattedProperly();
         foreach ($this->response->getData(true)['data'] as $key => $company) {

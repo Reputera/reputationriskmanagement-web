@@ -12,7 +12,7 @@ class AdminCanNotExceedFieldLimitsTest extends \TestCase
         $company = factory(Company::class)->create();
         $this->beLoggedInAsAdmin();
 
-        $this->apiCall('post', 'create-user', [
+        $this->ajaxCall('post', 'create-user', [
             'name' => str_repeat('l', 256),
             'email' => 'test',
             'password' => str_repeat('l', 2),

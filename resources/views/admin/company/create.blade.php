@@ -127,7 +127,7 @@
             $scope.companiesToAddErrors = [];
             $http({
                 method: 'POST',
-                url: 'api/create-company',
+                url: "{!! route('admin.company.create.store') !!}",
                 data: {
                     companies: $scope.companiesToAdd
                 }
@@ -170,7 +170,7 @@
         $scope.save = function () {
             $http({
                 method: 'POST',
-                url: 'api/industry',
+                url: "{!! route('admin.industry.create.store') !!}",
                 data: {
                     industry_name: $scope.newIndustryName
                 }

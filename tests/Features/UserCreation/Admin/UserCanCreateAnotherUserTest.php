@@ -41,7 +41,7 @@ class AdminCanCreateAnyTypeOfUserTest extends \TestCase
         $postParams['role'] = $role;
         $postParams['company_id'] = $company->id;
 
-        $this->apiCall('post', 'create-user', $postParams);
+        $this->ajaxCall('post', 'create-user', $postParams);
 
         $this->assertJsonResponseOkAndFormattedProperly();
 
@@ -63,7 +63,7 @@ class AdminCanCreateAnyTypeOfUserTest extends \TestCase
         unset($postParams['phone_number'], $postParams['phone_number_extension']);
         $postParams['role'] = Role::ADMIN;
 
-        $this->apiCall('post', 'create-user', $postParams);
+        $this->ajaxCall('post', 'create-user', $postParams);
 
         $this->assertJsonResponseOkAndFormattedProperly();
 

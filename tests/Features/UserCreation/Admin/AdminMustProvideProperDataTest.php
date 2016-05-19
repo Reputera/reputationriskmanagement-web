@@ -10,7 +10,7 @@ class AdminMustProvideProperDataTest extends \TestCase
     public function test_all_required_fields()
     {
         $this->beLoggedInAsAdmin();
-        $this->apiCall('post', 'create-user');
+        $this->ajaxCall('post', 'create-user');
 
         $this->assertJsonUnprocessableEntity();
 
@@ -37,7 +37,7 @@ class AdminMustProvideProperDataTest extends \TestCase
                 'company_id' => $company->id
             ];
 
-            $this->apiCall('post', 'create-user', $postData);
+            $this->ajaxCall('post', 'create-user', $postData);
 
             $this->assertJsonUnprocessableEntity();
 

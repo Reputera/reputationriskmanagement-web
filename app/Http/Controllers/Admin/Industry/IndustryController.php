@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Industry;
+namespace App\Http\Controllers\Admin\Industry;
 
 use App\Entities\Industry;
 use App\Http\Controllers\ApiController;
