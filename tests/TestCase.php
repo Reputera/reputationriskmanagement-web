@@ -42,6 +42,24 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
     }
 
     /**
+     * Adds the proper header for an AJAX call.
+     *
+     * @param $method
+     * @param $uri
+     * @param array $parameters
+     * @param array $cookies
+     * @param array $files
+     * @param array $server
+     * @param null $content
+     * @return \Illuminate\Http\Response
+     */
+    protected function ajaxCall($method, $uri, $parameters = [], $cookies = [], $files = [], $server = [], $content = null)
+    {
+        $server = array_merge($server, ['HTTP_X-Requested-With' => 'XMLHttpRequest', 'HTTP_Accept' => 'application/json']);
+        return parent::call($method, $uri, $parameters, $cookies, $files, $server, $content);
+    }
+
+    /**
      * Adds the proper prefix to the URI for calling API routes/URIs.
      *
      * @param $method
