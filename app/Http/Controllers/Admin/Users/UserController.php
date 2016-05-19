@@ -9,7 +9,7 @@ use App\Transformers\User\UserTransformer;
 
 class UserController extends ApiController
 {
-    public function store(NewUserRequest $request)
+    public function createUser(NewUserRequest $request)
     {
         $createdUser = User::create([
             'name' => $request->get('name'),

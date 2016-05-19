@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 
 class UserUIController extends Controller
 {
-    public function get()
+    public function createUser()
     {
         \JavaScript::put([
             'companies' => Company::orderBy('name', 'ASC')->get(['id', 'name']),
