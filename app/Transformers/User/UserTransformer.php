@@ -2,7 +2,6 @@
 
 namespace App\Transformers\User;
 
-use App\Entities\Role;
 use App\Entities\User;
 use League\Fractal\TransformerAbstract;
 
