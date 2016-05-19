@@ -57,6 +57,24 @@ class UserTest extends \TestCase
         $this->assertFalse($user->isAdmin());
     }
 
+    /** @test */
+    public function userIsTheGivenRole()
+    {
+        $attributes = $this->getValidAttributes();
+        $attributes['role'] = Role::USER;
+        $user = User::create($attributes);
+
+        $this->assertTrue($user->hasRole(Role::USER));
+
+        $allRoles = Role::all();
+        // Remove the role we have already tested.
+        unset($allRoles['USER']);
+
+        foreach ($allRoles as $role) {
+            $this->assertFalse($user->hasRole($role));
+        }
+    }
+
     protected function getValidAttributes()
     {
         return $attributes = [

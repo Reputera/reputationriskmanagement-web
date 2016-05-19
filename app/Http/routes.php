@@ -1,5 +1,7 @@
 <?php
 
+use App\Entities\Role;
+
 Route::group(['middleware' => ['web']], function () {
     Route::get('login', 'Auth\AuthController@getLogin')->name('login.get');
     Route::post('login', 'Auth\AuthController@postLogin')->name('login.post');
@@ -18,7 +20,7 @@ Route::group(['middleware' => ['web']], function () {
             return view('layouts.default');
         })->name('admin.landing');
 
-        Route::group(['middleware' => ['adminAccess']], function () {
+        Route::group(['middleware' => ['role:'.Role::ADMIN]], function () {
             Route::get('create-user', 'Admin\Users\UserUIController@createUser')->name('admin.users.create.get');
             Route::post('create-user', 'Admin\Users\UserController@createUser')->name('admin.users.create.store');
 

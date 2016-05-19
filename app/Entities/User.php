@@ -116,11 +116,22 @@ class User extends Authenticatable
     }
 
     /**
+     * Checks the user to see if they the role that was given.
+     *
+     * @param $role
+     * @return bool
+     */
+    public function hasRole(string $role): bool
+    {
+        return strtolower($this->role) == strtolower($role);
+    }
+
+    /**
      * Checks the user to see if they are an admin.
      *
      * @return bool
      */
-    public function isAdmin()
+    public function isAdmin(): bool
     {
         return ($this->role && $this->role == Role::ADMIN);
     }
