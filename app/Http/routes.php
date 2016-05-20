@@ -16,6 +16,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::group(['middleware' => ['auth']], function () {
         Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 
+        Route::get('vectors' , 'Vector\VectorController@get');
+
         Route::get('/', function () {
             return view('layouts.default');
         })->name('admin.landing');
@@ -26,6 +28,11 @@ Route::group(['middleware' => ['web']], function () {
 
             Route::get('create-company', 'Admin\Company\CompanyUIController@createIndex')->name('admin.company.create.get');
             Route::post('create-company', 'Admin\Company\CompanyController@createPost')->name('admin.company.create.store');
+
+            Route::get('edit-company', 'Admin\Company\CompanyUIController@editIndex')->name('admin.company.edit');
+
+            Route::post('vectorColor', 'Admin\Vector\VectorController@saveVectorColor')->name('admin.vector.color');
+
 
             Route::post('industry', 'Admin\Industry\IndustryController@store')->name('admin.industry.create.store');
 
