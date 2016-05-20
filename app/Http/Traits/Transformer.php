@@ -85,7 +85,19 @@ trait Transformer
      * @param $callback
      * @return array
      */
-    protected function fractalize($collection, $callback)
+    protected function fractalize($item, $callback): array
+    {
+        return $this->fractal()
+            ->createData(new Item($item, $callback))
+            ->toArray();
+    }
+
+    /**
+     * @param $collection
+     * @param $callback
+     * @return array
+     */
+    protected function fractalizeCollection(\Illuminate\Support\Collection $collection, $callback): array
     {
         return $this->fractal()
             ->createData(new Collection($collection, $callback))
@@ -101,7 +113,7 @@ trait Transformer
      */
     protected function respondWithCollection($collection, $callback)
     {
-        return $this->respondWithArray($this->fractalize($collection, $callback));
+        return $this->respondWithArray($this->fractalizeCollection($collection, $callback));
     }
 
     /**

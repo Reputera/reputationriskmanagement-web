@@ -69,7 +69,7 @@ class QueryController extends Controller
         $resultCollection = $queryBuilder->queryInstances($request, $request->getForQuery([
             'vectors_name', 'companies_name', 'regions_name', 'hideFlagged', 'fragment'
         ]))->get();
-        $instances = $this->fractalize($resultCollection, new InstanceTransformer());
+        $instances = $this->fractalizeCollection($resultCollection, new InstanceTransformer());
         $csv = Writer::createFromFileObject(new \SplTempFileObject());
         $csv->insertOne(array_keys(array_get($instances, 'data.0')));
         $csv->insertAll($instances['data']);
