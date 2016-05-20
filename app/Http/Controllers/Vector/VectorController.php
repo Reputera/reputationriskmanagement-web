@@ -51,6 +51,6 @@ class VectorController extends Controller
         ]);
         $vectorColor->color = $request->get('color');
         $vectorColor->save();
-        return $this->respondWithArray([]);
+        return $this->respondWith(Vector::find($request->get('vector_id')), new VectorTransformer());
     }
 }
