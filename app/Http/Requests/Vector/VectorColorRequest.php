@@ -23,7 +23,7 @@ class VectorColorRequest extends ApiRequest
     public function messages()
     {
         return [
-            'color.required_unless' => 'The company field is required.'
+            'color.regex' => 'The color must be in hex format. (eg. #000000)'
         ];
     }
 
