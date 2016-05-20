@@ -102,12 +102,8 @@
                             }
                         }
                     }
-                )
+                );
             };
-
-            $scope.hasMultipleCompanies = function () {
-                return $scope.companiesToAdd.length > 1;
-            }
 
             function generatePassword() {
                 var length = 8;
