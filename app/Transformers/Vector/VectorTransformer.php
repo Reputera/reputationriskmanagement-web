@@ -17,7 +17,7 @@ class VectorTransformer extends TransformerAbstract
             'id' => $vector->id,
             'name' => $vector->name,
             'color' => $vector->color(),
-            'default_color' => $vector->color()
+            'default_color' => $vector->default_color
         ];
     }
 }
