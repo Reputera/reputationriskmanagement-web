@@ -37,6 +37,11 @@ class Vector extends Model
         return $this->hasMany(Instance::class);
     }
 
+    public function companyVectorColor()
+    {
+        return $this->hasMany(CompanyVectorColor::class);
+    }
+
     /**
      * @param Company $company
      * @param int $year
@@ -56,5 +61,15 @@ class Vector extends Model
             return (int) round($results->vector_score);
         }
         return 0;
+    }
+
+    public function color() {
+        if($user = auth()->user()) {
+            $colorModel = $this->companyVectorColor()->where('company_id', $user->company_id)->first();
+            if($colorModel) {
+                return $colorModel->color;
+            }
+        }
+        return $this->default_color;
     }
 }
