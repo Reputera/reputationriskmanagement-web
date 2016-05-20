@@ -19,6 +19,7 @@ class InstanceTransformerTest extends \TestCase
             'title' => $instance->title,
             'company' => $instance->company->name,
             'vector' => $instance->vector->name,
+            'vector_color' => $instance->vector->color(),
             'type' => $instance->type,
             'date' => $instance->start->format('Y-m-d H:i:s'),
             'language' => $instance->language,
