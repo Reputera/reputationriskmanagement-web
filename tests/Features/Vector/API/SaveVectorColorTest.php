@@ -8,13 +8,20 @@ use App\Entities\Vector;
 class SaveVectorColorTest extends \TestCase
 {
 
-    public function testGetVectors()
+    public function testSaveVectorColorInvalidValueGiven()
     {
-        $vectors = factory(Vector::class)->times(2)->create();
         $this->beLoggedInAsUser();
-        $this->ajaxCall('POST', 'vectors');
-        dd($this->getResponseData());
-        $this->assertCount($vectors->count(), $this->getResponseData());
+        $this->ajaxCall('POST', 'vectorColor', ['color' => 'NotAHexColor']);
+        $this->assertJsonResponseHasStatusCode(422);
+    }
+
+    public function testSaveVectorColor()
+    {
+        $vector = factory(Vector::class)->create();
+        $this->beLoggedInAsUser();
+        $this->ajaxCall('POST', 'vectorColor', ['vector_id' => $vector->id, 'color' => '#123456']);
+        $this->assertResponseOk();
+        $this->assertEquals('#123456', $vector->color());
     }
 
 }
