@@ -12,22 +12,25 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @property integer $id
  * @property string $name
- * @property string $email
- * @property integer $company_id
  * @property string $role
+ * @property string $email
+ * @property string $phone_number
+ * @property string $phone_number_extension
+ * @property integer $company_id
  * @property string $password
  * @property string $remember_token
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property \Carbon\Carbon $deleted_at
  * @property-read \App\Entities\Company $company
- * @method static \App\Entities\User|null find($id)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\User whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\User whereName($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\User whereRole($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\User whereEmail($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\User wherePhoneNumber($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\User wherePhoneNumberExtension($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\User whereCompanyId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\User wherePassword($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Entities\User whereRole($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\User whereRememberToken($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\User whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\User whereUpdatedAt($value)

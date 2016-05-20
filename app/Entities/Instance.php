@@ -30,6 +30,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property boolean $flagged
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @property \Carbon\Carbon $deleted_at
  * @property-read \App\Entities\Company $company
  * @property-read \App\Entities\Vector $vector
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Entities\Country[] $countries
@@ -54,6 +55,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Instance whereFlagged($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Instance whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Instance whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Instance whereDeletedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Instance companyRiskScore($company)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Instance competitorRiskScoreForCompany($company)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Instance filter($filter)
