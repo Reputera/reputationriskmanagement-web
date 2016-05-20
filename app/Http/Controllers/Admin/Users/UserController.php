@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Users;
 
+use App\Entities\Status;
 use App\Entities\User;
 use App\Http\Requests\Users\NewUserRequest;
 use App\Http\Controllers\ApiController;
@@ -18,6 +19,7 @@ class UserController extends ApiController
             'phone_number_extension' => $request->get('phone_number_extension'),
             'password' => bcrypt($request->get('password')),
             'role' => $request->get('role'),
+            'status' => Status::EMAIL_NOT_CHANGED
         ]);
 
         if (!$createdUser->isAdmin()) {
