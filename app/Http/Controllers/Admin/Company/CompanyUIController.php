@@ -21,8 +21,8 @@ class CompanyUIController extends Controller
 
     public function editIndex() {
         \JavaScript::put([
-            'company' => $this->fractalizeItem(auth()->user()->company, new CompanyTransformer()),
-            'vectors' => $this->fractalize(Vector::all(), new VectorTransformer())
+            'company' => $this->fractalize(auth()->user()->company, new CompanyTransformer()),
+            'vectors' => $this->fractalizeCollection(Vector::all(), new VectorTransformer())
         ]);
 
         return view('admin.company.edit');
