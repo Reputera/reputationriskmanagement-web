@@ -8,7 +8,8 @@ var app = angular
         'currentUser',
         'singleClick',
         'angularModalService',
-        'ui.mask'
+        'ui.mask',
+        'angularSpectrumColorpicker'
     ])
     .factory('ApplicationConfig', function($log) {
         return {
