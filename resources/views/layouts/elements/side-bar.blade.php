@@ -13,6 +13,7 @@
                     <a href="#"><span>Company Management</span> <i class="fa fa-angle-left pull-right"></i></a>
                     <ul class="treeview-menu">
                         <li><a href="{{route('admin.company.create.get')}}">Create Company</a></li>
+                        <li><a href="{{route('admin.company.edit')}}">Edit Company</a></li>
                     </ul>
                 </li>
                 <li><a href="{{route('instance.index')}}">Data Query</a></li>
