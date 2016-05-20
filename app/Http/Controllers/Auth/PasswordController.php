@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Entities\Status;
 use App\Entities\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
@@ -43,6 +44,8 @@ class PasswordController extends Controller
     protected function getResetSuccessResponse($response)
     {
         $user = User::whereEmail(Request::get('email'))->first();
+        $user->status = Status::ENABLED;
+        $user->save();
 
         if ($user->isAdmin()) {
             return redirect($this->redirectPath())->with('status', trans($response));
