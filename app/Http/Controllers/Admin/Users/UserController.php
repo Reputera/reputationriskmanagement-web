@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Users;
 
 use App\Entities\Status;
 use App\Entities\User;
+use App\Http\Requests\Request;
 use App\Http\Requests\Users\NewUserRequest;
 use App\Http\Controllers\ApiController;
 use App\Transformers\User\UserTransformer;
@@ -28,5 +29,13 @@ class UserController extends ApiController
         }
 
         return $this->respondWithItem($createdUser, new UserTransformer());
+    }
+
+    public function toggle(Request $request)
+    {
+        User::where('id', $request->get('id'))
+            ->withTrashed()
+            ->firstOrFail()
+            ->toggleTrashed();
     }
 }
