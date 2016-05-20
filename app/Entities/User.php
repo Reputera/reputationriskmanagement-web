@@ -3,7 +3,6 @@
 namespace App\Entities;
 
 use App\Entities\Exceptions\InvalidRoleAssignment;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -139,5 +138,17 @@ class User extends Authenticatable
     public function isAdmin(): bool
     {
         return ($this->role && $this->role == Role::ADMIN);
+    }
+
+    public function toggleTrashed()
+    {
+        if ($this->trashed()) {
+            $this->update(['status' => Status::ENABLED]);
+            $this->restore();
+        } else {
+            $this->update(['status' => Status::DISABLED]);
+            $this->delete();
+        }
+        return $this;
     }
 }
