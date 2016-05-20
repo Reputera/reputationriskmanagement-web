@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Features\UserCreation\Admin;
+namespace Tests\Features\User\Admins\Creation;
 
 use App\Entities\Company;
 use App\Entities\Role;
