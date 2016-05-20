@@ -9,11 +9,14 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property integer $id
  * @property string $name
+ * @property string $default_color
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Entities\Instance[] $instances
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Entities\CompanyVectorColor[] $companyVectorColor
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Vector whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Vector whereName($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Vector whereDefaultColor($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Vector whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Vector whereUpdatedAt($value)
  * @mixin \Eloquent

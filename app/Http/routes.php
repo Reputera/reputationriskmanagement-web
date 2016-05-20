@@ -23,6 +23,9 @@ Route::group(['middleware' => ['web']], function () {
         })->name('admin.landing');
 
         Route::group(['middleware' => ['role:'.Role::ADMIN]], function () {
+            Route::get('users', 'Admin\Users\UserUIController@listAll')->name('admin.users.all.get');
+            Route::post('users/toggle', 'Admin\Users\UserController@toggle')->name('admin.users.toggle.post');
+
             Route::get('create-user', 'Admin\Users\UserUIController@createUser')->name('admin.users.create.get');
             Route::post('create-user', 'Admin\Users\UserController@createUser')->name('admin.users.create.store');
 

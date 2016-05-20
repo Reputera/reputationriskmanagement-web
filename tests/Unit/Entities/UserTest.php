@@ -4,6 +4,7 @@ namespace Tests\Unit\Entities;
 
 use App\Entities\Exceptions\InvalidRoleAssignment;
 use App\Entities\Role;
+use App\Entities\Status;
 use App\Entities\User;
 
 class UserTest extends \TestCase
@@ -35,6 +36,36 @@ class UserTest extends \TestCase
         $attributes = $this->getValidAttributes();
         unset($attributes['role']);
         (new User)->firstOrCreate($attributes);
+    }
+
+    /** @test */
+    public function userIsToggledToEnabled()
+    {
+        $attributes = $this->getValidAttributes();
+        $attributes['deleted_at'] = date('Y-m-d H:i:s');
+        $attributes['status'] = Status::DISABLED;
+
+        User::unguard(); // Normally you don't set the deleted at, and it's guarded, so we need to unguard to set it.
+        $user = User::create($attributes);
+
+        $user->toggleTrashed();
+
+        $this->assertEquals(Status::ENABLED, $user->status);
+        $this->seeIsNotSoftDeletedInDatabase('users', ['id' => $user->id, 'status' => $user->status]);
+    }
+
+    /** @test */
+    public function userIsToggledToDisabled()
+    {
+        $attributes = $this->getValidAttributes();
+        $attributes['status'] = Status::ENABLED;
+
+        $user = User::create($attributes);
+
+        $user->toggleTrashed();
+
+        $this->assertEquals(Status::DISABLED, $user->status);
+        $this->seeIsSoftDeletedInDatabase('users', ['id' => $user->id, 'status' => $user->status]);
     }
 
     /** @test */
@@ -81,7 +112,8 @@ class UserTest extends \TestCase
             'name' => 'some name',
             'password' => bcrypt('password'),
             'email' => 'lol@lol.com',
-            'role' => Role::ADMIN
+            'role' => Role::ADMIN,
+            'status' => Status::ENABLED
         ];
     }
 }

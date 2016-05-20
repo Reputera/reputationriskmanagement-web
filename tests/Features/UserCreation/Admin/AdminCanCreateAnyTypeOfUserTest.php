@@ -4,6 +4,7 @@ namespace Tests\Features\UserCreation\Admin;
 
 use App\Entities\Company;
 use App\Entities\Role;
+use App\Entities\Status;
 use App\Entities\User;
 
 class AdminCanCreateAnyTypeOfUserTest extends \TestCase
@@ -51,7 +52,8 @@ class AdminCanCreateAnyTypeOfUserTest extends \TestCase
             'role' => $postParams['role'],
             'phone_number' => $postParams['phone_number'],
             'phone_number_extension' => $postParams['phone_number_extension'],
-            'company_id' => ($role != 'Admin') ? $company->id : null
+            'company_id' => ($role != 'Admin') ? $company->id : null,
+            'status' => Status::EMAIL_NOT_CHANGED
         ]);
     }
 
@@ -73,7 +75,8 @@ class AdminCanCreateAnyTypeOfUserTest extends \TestCase
             'role' => $postParams['role'],
             'phone_number' => null,
             'phone_number_extension' => null,
-            'company_id' => null
+            'company_id' => null,
+            'status' => Status::EMAIL_NOT_CHANGED
         ]);
     }
 }

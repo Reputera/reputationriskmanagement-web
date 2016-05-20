@@ -3,7 +3,6 @@
 namespace App\Entities;
 
 use App\Entities\Exceptions\InvalidRoleAssignment;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -12,22 +11,27 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @property integer $id
  * @property string $name
- * @property string $email
- * @property integer $company_id
+ * @property string $status
  * @property string $role
+ * @property string $email
+ * @property string $phone_number
+ * @property string $phone_number_extension
+ * @property integer $company_id
  * @property string $password
  * @property string $remember_token
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property \Carbon\Carbon $deleted_at
  * @property-read \App\Entities\Company $company
- * @method static \App\Entities\User|null find($id)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\User whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\User whereName($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\User whereStatus($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\User whereRole($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\User whereEmail($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\User wherePhoneNumber($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\User wherePhoneNumberExtension($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\User whereCompanyId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\User wherePassword($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Entities\User whereRole($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\User whereRememberToken($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\User whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\User whereUpdatedAt($value)
@@ -44,7 +48,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'role', 'company_id', 'phone_number', 'phone_number_extension'
+        'name', 'email', 'password', 'status', 'role', 'company_id', 'phone_number', 'phone_number_extension'
     ];
 
     /**
@@ -134,5 +138,17 @@ class User extends Authenticatable
     public function isAdmin(): bool
     {
         return ($this->role && $this->role == Role::ADMIN);
+    }
+
+    public function toggleTrashed()
+    {
+        if ($this->trashed()) {
+            $this->update(['status' => Status::ENABLED]);
+            $this->restore();
+        } else {
+            $this->update(['status' => Status::DISABLED]);
+            $this->delete();
+        }
+        return $this;
     }
 }
