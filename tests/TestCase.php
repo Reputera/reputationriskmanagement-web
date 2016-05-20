@@ -212,4 +212,9 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
             $this->assertArrayHasKey($key, $data, $message);
         }
     }
+
+    protected function getResponseData()
+    {
+        return $this->response->getData(true)['data'];
+    }
 }
