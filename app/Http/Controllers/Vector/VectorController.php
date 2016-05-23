@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Vector;
 
+use App\Entities\Company;
 use App\Entities\CompanyVectorColor;
 use App\Http\Controllers\Controller;
 use App\Entities\Vector;
+use App\Http\Requests\Vector\AdminVectorColorRequest;
 use App\Transformers\Vector\VectorTransformer;
 use App\Http\Requests\Vector\VectorColorRequest;
 
@@ -43,14 +45,25 @@ class VectorController extends Controller
         return $this->respondWith(Vector::all(), new VectorTransformer());
     }
 
-    public function saveVectorColor(VectorColorRequest $request)
+    public function updateVectorColor($companyId, $vectorId, $color)
     {
         $vectorColor = CompanyVectorColor::firstOrNew([
-            'company_id' => auth()->user()->company_id,
-            'vector_id' => $request->get('vector_id')
+            'company_id' => $companyId,
+            'vector_id' => $vectorId
         ]);
-        $vectorColor->color = $request->get('color');
-        $vectorColor->save();
+        $vectorColor->color = $color;
+        return $vectorColor->save();
+    }
+
+    public function saveVectorColor(VectorColorRequest $request)
+    {
+        $this->updateVectorColor(auth()->user()->company_id, $request->get('vector_id'), $request->get('color'));
+        return $this->respondWith(Vector::find($request->get('vector_id')), new VectorTransformer());
+    }
+
+    public function adminSaveVectorColor(AdminVectorColorRequest $request)
+    {
+        $this->updateVectorColor($request->get('company_id'), $request->get('vector_id'), $request->get('color'));
         return $this->respondWith(Vector::find($request->get('vector_id')), new VectorTransformer());
     }
 }
