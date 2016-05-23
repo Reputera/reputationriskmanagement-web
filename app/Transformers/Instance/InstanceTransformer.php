@@ -89,6 +89,7 @@ class InstanceTransformer extends TransformerAbstract
             'title' => $instance->title,
             'company' => $instance->company->name,
             'vector' => $instance->vector->name ?? null,
+            'vector_color' => $instance->vector ? $instance->vector->color() : null,
             'type' => $instance->type,
             'date' => $instance->start->format('Y-m-d H:i:s'),
             'language' => $instance->language,

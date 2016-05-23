@@ -31,6 +31,8 @@ elixir(function(mix) {
             'node_modules/restangular/dist/restangular.min.js',
             'node_modules/ng-table/dist/ng-table.min.js',
             'node_modules/angular-modal-service/dst/angular-modal-service.min.js',
+            'bower_components/spectrum/spectrum.js',
+            'bower_components/angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker.min.js',
             'public/app/general/rrmModule.js',
             'public/app/features',
             'public/app/general/directives',
@@ -45,6 +47,7 @@ elixir(function(mix) {
         ],'public/js/adminlte.js', './')
         .styles([
             'bower_components/jquery-ui/themes/base/jquery-ui.min.css',
+            'bower_components/spectrum/spectrum.css',
             'node_modules/angular-toastr/dist/angular-toastr.css',
             'bower_components/jquery-ui/themes/base/all.css'
         ], 'public/css', './')

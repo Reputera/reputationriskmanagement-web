@@ -13,6 +13,7 @@ class CreateCompanyVectorColors extends Migration
     public function up()
     {
         Schema::create('company_vector_colors', function (Blueprint $table) {
+            $table->increments('id');
             $table->string('color', 10)->nullable();
             $table->unsignedInteger('company_id');
             $table->unsignedInteger('vector_id');

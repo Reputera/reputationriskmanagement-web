@@ -13,27 +13,33 @@ class VectorTableSeeder extends Seeder
     public function run()
     {
         Vector::create([
-           'name' => 'Social Responsibility'
+           'name' => 'Social Responsibility',
+            'default_color' => '#4BE6A1'
         ]);
 
         Vector::create([
-            'name' => 'Influencers'
+            'name' => 'Influencers',
+            'default_color' => '#4BE6A1'
         ]);
 
         Vector::create([
-            'name' => 'Social Intelligence'
+            'name' => 'Social Intelligence',
+            'default_color' => '#4BE6A1'
         ]);
 
         Vector::create([
-            'name' => 'Cybersecurity'
+            'name' => 'Cybersecurity',
+            'default_color' => '#4BE6A1'
         ]);
 
         Vector::create([
-            'name' => 'Operational Risks'
+            'name' => 'Operational Risks',
+            'default_color' => '#4BE6A1'
         ]);
 
         Vector::create([
-            'name' => 'Geopolitics'
+            'name' => 'Geopolitics',
+            'default_color' => '#4BE6A1'
         ]);
     }
 }

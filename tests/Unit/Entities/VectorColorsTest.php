@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Features\Vector;
+namespace Tests\Unit\Vector;
 
 use App\Entities\CompanyVectorColor;
 use App\Entities\Instance;

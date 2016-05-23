@@ -105,6 +105,19 @@ trait Transformer
     }
 
     /**
+     * @param $item
+     * @param $callback
+     * @return array
+     */
+    protected function fractalizeItem($item, $callback)
+    {
+        return $this->fractal()
+            ->createData(new Item($item, $callback))
+            ->toArray();
+    }
+
+
+    /**
      * When given a collection, it creates the proper response.
      *
      * @param $collection
