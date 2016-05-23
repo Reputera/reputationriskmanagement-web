@@ -1,28 +1,28 @@
 <?php
 
 use App\Entities\Role;
+use App\Entities\Status;
 
 Route::group(['middleware' => ['web']], function () {
     Route::get('login', 'Auth\AuthController@getLogin')->name('login.get');
     Route::post('login', 'Auth\AuthController@postLogin')->name('login.post');
+    Route::get('logout', 'Auth\AuthController@logout')->name('logout');
 
     // Password Reset Routes...
     Route::get('password/reset/{token?}', 'Auth\PasswordController@showResetForm')->name('password.reset.get');
     Route::post('password/email', 'Auth\PasswordController@sendResetLinkEmail')->name('password.email.post');
     Route::post('password/reset', 'Auth\PasswordController@reset')->name('password.reset.post');
 
-    Route::post('create-user', 'Users\UserController@store')->name('user.store');
-
-    Route::group(['middleware' => ['auth']], function () {
-        Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
-
-        Route::get('vectors' , 'Vector\VectorController@get');
+    Route::group(['middleware' => ['auth', 'status:'.Status::ENABLED]], function () {
+        Route::get('vectors', 'Vector\VectorController@get');
 
         Route::get('/', function () {
             return view('layouts.default');
         })->name('admin.landing');
 
         Route::group(['middleware' => ['role:'.Role::ADMIN]], function () {
+            Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+
             Route::get('users', 'Admin\Users\UserUIController@listAll')->name('admin.users.all.get');
             Route::post('users/toggle', 'Admin\Users\UserController@toggle')->name('admin.users.toggle.post');
 
@@ -35,8 +35,7 @@ Route::group(['middleware' => ['web']], function () {
             Route::get('edit-company', 'Admin\Company\CompanyUIController@editIndex')->name('admin.company.edit');
 
             Route::post('vectorColor', 'Vector\VectorController@saveVectorColor')->name('admin.vector.color');
-
-
+            
             Route::post('industry', 'Admin\Industry\IndustryController@store')->name('admin.industry.create.store');
 
             Route::get('instance', 'Instance\QueryController@getInstances')->name('instance.get');
@@ -52,6 +51,4 @@ Route::group(['middleware' => ['web']], function () {
                 ->name('instance.removeCompetitor');
         });
     });
-
-    Route::get('logout', 'Auth\AuthController@logout')->name('logout');
 });
