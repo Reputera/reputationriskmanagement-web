@@ -121,14 +121,25 @@ class User extends Authenticatable
     }
 
     /**
-     * Checks the user to see if they the role that was given.
+     * Checks the user to see if they are the role that was given.
      *
-     * @param $role
+     * @param string $role
      * @return bool
      */
     public function hasRole(string $role): bool
     {
         return strtolower($this->role) == strtolower($role);
+    }
+
+    /**
+     * Checks the user to see if they are the status that was given.
+     *
+     * @param string $status
+     * @return bool
+     */
+    public function isOfStatus(string $status): bool
+    {
+        return strtolower($this->status) == strtolower($status);
     }
 
     /**

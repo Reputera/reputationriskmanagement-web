@@ -106,6 +106,24 @@ class UserTest extends \TestCase
         }
     }
 
+    /** @test */
+    public function userIsTheGivenStatus()
+    {
+        $attributes = $this->getValidAttributes();
+        $attributes['status'] = Status::DISABLED;
+        $user = User::create($attributes);
+
+        $this->assertTrue($user->isOfStatus('DisABLed'));
+
+        $allStatuses = Status::all();
+        // Remove the status we have already tested.
+        unset($allStatuses['DISABLED']);
+
+        foreach ($allStatuses as $status) {
+            $this->assertFalse($user->isOfStatus($status));
+        }
+    }
+
     protected function getValidAttributes()
     {
         return $attributes = [
