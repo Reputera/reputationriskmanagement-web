@@ -19,9 +19,9 @@ class Role
         $user = $request->user();
 
         foreach (explode('|', $roles) as $role) {
-//            if (!$user || !$user->hasRole($role)) {
-//                return redirect(route('landing'));
-//            }
+            if (!$user || !$user->hasRole($role)) {
+                return redirect(route('landing'));
+            }
         }
 
         return $next($request);
