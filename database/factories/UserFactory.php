@@ -2,6 +2,7 @@
 
 use App\Entities\Company;
 use App\Entities\Role;
+use App\Entities\Status;
 
 $factory->define(App\Entities\User::class, function (Faker\Generator $faker) {
     return [
@@ -10,7 +11,8 @@ $factory->define(App\Entities\User::class, function (Faker\Generator $faker) {
         'password' => bcrypt(str_random(10)),
         'remember_token' => str_random(10),
         'role' => Role::USER,
-        'company_id' => null
+        'company_id' => null,
+        'status' => Status::ENABLED
     ];
 });
 
