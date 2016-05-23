@@ -3,6 +3,7 @@
 namespace App\Entities;
 
 use App\Entities\Exceptions\InvalidRoleAssignment;
+use App\Entities\Traits\Toggleable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -40,7 +41,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class User extends Authenticatable
 {
-    use SoftDeletes;
+    use SoftDeletes, Toggleable;
 
     /**
      * The attributes that are mass assignable.
@@ -140,15 +141,15 @@ class User extends Authenticatable
         return ($this->role && $this->role == Role::ADMIN);
     }
 
-    public function toggleTrashed()
+    public function restore()
     {
-        if ($this->trashed()) {
-            $this->update(['status' => Status::ENABLED]);
-            $this->restore();
-        } else {
-            $this->update(['status' => Status::DISABLED]);
-            $this->delete();
-        }
-        return $this;
+        $this->update(['status' => Status::ENABLED]);
+        return parent::restore();
+    }
+
+    public function delete()
+    {
+        $this->update(['status' => Status::DISABLED]);
+        return parent::delete();
     }
 }

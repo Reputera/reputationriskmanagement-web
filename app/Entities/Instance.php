@@ -2,6 +2,7 @@
 
 namespace App\Entities;
 
+use App\Entities\Traits\Toggleable;
 use App\Http\Queries\Instance as InstanceQuery;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -63,7 +64,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Instance extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, Toggleable;
 
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
@@ -100,16 +101,6 @@ class Instance extends Model
             $regions[] = $country->region->name;
         }
         return array_unique($regions);
-    }
-
-    public function toggleTrashed()
-    {
-        if ($this->trashed()) {
-            $this->restore();
-        } else {
-            $this->delete();
-        }
-        return $this;
     }
 
     public static function scopeCompanyRiskScore($builder, Company $company)
