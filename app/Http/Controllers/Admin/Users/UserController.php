@@ -33,9 +33,8 @@ class UserController extends ApiController
 
     public function toggle(Request $request)
     {
-        User::where('id', $request->get('id'))
-            ->withTrashed()
-            ->firstOrFail()
+        User::withTrashed()
+            ->findOrFail($request->get('id'))
             ->toggleTrashed();
     }
 }
