@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use App\Http\Traits\ErrorResponses;
+use App\Http\Traits\IsApiRequestChecker;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
@@ -17,7 +18,7 @@ use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 class Handler extends ExceptionHandler
 {
-    use ErrorResponses;
+    use ErrorResponses, IsApiRequestChecker;
 
     /**
      * A list of the exception types that should not be reported.
@@ -74,10 +75,5 @@ class Handler extends ExceptionHandler
         }
 
         return parent::render($request, $e);
-    }
-
-    protected function isApiRequest($request)
-    {
-        return ($request->route() && str_contains($request->route()->getPrefix(), '/api')  || $request->isJson() || $request->wantsJson());
     }
 }
