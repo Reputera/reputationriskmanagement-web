@@ -39,7 +39,7 @@
 
             <div class="form-group">
                 <div class="text-center">
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" name="reset-password" class="btn btn-primary">
                         <i class="fa fa-btn fa-refresh"></i>&nbsp;&nbsp;&nbsp;Reset Password
                     </button>
                 </div>
