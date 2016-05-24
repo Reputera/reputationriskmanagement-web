@@ -39,7 +39,9 @@ Route::group(['middleware' => ['web']], function () {
             Route::get('edit-company', 'Admin\Company\CompanyUIController@editIndex')->name('admin.company.edit');
 
             Route::post('adminVectorColor', 'Vector\VectorController@adminSaveVectorColor')->name('admin.vector.color');
-            
+
+            Route::get('vectorColors', 'Vector\VectorController@getCompanyVectorColors')->name('get.vector.color');
+
             Route::post('industry', 'Admin\Industry\IndustryController@store')->name('admin.industry.create.store');
 
             Route::get('instance', 'Instance\QueryController@getInstances')->name('instance.get');

@@ -6,6 +6,7 @@ use App\Entities\Company;
 use App\Entities\CompanyVectorColor;
 use App\Http\Controllers\Controller;
 use App\Entities\Vector;
+use App\Http\Requests\Request;
 use App\Http\Requests\Vector\AdminVectorColorRequest;
 use App\Transformers\Vector\VectorTransformer;
 use App\Http\Requests\Vector\VectorColorRequest;
@@ -43,6 +44,18 @@ class VectorController extends Controller
     public function get()
     {
         return $this->respondWith(Vector::all(), new VectorTransformer());
+    }
+
+    public function getCompanyVectorColors(Request $request)
+    {
+        $colors = \DB::table('company_vector_colors')
+            ->join('companies', 'company_vector_colors.company_id', '=', 'companies.id')
+            ->join('vectors', 'company_vector_colors.vector_id', '=', 'vectors.id')
+            ->where('company_id', $request->get('company_id'))
+            ->select('vectors.name as vector_name', 'vectors.default_color as default_color', 'vectors.id as vector_id', 'color')
+            ->get();
+
+        return $this->respondWithArray($colors);
     }
 
     public function updateVectorColor($companyId, $vectorId, $color)
