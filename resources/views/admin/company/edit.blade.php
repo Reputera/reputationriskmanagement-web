@@ -5,6 +5,13 @@
         <h3>Edit Company</h3>
         <br /><br />
 
+        <select ng-model="selectedCompanyId" required>
+            <option value="" selected="selected">Select Company</option>
+            <option ng-repeat="company in companies" value="@{{ company.id }}">
+                @{{ company.name }}
+            </option>
+        </select>
+
         <h3>Vector colors</h3>
         <table>
             <tr ng-repeat="vector in vectors.data track by vector.id">
@@ -23,14 +30,15 @@
             ['$scope', '$http', 'toastr', 'ModalService', 'ApplicationConfig', function($scope, $http, toastr, ModalService, ApplicationConfig)
     {
         $scope.vectors = vectors;
-        $scope.company = company;
+        $scope.companies = companies.data;
 
         $scope.saveColor = function(vector) {
             console.log(vector.color);
             $http({
                 method: 'POST',
-                url: '/vectorColor',
+                url: '/adminVectorColor',
                 data: {
+                    company_id: $scope.selectedCompanyId,
                     vector_id: vector.id,
                     color: vector.color
                 }

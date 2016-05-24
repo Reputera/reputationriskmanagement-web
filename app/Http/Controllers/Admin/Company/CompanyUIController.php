@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Company;
 
+use App\Entities\Company;
 use App\Entities\Industry;
 use App\Entities\Vector;
 use App\Http\Controllers\Controller;
@@ -21,7 +22,7 @@ class CompanyUIController extends Controller
 
     public function editIndex() {
         \JavaScript::put([
-            'company' => $this->fractalize(auth()->user()->company, new CompanyTransformer()),
+            'companies' => $this->fractalizeCollection(Company::all(), new CompanyTransformer()),
             'vectors' => $this->fractalizeCollection(Vector::all(), new VectorTransformer())
         ]);
 
