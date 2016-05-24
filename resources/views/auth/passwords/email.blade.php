@@ -10,12 +10,15 @@
             <input type="email" name="email" required class="form-control" placeholder="Email"/>
             <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
         </div>
-        <div class="row">
-            <div class="col-xs-5">
-                <button type="submit" name="signin" class="btn btn-primary btn-block btn-flat">
-                    Reset Password
-                </button>
-            </div>
+
+        <div class="form-group">
+            <button type="submit" name="signin" class="btn btn-primary btn-block btn-flat">
+                Reset Password
+            </button>
+        </div>
+
+        <div class="form-group">
+            <a class="text-red" href="{{ route('login.get') }}">Login</a>
         </div>
     </form>
 @endsection
