@@ -40,6 +40,7 @@ Route::group(['middleware' => ['web']], function () {
 
             Route::post('adminVectorColor', 'Vector\VectorController@adminSaveVectorColor')->name('admin.vector.color');
 
+            Route::post('vectorColor', 'Vector\VectorController@saveVectorColor')->name('vector.color');
             Route::get('vectorColors', 'Vector\VectorController@getCompanyVectorColors')->name('get.vector.color');
 
             Route::post('industry', 'Admin\Industry\IndustryController@store')->name('admin.industry.create.store');
