@@ -28,13 +28,16 @@ class Status
                 return $next($request);
             }
         }
-
+        
         if ($this->isApiRequest($request)) {
             if ($user->isOfStatus(UserStatus::EMAIL_NOT_CHANGED)) {
                 return $this->unauthorizedResponse('You must change your email to have access to the system.');
             }
             return $this->unauthorizedResponse();
         } else {
+            if ($user->isOfStatus(UserStatus::EMAIL_NOT_CHANGED)) {
+                return redirect(route('password.force-reset.get'));
+            }
             return redirect(route('landing'));
         }
     }
