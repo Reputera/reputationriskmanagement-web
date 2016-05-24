@@ -45,6 +45,14 @@ class Vector extends Model
         return $this->hasMany(CompanyVectorColor::class);
     }
 
+    public static function boot()
+    {
+        Vector::created(function ($vector) {
+            CompanyVectorColor::populateCompaniesWithNewVector($vector);
+        });
+        parent::boot();
+    }
+
     /**
      * @param Company $company
      * @param int $year
@@ -74,5 +82,9 @@ class Vector extends Model
             }
         }
         return $this->default_color;
+    }
+
+    public function colorForCompany($companyId) {
+        return $this->companyVectorColor()->where('company_id', $companyId)->first();
     }
 }

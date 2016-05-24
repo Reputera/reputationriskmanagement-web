@@ -25,4 +25,37 @@ class CompanyVectorColor extends Model
 
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
+
+    /**
+     * Associate all vector colors to company.
+     *
+     * @param Company $company
+     */
+    public static function populateCompanyColors(Company $company)
+    {
+        foreach(Vector::all() as $vector) {
+            CompanyVectorColor::create([
+                'company_id' => $company->id,
+                'vector_id' => $vector->id,
+                'color' => $vector->default_color
+            ]);
+        }
+    }
+
+    /**
+     * Associate a new vector color with all companies.
+     *
+     * @param Vector $vector
+     */
+    public static function populateCompaniesWithNewVector(Vector $vector)
+    {
+        foreach(Company::all() as $company) {
+            CompanyVectorColor::create([
+                'company_id' => $company->id,
+                'vector_id' => $vector->id,
+                'color' => $vector->default_color
+            ]);
+        }
+    }
+
 }
