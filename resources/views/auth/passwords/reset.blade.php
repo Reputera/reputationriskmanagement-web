@@ -44,6 +44,14 @@
                     </button>
                 </div>
             </div>
+
+            <div class="form-group">
+                <div class="text-center">
+                    @if(Auth::check())
+                        <a class="text-red" href="{{ route('logout') }}">Logout</a>
+                    @endif
+                </div>
+            </div>
         </form>
     </div>
 @endsection
