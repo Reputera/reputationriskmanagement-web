@@ -13,6 +13,10 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('password/email', 'Auth\PasswordController@sendResetLinkEmail')->name('password.email.post');
     Route::post('password/reset', 'Auth\PasswordController@reset')->name('password.reset.post');
 
+    Route::group(['middleware' => ['auth', 'status:'.Status::EMAIL_NOT_CHANGED]], function () {
+        Route::get('password/force-reset', 'Auth\PasswordController@forceReset')->name('password.force-reset.get');
+    });
+
     Route::group(['middleware' => ['auth', 'status:'.Status::ENABLED]], function () {
         Route::get('vectors', 'Vector\VectorController@get');
 
