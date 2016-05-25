@@ -22,8 +22,10 @@ class UserUIController extends Controller
 
     public function listAll()
     {
+        $users = collect($this->fractalizeCollection(User::withTrashed()->get(), new UserTransformer())['data']);
+
         \JavaScript::put([
-            'users' => $this->fractalizeCollection(User::all(), new UserTransformer())['data']
+            'users' => $users->keyBy('id')
         ]);
 
         return view('admin.users.list');

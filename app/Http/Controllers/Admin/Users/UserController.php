@@ -33,8 +33,10 @@ class UserController extends ApiController
 
     public function toggle(Request $request)
     {
-        User::withTrashed()
+        $user = User::withTrashed()
             ->findOrFail($request->get('id'))
             ->toggleTrashed();
+
+        return $this->respondWithItem($user, new UserTransformer);
     }
 }

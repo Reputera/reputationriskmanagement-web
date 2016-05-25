@@ -13,20 +13,23 @@
                     <th>Phone Number</th>
                     <th>Enable/Disable</th>
                 </tr>
-                <tr ng-repeat="user in users">
-                    <td>@{{ user.name }}</td>
-                    <td>@{{ user.email }}</td>
-                    <td>@{{ user.role }}</td>
+                <tr ng-repeat="singleUser in users">
+                    <td>@{{ singleUser.name }}</td>
+                    <td>@{{ singleUser.email }}</td>
+                    <td>@{{ singleUser.role }}</td>
                     <td>
-                        @{{ user.phone_number }}
-                        <span ng-if="user.phone_number_extension">Ext: @{{ user.phone_number_extension }}</span>
+                        @{{ singleUser.phone_number }}
+                        <span ng-if="singleUser.phone_number_extension">Ext: @{{ singleUser.phone_number_extension }}</span>
                     </td>
                     <td>
-                        <button class="btn"
-                                ng-class="{'btn-primary': user.deleted_at, 'btn-danger': !user.deleted_at}"
-                                ng-click="toggle(user.id)"
+                        <div ng-show="user.id == singleUser.id">
+                            Disabled for logged in user.
+                        </div>
+                        <button class="btn" ng-show="user.id != singleUser.id"
+                                ng-class="{'btn-primary': singleUser.deleted_at, 'btn-danger': !singleUser.deleted_at}"
+                                ng-click="toggle(singleUser.id)"
                         >
-                            @{{ user.deleted_at ? 'Enable' : 'Disable' }}
+                            @{{ singleUser.deleted_at ? 'Enable' : 'Disable' }}
                         </button>
                     </td>
                 </tr>
@@ -46,11 +49,14 @@
                 $http({
                     method: 'POST',
                     url: '{{ route('admin.users.toggle.post') }}',
-                    data: userId
+                    data: {
+                        id: userId
+                    }
                 })
                 .then(
                     function success(response) {
-                        toastr.success('Successfully added the companies!');
+                        toastr.success('Successfully updated the user!');
+                        $scope.users[response.data.data.id]['deleted_at'] = response.data.data.deleted_at;
                     },
                     function error(response) {
                         $scope.addErrors = [];
@@ -66,32 +72,6 @@
                     }
                 );
             }
-
-            $scope.saveUser = function () {
-                $scope.addErrors = [];
-                $http({
-                    method: 'POST',
-                    url: '{{ route('admin.users.create.store') }}',
-                    data: $scope.user
-                })
-                .then(
-                    function success(response) {
-                        toastr.success('Successfully added the companies!');
-                    },
-                    function error(response) {
-                        $scope.addErrors = [];
-                        if (response.data.hasOwnProperty('errors')) {
-                            for (var error_field in response.data.errors) {
-                                var field = error_field.split(".");
-                                if(typeof $scope.addErrors[field[0]] == "undefined"){
-                                    $scope.addErrors[field[0]] = [];
-                                }
-                                $scope.addErrors[field[0]] = response.data.errors[error_field][0];
-                            }
-                        }
-                    }
-                );
-            };
         }]);
     </script>
 @endsection
