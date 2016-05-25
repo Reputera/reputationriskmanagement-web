@@ -34,8 +34,13 @@ class UserController extends ApiController
     public function toggle(Request $request)
     {
         $user = User::withTrashed()
-            ->findOrFail($request->get('id'))
-            ->toggleTrashed();
+            ->findOrFail($request->get('id'));
+
+        if ($request->user()->id == $user->id) {
+            return $this->errorResponse('You cannot enable/disable yourself.');
+        }
+
+        $user->toggleTrashed();
 
         return $this->respondWithItem($user, new UserTransformer);
     }

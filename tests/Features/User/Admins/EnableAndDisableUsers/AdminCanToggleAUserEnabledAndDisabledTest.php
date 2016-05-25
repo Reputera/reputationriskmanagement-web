@@ -14,6 +14,7 @@ class AdminCanToggleAUserEnabledAndDisabledTest extends \TestCase
 
         $this->post('users/toggle', ['id' => $user->id]);
 
+        $this->assertResponseOk();
         $this->seeIsNotSoftDeletedInDatabase('users', ['id' => $user->id, 'status' => Status::ENABLED]);
     }
 
@@ -24,6 +25,17 @@ class AdminCanToggleAUserEnabledAndDisabledTest extends \TestCase
 
         $this->post('users/toggle', ['id' => $user->id]);
 
+        $this->assertResponseOk();
         $this->seeIsSoftDeletedInDatabase('users', ['id' => $user->id, 'status' => Status::DISABLED]);
+    }
+
+    public function test_admin_cannot_toggle_themselves()
+    {
+        $user = $this->beLoggedInAsAdmin(['status' => Status::ENABLED]);
+
+        $this->post('users/toggle', ['id' => $user->id]);
+
+        $this->assertResponseStatus(500);
+        $this->assertEquals('You cannot enable/disable yourself.', $this->response->getData(true)['message']);
     }
 }
