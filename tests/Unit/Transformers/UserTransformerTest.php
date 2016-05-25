@@ -11,31 +11,48 @@ class UserTransformerTest extends \TestCase
     {
         $user = factory(User::class)->create(['phone_number' => 1234567891, 'phone_number_extension' => 123]);
 
-        $expectedResults = [
-            'name' => $user->name,
-            'email' => $user->email,
-            'role' => $user->role,
-            'phone_number' => '(123) 456-7891',
-            'phone_number_extension' => $user->phone_number_extension
-        ];
-
         $transformedData = (new UserTransformer())->transform($user);
-        $this->assertEquals($expectedResults, $transformedData);
+        $this->assertEquals($this->getExpectedResults($user), $transformedData);
     }
 
     public function testPresentWithoutPhoneNumber()
     {
         $user = factory(User::class)->create();
 
-        $expectedResults = [
+        $transformedData = (new UserTransformer())->transform($user);
+        $this->assertEquals($this->getExpectedResults($user), $transformedData);
+    }
+
+    public function testAdminGetsAdditionalFields()
+    {
+        $user = $this->beLoggedInAsAdmin(['phone_number' => 1234567891, 'phone_number_extension' => 123]);
+        
+        $transformedData = (new UserTransformer())->transform($user);
+        $this->assertEquals($this->getExpectedResults($user), $transformedData);
+    }
+
+    protected function getExpectedResults(User $user)
+    {
+        $phoneNumber = null;
+        if ($user->phone_number) {
+            $phoneNumber = "(".substr($user->phone_number, 0, 3).") ".
+                substr($user->phone_number, 3, 3)."-".substr($user->phone_number, 6);
+        }
+
+        $returnArray = [
             'name' => $user->name,
             'email' => $user->email,
             'role' => $user->role,
-            'phone_number' => $user->phone_number,
+            'phone_number' => $phoneNumber,
             'phone_number_extension' => $user->phone_number_extension
         ];
 
-        $transformedData = (new UserTransformer())->transform($user);
-        $this->assertEquals($expectedResults, $transformedData);
+        if ($user->isAdmin()) {
+            $returnArray['id'] = $user->id;
+            $returnArray['updated_at'] = (string) $user->updated_at;
+            $returnArray['deleted_at'] = (string) $user->deleted_at;
+        }
+
+        return $returnArray;
     }
 }
