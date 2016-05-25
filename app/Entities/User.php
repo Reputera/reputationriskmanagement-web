@@ -151,16 +151,4 @@ class User extends Authenticatable
     {
         return ($this->role && $this->role == Role::ADMIN);
     }
-
-    public function restore()
-    {
-        $this->update(['status' => Status::ENABLED]);
-        return parent::restore();
-    }
-
-    public function delete()
-    {
-        $this->update(['status' => Status::DISABLED]);
-        return parent::delete();
-    }
 }
