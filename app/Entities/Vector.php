@@ -74,17 +74,19 @@ class Vector extends Model
         return 0;
     }
 
-    public function color() {
-        if($user = auth()->user()) {
+    public function color()
+    {
+        if ($user = auth()->user()) {
             $colorModel = $this->companyVectorColor()->where('company_id', $user->company_id)->first();
-            if($colorModel) {
+            if ($colorModel) {
                 return $colorModel->color;
             }
         }
         return $this->default_color;
     }
 
-    public function colorForCompany($companyId) {
+    public function colorForCompany($companyId)
+    {
         return $this->companyVectorColor()->where('company_id', $companyId)->first();
     }
 }
