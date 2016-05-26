@@ -13,7 +13,6 @@ class GetVectorColorsTest extends \TestCase
     {
         $vector = factory(Vector::class)->create();
         $user = $this->beLoggedInAsUser();
-        CompanyVectorColor::create(['company_id' => $user->company_id, 'vector_id' => $vector->id, 'color' => 'color']);
         $this->ajaxCall('GET', 'vectorColors', ['company_id' => $user->company_id]);
         $this->assertResponseOk();
         $this->assertCount(1, $this->getResponseData());
