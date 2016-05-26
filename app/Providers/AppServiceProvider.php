@@ -16,13 +16,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        User::restoring(function ($user) {
-            return $user->update(['status' => Status::ENABLED]);
-        });
 
-        User::deleting(function ($user) {
-            return $user->update(['status' => Status::DISABLED]);
-        });
     }
 
     /**

@@ -63,6 +63,19 @@ class User extends Authenticatable
 
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 
+    public static function boot()
+    {
+        User::restoring(function ($user) {
+            return $user->update(['status' => Status::ENABLED]);
+        });
+
+        User::deleting(function ($user) {
+            return $user->update(['status' => Status::DISABLED]);
+        });
+        
+        parent::boot();
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|Company
      */
