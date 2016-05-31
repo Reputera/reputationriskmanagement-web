@@ -6,6 +6,7 @@ use App\Entities\Traits\Toggleable;
 use App\Http\Queries\Instance as InstanceQuery;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 /**
  * App\Entities\Instance
@@ -105,24 +106,27 @@ class Instance extends Model
 
     public static function scopeCompanyRiskScore($builder, Company $company)
     {
-        $builder->select(\DB::raw('sum(risk_score) / COUNT(instances.id) as company_risk_scores'))
+        return self::addSelectForRiskScoreAverage($builder)
             ->where('instances.company_id', $company->id)
             ->groupBy('instances.company_id');
+    }
 
-        return $builder;
+    public static function scopeDailyCompanyRiskScore($builder, Company $company)
+    {
+        return self::addSelectForRiskScoreAverage($builder)
+            ->where('instances.company_id', $company->id)
+            ->groupBy('instances.start_date');
     }
 
     public static function scopeCompetitorRiskScoreForCompany($builder, Company $company)
     {
-        $builder->select(\DB::raw('sum(risk_score) / COUNT(instances.id) as company_risk_scores'))
+        return self::addSelectForRiskScoreAverage($builder)
             ->whereIn('instances.company_id', function ($query) use ($company) {
                 $query->select('competitor_company_id')
                     ->from($company->competitors()->getTable())
                     ->where('company_id', $company->id);
             })
             ->groupBy('instances.company_id');
-
-        return $builder;
     }
 
     /**
@@ -133,5 +137,10 @@ class Instance extends Model
     public function scopeFilter($builder, InstanceQuery $filter)
     {
         return $filter->apply($builder);
+    }
+
+    protected static function addSelectForRiskScoreAverage($builder)
+    {
+        return $builder->select(DB::raw('sum(risk_score) / COUNT(instances.id) as company_risk_scores'));
     }
 }
