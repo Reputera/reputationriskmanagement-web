@@ -2,7 +2,6 @@
 
 namespace App\Http\Pipelines\Query;
 
-
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 
@@ -20,7 +19,7 @@ class SortingPipeline
         $builder = $next($request);
 
         if ($sortBy = $request->input('sort_by')) {
-                $builder->orderBy($sortBy, $request->input('sort_direction') ?: 'DESC');
+            $builder->orderBy($sortBy, $request->input('sort_direction') ?: 'DESC');
         }
 
         return $builder;
