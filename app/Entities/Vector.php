@@ -3,6 +3,7 @@
 namespace App\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 /**
  * App\Entities\Vector
@@ -66,7 +67,7 @@ class Vector extends Model
             ->where('instances.company_id', $company->id)
             ->where('instances.start', 'like', $year.'-'.$month.'%')
             ->where('instances.vector_id', $this->id)
-            ->select(\DB::raw('sum(instances.risk_score) / COUNT(instances.id) AS vector_score'));
+            ->select(DB::raw('sum(instances.risk_score) / COUNT(instances.id) AS vector_score'));
 
         if ($results = $vectorScoreQuery->first()) {
             return (int) round($results->vector_score);
