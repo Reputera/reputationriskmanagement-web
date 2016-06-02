@@ -1,4 +1,4 @@
-<?php namespace Tests\Features\Instance\API;
+<?php namespace Tests\Features\Instance\Web;
 
 use App\Entities\Country;
 use App\Entities\Instance;

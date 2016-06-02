@@ -3,6 +3,12 @@
 use App\Entities\Role;
 use App\Entities\Status;
 
+Route::group(['prefix' => 'api', 'middleware' => ['api']], function () {
+    Route::post('login', 'Auth\ApiAuthController@authenticate')->name('api.login.post');
+    Route::get('myInstances', 'Api\Instance\ApiQueryController@getMyInstances')->name('api.myInstances');
+    Route::get('vector-risk-scores-by-month', 'Api\Instance\MonthlyRiskScoreController@byCompany')->name('api.monthly.risk');
+});
+
 Route::group(['middleware' => ['web']], function () {
     Route::get('login', 'Auth\AuthController@getLogin')->name('login.get');
     Route::post('login', 'Auth\AuthController@postLogin')->name('login.post');
