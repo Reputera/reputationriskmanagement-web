@@ -40,7 +40,9 @@ class SentimentMapController extends ApiController
             ->leftJoin('instance_country', 'instances.id', '=', 'instance_country.instance_id')
             ->leftJoin('countries', 'countries.id', '=', 'instance_country.country_id')
             ->leftJoin('regions', 'regions.id', '=', 'countries.region_id')
+            ->whereNotNull('vectors.name')
             ->groupBy('vectors.name')
+            ->orderBy('count', 'desc')
             ->where('regions.name', '=', $request->input('region'));
 
         if ($start = $request->input('start_datetime')) {
