@@ -9,6 +9,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['api']], function () {
     Route::post('riskScore', 'Instance\QueryController@getRiskScore')->name('api.getRiskScore');
     Route::post('vector-risk-scores-by-month', 'Api\Instance\MonthlyRiskScoreController@byCompany')->name('api.monthly.risk');
     Route::post('vectors', 'Vector\VectorController@get');
+    Route::post('setimentMap', 'Api\Instance\SentimentMapController@getSentimentMapData');
 });
 
 Route::group(['middleware' => ['web']], function () {
