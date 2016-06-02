@@ -14,26 +14,17 @@ use App\Http\Requests\Vector\VectorColorRequest;
 class VectorController extends Controller
 {
     /**
-     * @api {get} /vectors/
+     * @api {get} /vectors/ List Vectors
      * @apiName Vectors
      * @apiDescription Retrieves vector names and colors.
      * @apiGroup Vectors
      * @apiSuccessExample {json} Success-Response:
      *  HTTP/1.1 200 OK
      *  {
-     *      "data": {
-     *          "2016-04": {
-     *              "Vector 1": 10,
-     *              "Vector 2": 20,
-     *              "Vector 3": 30,
-     *          },
-     *          "2016-7": {
-     *              "Vector 1": 20,
-     *              "Vector 2": 30,
-     *              "Vector 3": 10,
-     *          },
-     *          ...
-     *      },
+     *      "data":[
+     *          {"id":1,"name":"Social Responsibility","color":"#4BE6A1","default_color":"#4BE6A1"},
+     *          {"id":2,"name":"Influencers","color":"#4BE6A1","default_color":"#4BE6A1"}
+     *      ],
      *      "status_code": 200,
      *      "message": "Success"
      *  }

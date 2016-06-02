@@ -17,14 +17,6 @@ class QueryController extends Controller
     use PaginationTrait;
 
     /**
-     * @api {get} /instances/ List instances
-     * @apiName ListInstances
-     * @apiDescription List instances based on query parameters.
-     * @apiGroup Instances
-     * @apiUse MultipleInstances
-     * @apiUse PaginatedResults
-     */
-    /**
      * @param InstanceQueryRequest $request
      * @param QueryBuilder $queryBuilder
      * @return \Illuminate\Http\JsonResponse
@@ -41,7 +33,6 @@ class QueryController extends Controller
             'total_sentiment_score' => $resultCollection->total() ? (int)($resultCollection->sum('sentiment') / $resultCollection->total() * 100) : 0,
             'instances' => $this->fractalPaginate($resultCollection, new InstanceTransformer())
         ]);
-
     }
 
     /**
@@ -77,12 +68,6 @@ class QueryController extends Controller
         die;
     }
 
-    /**
-     * @api {get} /competitors-average-risk-score Return the risk score for a company.
-     * @apiName RiskScore
-     * @apiDescription Return the risk score for a company.
-     * @apiGroup Instances
-     */
     /**
      * @param RiskScoreRequest $request
      * @param InstanceQuery $query
