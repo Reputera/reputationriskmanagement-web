@@ -33,7 +33,7 @@ class QueryingTest extends \TestCase
             'companies_name' => $returnedInstance->company->name,
         ]);
         $this->assertJsonResponseOkAndFormattedProperly();
-        $results = $this->response->getData(true)['data']['instances']['data'];
+        $results = $this->response->getData(true)['data'];
         $this->assertCount(1, $results);
         $this->assertEquals($returnedInstance->title, array_get($results, '0.title'), 'Assert correct instance returned');
     }
@@ -66,7 +66,7 @@ class QueryingTest extends \TestCase
             'companies_name' => $returnedInstance->company->name,
         ]);
         $this->assertJsonResponseOkAndFormattedProperly();
-        $results = $this->response->getData(true)['data']['instances']['data'];
+        $results = $this->response->getData(true)['data'];
         $this->assertCount(2, $results);
         $this->assertEquals($returnedInstance->title, array_get($results, '0.title'), 'Assert correct instance returned');
     }
@@ -84,7 +84,7 @@ class QueryingTest extends \TestCase
             'fragment' => 'fragment text'
         ]);
         $this->assertJsonResponseOkAndFormattedProperly();
-        $results = $this->response->getData(true)['data']['instances']['data'];
+        $results = $this->response->getData(true)['data'];
         $this->assertCount(1, $results);
         $this->assertEquals($returnedInstance->title, array_get($results, '0.title'), 'Assert correct instance returned');
     }

@@ -38,12 +38,7 @@ class ApiQueryController extends ApiController
             $queryBuilder->queryInstances($request, $params)
                 ->with('countries.region'), $request
         );
-
-        return $this->respondWithArray([
-            'count' => $resultCollection->total(),
-            'total_sentiment_score' => $resultCollection->total() ? (int)($resultCollection->sum('sentiment') / $resultCollection->total() * 100) : 0,
-            'instances' => $this->fractalPaginate($resultCollection, new InstanceTransformer())
-        ]);
+        return $this->respondWithArray($this->fractalPaginate($resultCollection, new InstanceTransformer()));
     }
 
     /**
