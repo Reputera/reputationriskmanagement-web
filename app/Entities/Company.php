@@ -5,8 +5,10 @@ namespace App\Entities;
 use App\Http\Queries\Instance as InstanceQuery;
 use App\Http\QueryFilter;
 use App\Services\Vendors\RecordedFuture\InstanceApiResponseQueue;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 /**
  * App\Entities\Company
@@ -110,5 +112,68 @@ class Company extends Model
         }
 
         return 0;
+    }
+
+    /**
+     * Gets the reputation change for a particular company between two dates. The way this is done is rather complex.
+     *
+     * @param Carbon $start
+     * @param Carbon $end
+     * @return float
+     */
+    public function reputationChangeByDate(Carbon $start, Carbon $end)
+    {
+        $days = $start->diffInDays($end);
+
+        // We initially need to make a query to populate the instance scores (reputation score) grouped by the
+        // date (YYYY-MM-DD) of the start column. They way the the datetimes (dates withe hours/minutes/seconds)
+        // do not try to group.
+        $builder = (new Instance)->dailyCompanyRiskScore($this)
+            ->whereRaw("start between ('{$start->toDateString()}' - interval {$days} day ) and '{$start->toDateString()}'")
+            ->orderByRaw('start_date ASC');
+
+        // For speed and because we want to use this same data set over and over (for this "process"), we place the
+        // results into a temp table. This table automatically destroys itself after the session ends.
+        DB::select(DB::raw("
+            CREATE TEMPORARY TABLE IF NOT EXISTS temp_daily_scores_and_start_dates AS
+            (
+              {$builder->toSql()}
+            );
+            "), $builder->getBindings());
+
+        // Next we want to create an exact copy of the taem table, again for speed, but also so because we want want to
+        // query on this table to get the "next" company risk score.
+        DB::select(DB::raw("
+            CREATE TEMPORARY TABLE IF NOT EXISTS temp_daily_scores_and_start_dates_copy AS (
+              SELECT * FROM temp_daily_scores_and_start_dates
+            );
+        "));
+
+        // Here is where we are making use of the two temp tables. This allows us to get the current risk score
+        // for each day using the "temp_daily_scores_and_start_dates" temp table and using the
+        // "temp_daily_scores_and_start_dates_copy" to get the next days risk score.
+        // This will allow us to compare the two days and get the percentage of change.
+        $results = DB::select(DB::raw("
+            SELECT *, (
+              SELECT company_risk_scores from temp_daily_scores_and_start_dates_copy where temp_daily_scores_and_start_dates_copy.start_date > temp_daily_scores_and_start_dates.start_date order by temp_daily_scores_and_start_dates_copy.start_date asc limit 1
+            ) AS next_company_risk_scores
+            FROM temp_daily_scores_and_start_dates;
+            "));
+
+        // Since we can't count the next day of the last date, we need to drop that day.
+        // The reason we can't count it is
+        array_pop($results);
+        $finalScores = [];
+        foreach ($results as &$result) {
+            if ($result->next_company_risk_scores > $result->company_risk_scores) {
+                $value = (($result->next_company_risk_scores - $result->company_risk_scores) / $result->company_risk_scores);
+            } else {
+                $value = -(($result->company_risk_scores - $result->next_company_risk_scores) / $result->company_risk_scores);
+            }
+
+            $finalScores[] = $value * 100;
+        }
+
+        return array_sum($finalScores) / count($finalScores);
     }
 }
