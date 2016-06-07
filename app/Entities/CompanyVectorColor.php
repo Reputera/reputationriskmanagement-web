@@ -27,6 +27,15 @@ class CompanyVectorColor extends Model
 
 
     /**
+     * Associates all unassociated colors with companies.
+     */
+    public static function syncAllCompanyColors() {
+        foreach(Company::all() as $company) {
+            CompanyVectorColor::populateCompanyColors($company);
+        }
+    }
+
+    /**
      * Associate all vector colors to company.
      *
      * @param Company $company
@@ -34,11 +43,7 @@ class CompanyVectorColor extends Model
     public static function populateCompanyColors(Company $company)
     {
         foreach(Vector::all() as $vector) {
-            CompanyVectorColor::create([
-                'company_id' => $company->id,
-                'vector_id' => $vector->id,
-                'color' => $vector->default_color
-            ]);
+            CompanyVectorColor::createIfDoesntExist($company, $vector);
         }
     }
 
@@ -50,6 +55,23 @@ class CompanyVectorColor extends Model
     public static function populateCompaniesWithNewVector(Vector $vector)
     {
         foreach(Company::all() as $company) {
+            CompanyVectorColor::createIfDoesntExist($company, $vector);
+        }
+    }
+
+
+    /**
+     * Create association between company and vector color (deafult color) if one does not already exist.
+     *
+     * @param Company $company
+     * @param Vector $vector
+     */
+    protected static function createIfDoesntExist(Company $company, Vector $vector)
+    {
+        if(! CompanyVectorColor::where([
+            'company_id' => $company->id,
+            'vector_id' => $vector->id
+        ])->first()) {
             CompanyVectorColor::create([
                 'company_id' => $company->id,
                 'vector_id' => $vector->id,

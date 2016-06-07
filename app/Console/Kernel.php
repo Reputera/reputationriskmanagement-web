@@ -6,6 +6,7 @@ use App\Console\Commands\RecordedFuture\Instances\RetrieveInstanceResponsesDaily
 use App\Console\Commands\RecordedFuture\Instances\RetrieveInstanceResponsesHourly;
 use App\Console\Commands\RecordedFuture\Instances\QueueProcessor;
 use App\Console\Commands\SystemCleanup\Instance as SystemCleanupInstance;
+use App\Console\Commands\SystemCleanup\SyncCompanyVectorColors;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -20,7 +21,8 @@ class Kernel extends ConsoleKernel
         RetrieveInstanceResponsesDaily::class,
         RetrieveInstanceResponsesHourly::class,
         QueueProcessor::class,
-        SystemCleanupInstance::class
+        SystemCleanupInstance::class,
+        SyncCompanyVectorColors::class
     ];
 
     /**

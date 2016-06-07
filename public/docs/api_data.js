@@ -1,19 +1,75 @@
 define({ "api": [
   {
-    "type": "get",
+    "type": "post",
     "url": "/instances/",
     "title": "List instances",
     "name": "ListInstances",
     "description": "<p>List instances based on query parameters.</p>",
     "group": "Instances",
     "version": "0.0.0",
-    "filename": "app/Http/Controllers/Instance/QueryController.php",
+    "filename": "app/Http/Controllers/Api/Instance/ApiQueryController.php",
     "groupTitle": "Instances",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "start_datetime",
+            "description": "<p>Acceptable format: YYYY-MM-DD HH:ii:ss</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "end_datetime",
+            "description": "<p>Acceptable format: YYYY-MM-DD HH:ii:ss</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "vectors_name",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "regions_name",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "size": "1-1000",
+            "optional": true,
+            "field": "count",
+            "description": "<p>The maximum number of records per page to be retrieved with pagination.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": true,
+            "field": "page",
+            "description": "<p>The page of the result set to return.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example request:",
+        "content": "{\n    start_datetime: \"2015-03-1 00:00:00\",\n    end_datetime: \"2015-5-1 00:00:00\",\n    vectors_name: \"Vector\",\n    regions_name: \"Region\"\n}",
+        "type": "json"
+      }
+    ],
     "success": {
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n    \"data\": {[\n        {\n            \"id\" => \"123\",\n            \"title\" => \"Some Title\",\n            \"company\" => \"Company name\",\n            \"vector\" => \"Vector\", // Can be ''\n            \"type\" => \"Instance Type\",\n            \"date\" => \"2016-04-12 12:23:23\",\n            \"language\" => \"eng\",\n            \"source\" => \"Some Source\",\n            \"fragment\" => \"A string about the instance\",\n            \"link\" => \"A URL to the instance\",\n            \"regions\" => \"North America, Africa\",\n            \"positive_risk_score\" => \"10\",\n            \"negative_risk_score\" => \"0\",\n            \"risk_score\" => \"10\",\n            \"flagged\" => false\n        },\n        {\n            \"id\" => \"456\",\n            \"title\" => \"Some Title\",\n            \"company\" => \"Company name\",\n            \"vector\" => \"Vector\", // Can be ''\n            \"type\" => \"Instance Type\",\n            \"date\" => \"2016-04-12 12:23:23\",\n            \"language\" => \"eng\",\n            \"source\" => \"Some Source\",\n            \"fragment\" => \"A string about the instance\",\n            \"link\" => \"A URL to the instance\",\n            \"regions\" => \"Europe, South America\",\n            \"positive_risk_score\" => \"20\",\n            \"negative_risk_score\" => \"50\",\n            \"risk_score\" => \"-30\",\n            \"flagged\" => true\n        }\n    ]},\n    \"status_code\": 200,\n    \"message\": \"Success\"\n}",
+          "content": "HTTP/1.1 200 OK\n{\n    \"data\": {[\n        {\n            \"id\" => \"123\",\n            \"title\" => \"Some Title\",\n            \"company\" => \"Company name\",\n            \"vector\" => \"Vector\", // Can be ''\n            \"vector_color\" => \"#000000\",\n            \"type\" => \"Instance Type\",\n            \"date\" => \"2016-04-12 12:23:23\",\n            \"language\" => \"eng\",\n            \"source\" => \"Some Source\",\n            \"fragment\" => \"A string about the instance\",\n            \"link\" => \"A URL to the instance\",\n            \"regions\" => \"North America, Africa\",\n            \"positive_risk_score\" => \"10\",\n            \"negative_risk_score\" => \"0\",\n            \"risk_score\" => \"10\",\n            \"flagged\" => false\n        },\n        {\n            \"id\" => \"456\",\n            \"title\" => \"Some Title\",\n            \"company\" => \"Company name\",\n            \"vector\" => \"Vector\", // Can be ''\n            \"vector_color\" => \"#000000\",\n            \"type\" => \"Instance Type\",\n            \"date\" => \"2016-04-12 12:23:23\",\n            \"language\" => \"eng\",\n            \"source\" => \"Some Source\",\n            \"fragment\" => \"A string about the instance\",\n            \"link\" => \"A URL to the instance\",\n            \"regions\" => \"Europe, South America\",\n            \"positive_risk_score\" => \"20\",\n            \"negative_risk_score\" => \"50\",\n            \"risk_score\" => \"-30\",\n            \"flagged\" => true\n        }\n    ]},\n    \"status_code\": 200,\n    \"message\": \"Success\"\n}",
           "type": "json"
         },
         {
@@ -22,32 +78,101 @@ define({ "api": [
           "type": "json"
         }
       ]
-    },
+    }
+  },
+  {
+    "type": "post",
+    "url": "/competitors-average-risk-score",
+    "title": "Risk Score",
+    "name": "RiskScore",
+    "description": "<p>Return the risk score for a company, and inudstry average risk score.</p>",
+    "group": "Instances",
+    "examples": [
+      {
+        "title": "Success-Response:",
+        "content": "HTTP/1.1 200 OK\n{\n    \"data\":[\n        {\"company_risk_score\":25},\n        {\"average_competitor_risk_score\":10}\n    ],\n    \"status_code\": 200,\n    \"message\": \"Success\"\n}",
+        "type": "json"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": "app/Http/Controllers/Api/Instance/ApiQueryController.php",
+    "groupTitle": "Instances",
     "parameter": {
       "fields": {
         "Parameter": [
           {
             "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "company_name",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
             "type": "Number",
-            "size": "1-1000",
+            "allowedValues": [
+              "7",
+              "30",
+              "186",
+              "365"
+            ],
+            "optional": false,
+            "field": "lastDays",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
             "optional": true,
-            "field": "limit",
-            "description": "<p>The maximum number of records to be retrieved with pagination.</p>"
+            "field": "vector",
+            "description": ""
           }
         ]
       }
     }
   },
   {
-    "type": "get",
-    "url": "/competitors-average-risk-score",
-    "title": "Return the risk score for a company.",
-    "name": "RiskScore",
-    "description": "<p>Return the risk score for a company.</p>",
+    "type": "post",
+    "url": "/riskScoreMapData",
+    "title": "Risk Score map data",
+    "name": "RiskScoreMapData",
+    "description": "<p>Return the risk score data for risk map</p>",
     "group": "Instances",
+    "examples": [
+      {
+        "title": "Success-Response:",
+        "content": "HTTP/1.1 200 OK\n{\n    \"data\":[\n        {\n            \"region\":\"Region name\",\n            \"count\":25,\n            \"vectors\":[\n                {\n                    \"vector1\":\"vector name\",\n                    \"count\":5\n                }\n                {\n                    \"vector1\":\"vector name\",\n                    \"count\":5\n                }\n            ]\n        },\n    ],\n    \"status_code\": 200,\n    \"message\": \"Success\"\n}",
+        "type": "json"
+      },
+      {
+        "title": "Example request:",
+        "content": "{\n    start_datetime: \"2015-03-1 00:00:00\",\n    end_datetime: \"2015-5-1 00:00:00\"\n}",
+        "type": "json"
+      }
+    ],
     "version": "0.0.0",
-    "filename": "app/Http/Controllers/Instance/QueryController.php",
-    "groupTitle": "Instances"
+    "filename": "app/Http/Controllers/Api/Instance/RiskScoreMapController.php",
+    "groupTitle": "Instances",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "start_datetime",
+            "description": "<p>Acceptable format: YYYY-MM-DD HH:ii:ss</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "end_datetime",
+            "description": "<p>Acceptable format: YYYY-MM-DD HH:ii:ss</p>"
+          }
+        ]
+      }
+    }
   },
   {
     "type": "post",
@@ -137,5 +262,25 @@ define({ "api": [
         }
       ]
     }
+  },
+  {
+    "type": "get",
+    "url": "/vectors/",
+    "title": "List Vectors",
+    "name": "Vectors",
+    "description": "<p>Retrieves vector names and colors.</p>",
+    "group": "Vectors",
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n    \"data\":[\n        {\"id\":1,\"name\":\"Social Responsibility\",\"color\":\"#4BE6A1\",\"default_color\":\"#4BE6A1\"},\n        {\"id\":2,\"name\":\"Influencers\",\"color\":\"#4BE6A1\",\"default_color\":\"#4BE6A1\"}\n    ],\n    \"status_code\": 200,\n    \"message\": \"Success\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/Http/Controllers/Vector/VectorController.php",
+    "groupTitle": "Vectors"
   }
 ] });

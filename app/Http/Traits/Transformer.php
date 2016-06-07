@@ -131,7 +131,8 @@ trait Transformer
 
     /**
      * @apiDefine PaginatedResults
-     * @apiParam {Number{1-1000}} [limit] The maximum number of records to be retrieved with pagination.
+     * @apiParam {Number{1-1000}} [count] The maximum number of records per page to be retrieved with pagination.
+     * @apiParam {Number} [page] The page of the result set to return.
      * @apiSuccessExample {json} Results with pagination:
      *      // Any endpoint will have the following "meta" key added to the response. Also the endpoint
      *      // may have the following parameter to determine the number of records returned.

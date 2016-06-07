@@ -17,6 +17,7 @@ class InstanceTransformer extends TransformerAbstract
      *          "title" => "Some Title",
      *          "company" => "Company name",
      *          "vector" => "Vector", // Can be ''
+     *          "vector_color" => "#000000",
      *          "type" => "Instance Type",
      *          "date" => "2016-04-12 12:23:23",
      *          "language" => "eng",
@@ -44,6 +45,7 @@ class InstanceTransformer extends TransformerAbstract
      *              "title" => "Some Title",
      *              "company" => "Company name",
      *              "vector" => "Vector", // Can be ''
+     *              "vector_color" => "#000000",
      *              "type" => "Instance Type",
      *              "date" => "2016-04-12 12:23:23",
      *              "language" => "eng",
@@ -61,6 +63,7 @@ class InstanceTransformer extends TransformerAbstract
      *              "title" => "Some Title",
      *              "company" => "Company name",
      *              "vector" => "Vector", // Can be ''
+     *              "vector_color" => "#000000",
      *              "type" => "Instance Type",
      *              "date" => "2016-04-12 12:23:23",
      *              "language" => "eng",

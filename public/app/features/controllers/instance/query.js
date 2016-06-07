@@ -31,13 +31,14 @@ app.controller('InstanceQueryController', ['$scope', '$http', 'toastr', 'helpers
                 method: 'GET',
                 url: '/instance?' + $.param($scope.getParameters())
             }).then(function(result) {
-                $scope.instances = result.data.data.instances;
-                $scope.resultCount = $scope.instances.meta.pagination.total;
-                params.total($scope.instances.meta.pagination.total);
-                params.page($scope.instances.meta.pagination.current_page);
-                $defer.resolve($scope.instances.data);
+                $scope.instances = result.data.data;
+                console.log($scope.instances);
+                $scope.resultCount = result.data.meta.pagination.total;
+                params.total(result.data.meta.pagination.total);
+                params.page(result.data.meta.pagination.current_page);
+                $defer.resolve($scope.instances);
                 $scope.csvUrl = '/instanceCsv?'+$.param($scope.getParameters());
-                return $scope.instances.data;
+                return $scope.instances;
             });
         }
     });
