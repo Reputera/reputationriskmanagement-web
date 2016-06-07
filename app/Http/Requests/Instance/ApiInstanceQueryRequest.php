@@ -8,10 +8,10 @@ class ApiInstanceQueryRequest extends Request
 {
     /**
      * @apiDefine InstanceQuery
-     * @apiParam {String} start_datetime Acceptable format: YYYY-MM-DD HH:ii:ss
-     * @apiParam {String} end_datetime Acceptable format: YYYY-MM-DD HH:ii:ss
-     * @apiParam {String} vectors_name
-     * @apiParam {String} regions_name
+     * @apiParam {String} start_datetime Acceptable format: YYYY-MM-DD HH:ii:ss (2016-06-07 17:54:15)
+     * @apiParam {String} end_datetime Acceptable format: YYYY-MM-DD HH:ii:ss (2016-06-07 17:54:15)
+     * @apiParam [String] vectors_name Name of vector to get instances for.
+     * @apiParam [String] regions_name Name of region to get instances for.
      * @apiExample {json} Example request:
      *  {
      *      start_datetime: "2015-03-1 00:00:00",
@@ -28,8 +28,8 @@ class ApiInstanceQueryRequest extends Request
     public function rules()
     {
         return [
-            'start_datetime' => 'date',
-            'end_datetime' => 'date',
+            'start_datetime' => 'required|date',
+            'end_datetime' => 'required|date',
             'vectors_name' => 'exists:vectors,name',
             'regions_name' => 'exists:regions,name',
         ];
