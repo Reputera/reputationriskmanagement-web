@@ -132,42 +132,16 @@ class Company extends Model
             ->whereRaw("start between '{$start->toDateString()} 00:00:00' and '{$end->toDateString()} 23:59:59'")
             ->orderByRaw('start_date ASC');
 
-        // For speed and because we want to use this same data set over and over (for this "process"), we place the
-        // results into a temp table. This table automatically destroys itself after the session ends.
-        DB::select(DB::raw("
-            CREATE TEMPORARY TABLE IF NOT EXISTS temp_daily_scores_and_start_dates AS
-            (
-              {$builder->toSql()}
-            );
-            "), $builder->getBindings());
+        $results = DB::select("{$builder->toSql()}", $builder->getBindings());
 
-        // Next we want to create an exact copy of the taem table, again for speed, but also so because we want want to
-        // query on this table to get the "next" company risk score.
-        DB::select(DB::raw("
-            CREATE TEMPORARY TABLE IF NOT EXISTS temp_daily_scores_and_start_dates_copy AS (
-              SELECT * FROM temp_daily_scores_and_start_dates
-            );
-        "));
-
-        // Here is where we are making use of the two temp tables. This allows us to get the current risk score
-        // for each day using the "temp_daily_scores_and_start_dates" temp table and using the
-        // "temp_daily_scores_and_start_dates_copy" to get the next days risk score.
-        // This will allow us to compare the two days and get the percentage of change.
-        $results = DB::select(DB::raw("
-            SELECT *, (
-              SELECT company_risk_scores from temp_daily_scores_and_start_dates_copy where temp_daily_scores_and_start_dates_copy.start_date > temp_daily_scores_and_start_dates.start_date order by temp_daily_scores_and_start_dates_copy.start_date asc limit 1
-            ) AS next_company_risk_scores
-            FROM temp_daily_scores_and_start_dates;
-            "));
-
-        // We can't use the next day if there isn't one, and there won't be for the final day found, so MySQL
-        // will assign that value a null for the next day's score risk. So we remove it from the result set.
-        array_pop($results);
         $finalScores = [];
+        foreach ($results as $key => $result) {
+            if (!array_key_exists($key + 1, $results)) {
+                continue;
+            }
 
-        foreach ($results as $result) {
-            $originalNumber = ($result->company_risk_scores);
-            $secondNumber = ($result->next_company_risk_scores);
+            $originalNumber = $result->company_risk_scores;
+            $secondNumber = $results[$key + 1]->company_risk_scores;
             if (($originalNumber - $secondNumber) > 0) {
                 $value = ($originalNumber - $secondNumber) / $originalNumber;
             } else {
@@ -181,7 +155,7 @@ class Company extends Model
             $finalScores[] = $value * 100;
         }
 
-        if (!$results) {
+        if (!$finalScores) {
             return 0.0;
         }
 
