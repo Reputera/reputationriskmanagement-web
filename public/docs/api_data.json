@@ -28,9 +28,17 @@
           },
           {
             "group": "Parameter",
+            "type": "String",
             "optional": true,
-            "field": "String",
-            "description": "<p>vectors_name Name of vector to get instances for.</p>"
+            "field": "vectors_name",
+            "description": "<p>Name of vector to get instances for.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "regions_name",
+            "description": "<p>Name of region to get instances for.</p>"
           },
           {
             "group": "Parameter",
