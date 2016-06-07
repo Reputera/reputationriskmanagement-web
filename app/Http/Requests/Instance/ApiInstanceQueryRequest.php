@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Instance;
 
-use App\Http\Requests\Request;
+use App\Http\Requests\ApiRequest;
 
-class ApiInstanceQueryRequest extends Request
+class ApiInstanceQueryRequest extends ApiRequest
 {
     /**
      * @apiDefine InstanceQuery
