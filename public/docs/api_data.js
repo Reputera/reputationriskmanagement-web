@@ -36,7 +36,7 @@ define({ "api": [
           {
             "group": "Parameter",
             "type": "String",
-            "optional": false,
+            "optional": true,
             "field": "regions_name",
             "description": "<p>Name of region to get instances for.</p>"
           },
