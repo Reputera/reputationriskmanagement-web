@@ -117,19 +117,19 @@ class Company extends Model
     /**
      * Gets the reputation change for a particular company between two dates. The way this is done is rather complex.
      *
+     * @link http://www.csgnetwork.com/percentchangecalc.html
+     * @link http://math.stackexchange.com/questions/716767/how-to-calculate-the-percentage-of-increase-decrease-with-negative-numbers
      * @param Carbon $start
      * @param Carbon $end
      * @return float
      */
-    public function reputationChangeByDate(Carbon $start, Carbon $end)
+    public function reputationChangeByDate(Carbon $start, Carbon $end): float
     {
-        $days = $start->diffInDays($end);
-
         // We initially need to make a query to populate the instance scores (reputation score) grouped by the
         // date (YYYY-MM-DD) of the start column. They way the the datetimes (dates withe hours/minutes/seconds)
         // do not try to group.
         $builder = (new Instance)->dailyCompanyRiskScore($this)
-            ->whereRaw("start between ('{$start->toDateString()}' - interval {$days} day ) and '{$start->toDateString()}'")
+            ->whereRaw("start between '{$start->toDateString()} 00:00:00' and '{$end->toDateString()} 23:59:59'")
             ->orderByRaw('start_date ASC');
 
         // For speed and because we want to use this same data set over and over (for this "process"), we place the
@@ -160,20 +160,31 @@ class Company extends Model
             FROM temp_daily_scores_and_start_dates;
             "));
 
-        // Since we can't count the next day of the last date, we need to drop that day.
-        // The reason we can't count it is
+        // We can't use the next day if there isn't one, and there won't be for the final day found, so MySQL
+        // will assign that value a null for the next day's score risk. So we remove it from the result set.
         array_pop($results);
         $finalScores = [];
-        foreach ($results as &$result) {
-            if ($result->next_company_risk_scores > $result->company_risk_scores) {
-                $value = (($result->next_company_risk_scores - $result->company_risk_scores) / $result->company_risk_scores);
+
+        foreach ($results as $result) {
+            $originalNumber = ($result->company_risk_scores);
+            $secondNumber = ($result->next_company_risk_scores);
+            if (($originalNumber - $secondNumber) > 0) {
+                $value = ($originalNumber - $secondNumber) / $originalNumber;
             } else {
-                $value = -(($result->company_risk_scores - $result->next_company_risk_scores) / $result->company_risk_scores);
+                $value = ($secondNumber - $originalNumber) / $originalNumber;
+            }
+
+            if ($originalNumber > $secondNumber && ($originalNumber > 0)) {
+                $value = -1 * $value;
             }
 
             $finalScores[] = $value * 100;
         }
 
-        return array_sum($finalScores) / count($finalScores);
+        if (!$results) {
+            return 0.0;
+        }
+
+        return (float) (array_sum($finalScores) / count($finalScores));
     }
 }
