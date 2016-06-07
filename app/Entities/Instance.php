@@ -4,6 +4,7 @@ namespace App\Entities;
 
 use App\Entities\Traits\Toggleable;
 use App\Http\Queries\Instance as InstanceQuery;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
@@ -95,7 +96,10 @@ class Instance extends Model
         return $this->belongsToMany(Country::class, 'instance_country', 'instance_id', 'country_id');
     }
 
-    public function getRegions()
+    /**
+     * @return array
+     */
+    public function getRegions(): array
     {
         $regions = [];
         foreach ($this->countries as $country) {
@@ -114,8 +118,9 @@ class Instance extends Model
     public static function scopeDailyCompanyRiskScore($builder, Company $company)
     {
         return self::addSelectForRiskScoreAverage($builder)
+            ->selectRaw('date(start) as start_date')
             ->where('instances.company_id', $company->id)
-            ->groupBy('instances.start_date');
+            ->groupBy('start_date');
     }
 
     public static function scopeCompetitorRiskScoreForCompany($builder, Company $company)
@@ -139,6 +144,10 @@ class Instance extends Model
         return $filter->apply($builder);
     }
 
+    /**
+     * @param $builder
+     * @return Builder
+     */
     protected static function addSelectForRiskScoreAverage($builder)
     {
         return $builder->select(DB::raw('sum(risk_score) / COUNT(instances.id) as company_risk_scores'));
