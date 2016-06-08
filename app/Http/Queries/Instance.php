@@ -28,4 +28,25 @@ class Instance extends QueryFilter
             Carbon::now()->toDateTimeString()
         ]);
     }
+
+    /**
+     * Constrain instances to be after given datetime.
+     *
+     * @param $start
+     */
+    public function dateStart($start)
+    {
+        $this->builder->where('instances.start', '>', $start);
+    }
+
+    /**
+     * Constrain instances to be before given datetime.
+     *
+     * @param $end
+     */
+    public function dateEnd($end)
+    {
+        $this->builder->where('instances.end', '<', $end);
+    }
+
 }
