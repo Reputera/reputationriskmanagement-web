@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Instance;
 
-use App\Http\Requests\Request;
+use App\Http\Requests\ApiRequest;
 
-class InstanceQueryRequest extends Request
+class InstanceQueryRequest extends ApiRequest
 {
     /**
      * Get the validation rules that apply to the request.

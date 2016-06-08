@@ -17,28 +17,28 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "start_datetime",
-            "description": "<p>Acceptable format: YYYY-MM-DD HH:ii:ss</p>"
+            "description": "<p>Acceptable format: YYYY-MM-DD HH:ii:ss (2016-06-07 17:54:15)</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": false,
             "field": "end_datetime",
-            "description": "<p>Acceptable format: YYYY-MM-DD HH:ii:ss</p>"
+            "description": "<p>Acceptable format: YYYY-MM-DD HH:ii:ss (2016-06-07 17:54:15)</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
-            "optional": false,
+            "optional": true,
             "field": "vectors_name",
-            "description": ""
+            "description": "<p>Name of vector to get instances for.</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
-            "optional": false,
+            "optional": true,
             "field": "regions_name",
-            "description": ""
+            "description": "<p>Name of region to get instances for.</p>"
           },
           {
             "group": "Parameter",
@@ -141,7 +141,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Success-Response:",
-        "content": "HTTP/1.1 200 OK\n{\n    \"data\":[\n        {\n            \"region\":\"Region name\",\n            \"count\":25,\n            \"vectors\":[\n                {\n                    \"vector1\":\"vector name\",\n                    \"count\":5\n                }\n                {\n                    \"vector1\":\"vector name\",\n                    \"count\":5\n                }\n            ]\n        },\n    ],\n    \"status_code\": 200,\n    \"message\": \"Success\"\n}",
+        "content": "HTTP/1.1 200 OK\n{\n    \"data\":[\n        {\n            \"region\":\"Region name\",\n            \"count\":15,\n            \"vectors\":[\n                {\n                    \"vector1\":\"vector name\",\n                    \"count\":10\n                }\n                {\n                    \"vector1\":\"vector name\",\n                    \"count\":5\n                }\n            ]\n        },\n    ],\n    \"status_code\": 200,\n    \"message\": \"Success\"\n}",
         "type": "json"
       },
       {
