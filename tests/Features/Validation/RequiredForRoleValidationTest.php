@@ -8,7 +8,7 @@ use App\Entities\Role;
 class RequiredForRoleValidationTest extends \TestCase
 {
 
-    public function testValidationFailsIfAdmin()
+    public function testValidationFailsIfAdminAndMessageIsGiven()
     {
         $this->beLoggedInAsAdmin();
         $validator = \Validator::make(
@@ -16,6 +16,7 @@ class RequiredForRoleValidationTest extends \TestCase
             ['input' => 'required_for_role:' . Role::ADMIN]
         );
         $this->assertFalse($validator->passes());
+        $this->assertEquals('The input field is required for the current user\'s role', $validator->messages()->first());
     }
 
     public function testValidationSucceedsIfAdmin()

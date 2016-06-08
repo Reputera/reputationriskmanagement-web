@@ -20,6 +20,10 @@ class AppServiceProvider extends ServiceProvider
 //            Fail if no value is given, and user's role is in parameters
             return !(!$value && in_array(auth()->user()->role, $parameters));
         });
+
+        \Validator::replacer('required_for_role', function ($message, $attribute) {
+            return 'The '.$attribute.' field is required for the current user\'s role';
+        });
     }
 
     /**
