@@ -49,4 +49,11 @@ class CompanyController extends ApiController
             ->detach($competitor);
         return $this->respondWithArray([]);
     }
+
+    public function updateCompanyLogo(Imagep $request)
+    {
+        $company = Company::where('company_name', '=', $request->get('companies_name'));
+        \Storage::disk(config('rrm.filesystem.logo.filesystem'))
+            ->put($company->logo_filename, $this->base64Decode($request->get('logoImage')));
+    }
 }

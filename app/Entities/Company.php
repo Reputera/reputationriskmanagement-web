@@ -63,6 +63,9 @@ class Company extends Model
 
     public static function boot()
     {
+        Company::creating(function ($company) {
+            $company->logo_filename = config('rrm.filesystem.logo.directory') . '\\' . \Hash::make($company->name . time());
+        });
         Company::created(function ($company) {
             CompanyVectorColor::populateCompanyColors($company);
         });
