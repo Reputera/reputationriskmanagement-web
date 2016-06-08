@@ -17,6 +17,15 @@ class QueryController extends Controller
     use PaginationTrait;
 
     /**
+     * @api {post} /instances/ List instances
+     * @apiName ListInstances
+     * @apiDescription List instances based on query parameters.
+     * @apiGroup Instances
+     * @apiUse InstanceQuery
+     * @apiUse MultipleInstances
+     * @apiUse PaginatedResults
+     */
+    /**
      * @param InstanceQueryRequest $request
      * @param QueryBuilder $queryBuilder
      * @return \Illuminate\Http\JsonResponse
@@ -64,6 +73,23 @@ class QueryController extends Controller
         die;
     }
 
+    /**
+     * @api {post} /competitors-average-risk-score Risk Score
+     * @apiName RiskScore
+     * @apiDescription Return the risk score for a company, and industry average risk score.
+     * @apiUse RiskScoreParams
+     * @apiGroup Instances
+     * @apiExample {json} Success-Response:
+     *  HTTP/1.1 200 OK
+     *  {
+     *      "data":[
+     *          {"company_risk_score":25},
+     *          {"average_competitor_risk_score":10}
+     *      ],
+     *      "status_code": 200,
+     *      "message": "Success"
+     *  }
+     */
     /**
      * @param RiskScoreRequest $request
      * @param InstanceQuery $query
