@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Company;
 use App\Entities\Company;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Company\NewCompanyRequest;
+use App\Http\Requests\Company\UpdateCompanyLogoRequest;
 use App\Jobs\QueueYearlyRecordedFutureInstances;
 use App\Jobs\YearlyRecordedFutureInstances;
 use App\Transformers\Company\CompanyTransformer;
@@ -50,10 +51,34 @@ class CompanyController extends ApiController
         return $this->respondWithArray([]);
     }
 
-    public function updateCompanyLogo(Imagep $request)
+    public function getCompanyLogo(Request $request)
     {
-        $company = Company::where('company_name', '=', $request->get('companies_name'));
-        \Storage::disk(config('rrm.filesystem.logo.filesystem'))
-            ->put($company->logo_filename, $this->base64Decode($request->get('logoImage')));
+        try {
+            $company = Company::findOrFail($request->input('company_id'));
+            return response()->download($company->logo_filename);
+        }catch(\Exception $e) {
+            return response('', 404);
+        }
     }
+
+    public function updateCompanyLogo(UpdateCompanyLogoRequest $request)
+    {
+        $company = Company::findOrFail($request->get('company_id'));
+        try {
+            file($company->logo_filename)->delete();
+        }catch(\Exception $e) {}
+        $logoFile = $request->file('logoImage');
+
+
+        $filename = base64_encode(\Hash::make($company->id . time() . $logoFile->getClientOriginalName())) . '.' . $logoFile->getClientOriginalExtension();
+
+
+        $company->logo_filename = storage_path(config('rrm.filesystem.logo.directory') . '/' .$filename);
+        $company->save();
+        $logoFile->move(
+            storage_path(config('rrm.filesystem.logo.directory')),
+            $filename
+        );
+    }
+
 }

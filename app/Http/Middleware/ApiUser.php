@@ -10,7 +10,8 @@ class ApiUser
     {
         if(!$request->user()->hasRole(\App\Entities\Role::ADMIN)) {
             $request->merge([
-                'companies_name' => $request->user()->company->name
+                'companies_name' => $request->user()->company->name,
+                'companies_id' => $request->user()->company_id
             ]);
         }
 
