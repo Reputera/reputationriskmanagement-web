@@ -16,7 +16,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
+        \Validator::extendImplicit('required_for_role', function($attribute, $value, $parameters, $validator) {
+//            Fail if no value is given, and user's role is in parameters
+            return !(!$value && in_array(auth()->user()->role, $parameters));
+        });
     }
 
     /**
