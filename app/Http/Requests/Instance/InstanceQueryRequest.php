@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Instance;
 
+use App\Entities\Role;
 use App\Http\Requests\ApiRequest;
 
 class InstanceQueryRequest extends ApiRequest
@@ -32,7 +33,7 @@ class InstanceQueryRequest extends ApiRequest
             'end_datetime' => 'date',
             'vectors_name' => 'exists:vectors,name',
             'regions_name' => 'exists:regions,name',
-            'companies_name' => 'required'
+            'companies_name' => 'required_for_role:' . Role::ADMIN
         ];
     }
 }
