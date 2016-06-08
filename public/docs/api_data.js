@@ -7,7 +7,7 @@ define({ "api": [
     "description": "<p>List instances based on query parameters.</p>",
     "group": "Instances",
     "version": "0.0.0",
-    "filename": "app/Http/Controllers/Api/Instance/ApiQueryController.php",
+    "filename": "app/Http/Controllers/Instance/QueryController.php",
     "groupTitle": "Instances",
     "parameter": {
       "fields": {
@@ -85,7 +85,7 @@ define({ "api": [
     "url": "/competitors-average-risk-score",
     "title": "Risk Score",
     "name": "RiskScore",
-    "description": "<p>Return the risk score for a company, and inudstry average risk score.</p>",
+    "description": "<p>Return the risk score for a company, and industry average risk score.</p>",
     "group": "Instances",
     "examples": [
       {
@@ -95,7 +95,7 @@ define({ "api": [
       }
     ],
     "version": "0.0.0",
-    "filename": "app/Http/Controllers/Api/Instance/ApiQueryController.php",
+    "filename": "app/Http/Controllers/Instance/QueryController.php",
     "groupTitle": "Instances",
     "parameter": {
       "fields": {
@@ -118,14 +118,28 @@ define({ "api": [
             ],
             "optional": false,
             "field": "lastDays",
-            "description": ""
+            "description": "<p>(Required if start_datetime not given)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "start_datetime",
+            "description": "<p>Acceptable format: YYYY-MM-DD HH:ii:ss (Required if lastDays not given)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "end_datetime",
+            "description": "<p>Acceptable format: YYYY-MM-DD HH:ii:ss (Required if lastDays not given)</p>"
           },
           {
             "group": "Parameter",
             "type": "Number",
             "optional": true,
             "field": "vector",
-            "description": ""
+            "description": "<p>ID of vector</p>"
           }
         ]
       }
@@ -173,6 +187,39 @@ define({ "api": [
         ]
       }
     }
+  },
+  {
+    "type": "post",
+    "url": "/password/reset/",
+    "title": "Reset Password",
+    "name": "ResetPassword",
+    "description": "<p>Starts password reset process, and sends mail to user to continue.</p>",
+    "group": "Users",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>Email of user requesting password reset.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n    \"data\": {\n        \"success\": \"Email successfully sent to email@email.com\"\n    },\n    \"status_code\": 200,\n    \"message\": \"Success\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/Http/Controllers/Auth/ApiPasswordController.php",
+    "groupTitle": "Users"
   },
   {
     "type": "post",
