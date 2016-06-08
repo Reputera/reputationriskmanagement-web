@@ -51,6 +51,12 @@ class CompanyController extends ApiController
         return $this->respondWithArray([]);
     }
 
+    /**
+     * @api {get} /company/logo Company Logo
+     * @apiName CompanyLogo
+     * @apiDescription Return the current company's logo image.
+     * @apiGroup Company
+     */
     public function getCompanyLogo(Request $request)
     {
         try {

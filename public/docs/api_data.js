@@ -1,5 +1,16 @@
 define({ "api": [
   {
+    "type": "get",
+    "url": "/company/logo",
+    "title": "Company Logo",
+    "name": "CompanyLogo",
+    "description": "<p>Return the current company's logo image.</p>",
+    "group": "Company",
+    "version": "0.0.0",
+    "filename": "app/Http/Controllers/Admin/Company/CompanyController.php",
+    "groupTitle": "Company"
+  },
+  {
     "type": "post",
     "url": "/instances/",
     "title": "List instances",
