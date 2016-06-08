@@ -9,7 +9,8 @@ var app = angular
         'singleClick',
         'angularModalService',
         'ui.mask',
-        'angularSpectrumColorpicker'
+        'angularSpectrumColorpicker',
+        'fileModel'
     ])
     .factory('ApplicationConfig', function($log) {
         return {
