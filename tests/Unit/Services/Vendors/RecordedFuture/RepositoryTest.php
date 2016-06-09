@@ -78,17 +78,17 @@ class RepositoryTest extends \TestCase
         $instance = new Instance($singleInstance['instances'][0]);
         $company = factory(Company::class)->create();
 
-        $this->assertTrue($this->repo->saveInstanceForCompany($instance, $company));
+        $this->assertNotFalse($this->repo->saveInstanceForCompany($instance, $company));
         $this->assertInstanceInDb($company, $singleInstance['instances'][0], $eventType->vector);
     }
 
     public function test_saving_an_instance_when_vector_cannot_be_found()
     {
-        $singleInstance = SingleInstance::get(['event_type' => 'SomeRandomEventNotInTheSystem']);
+        $singleInstance = SingleInstance::get(['type' => 'SomeRandomEventNotInTheSystem']);
         $instance = new Instance($singleInstance['instances'][0]);
         $company = factory(Company::class)->create();
 
-        $this->assertTrue($this->repo->saveInstanceForCompany($instance, $company));
+        $this->assertNotFalse($this->repo->saveInstanceForCompany($instance, $company));
         $this->assertInstanceInDb($company, $singleInstance['instances'][0]);
     }
 
@@ -103,7 +103,7 @@ class RepositoryTest extends \TestCase
         $instance->setRelatedEntities([new Entity('B_FAG', $singleInstance['entities']['B_FAG'])]);
         $company = factory(Company::class)->create();
 
-        $this->assertTrue($this->repo->saveInstanceForCompany($instance, $company));
+        $this->assertNotFalse($this->repo->saveInstanceForCompany($instance, $company));
         $this->assertInstanceInDb($company, $singleInstance['instances'][0], $eventType->vector, $country);
     }
 
@@ -123,7 +123,7 @@ class RepositoryTest extends \TestCase
             'company_id' => factory(Company::class)->create()->id
         ]);
 
-        $this->assertTrue($this->repo->saveInstanceForCompany($instance, $company));
+        $this->assertNotFalse($this->repo->saveInstanceForCompany($instance, $company));
         $this->assertInstanceInDb($company, $singleInstance['instances'][0], $eventType->vector, $country);
     }
 

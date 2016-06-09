@@ -3,6 +3,7 @@
 namespace Tests\Unit\Services\Vendors\RecordedFuture;
 
 use App\Entities\Company;
+use App\Events\InstanceCreatedEvent;
 use App\Services\Vendors\RecordedFuture\Api\Instance;
 use App\Services\Vendors\RecordedFuture\QueueProcessor;
 use App\Services\Vendors\RecordedFuture\InstanceApiResponseQueue;
@@ -36,6 +37,7 @@ class QueueProcessorTest extends \TestCase
 
     public function testProcessingWhenFilesExist()
     {
+        $this->expectsEvents(InstanceCreatedEvent::class);
         $company = factory(Company::class)->create();
 
         $companyDir = vfsStream::newDirectory($company->entity_id)->at($this->storageFolder);
@@ -50,7 +52,8 @@ class QueueProcessorTest extends \TestCase
         $this->mockedInstanceRepo
             ->shouldReceive('saveInstanceForCompany')
             ->times(2)
-            ->with(\Mockery::type(Instance::class), \Mockery::type(Company::class));
+            ->with(\Mockery::type(Instance::class), \Mockery::type(Company::class))
+            ->andReturn(2);
 
         \File::shouldReceive('allFiles')
             ->once()
@@ -68,6 +71,7 @@ class QueueProcessorTest extends \TestCase
 
     public function testProcessingWhenNoFilesExist()
     {
+        $this->doesntExpectEvents(InstanceCreatedEvent::class);
         $this->mockedInstanceRepo
             ->shouldReceive('saveInstanceForCompany')
             ->never();
@@ -88,6 +92,8 @@ class QueueProcessorTest extends \TestCase
 
     public function testProcessingFilesForDifferentCompanies()
     {
+        $this->expectsEvents(InstanceCreatedEvent::class);
+
         $company1 = factory(Company::class)->create();
         $company1Dir = vfsStream::newDirectory($company1->entity_id)->at($this->storageFolder);
         vfsStream::newFile('Company1logfile.log')->at($company1Dir)
@@ -107,7 +113,8 @@ class QueueProcessorTest extends \TestCase
         $this->mockedInstanceRepo
             ->shouldReceive('saveInstanceForCompany')
             ->times(count($allFiles))
-            ->with(\Mockery::type(Instance::class), \Mockery::type(Company::class));
+            ->with(\Mockery::type(Instance::class), \Mockery::type(Company::class))
+            ->andReturn(2);
 
         \File::shouldReceive('allFiles')
             ->once()

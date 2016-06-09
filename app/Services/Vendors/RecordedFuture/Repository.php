@@ -100,7 +100,7 @@ class Repository
                 }
             }
 
-            return true;
+            return $instanceId;
         } catch (\Exception $e) {
             $this->error = $e->getMessage();
         }

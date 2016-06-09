@@ -3,6 +3,7 @@
 namespace App\Services\Vendors\RecordedFuture;
 
 use App\Entities\Company;
+use App\Events\InstanceCreatedEvent;
 use App\Services\Vendors\RecordedFuture\Api\Response;
 use App\Services\Vendors\RecordedFuture\Repository as RecordedFutureRepository;
 use Illuminate\Support\Facades\File;
@@ -29,6 +30,7 @@ class QueueProcessor
      */
     public function process(bool $deleteProcessedFiles = true)
     {
+        $createdInstanceIds = [];
         $filesProcessed = [];
         foreach (File::allFiles(InstanceApiResponseQueue::getFullPath()) as $queuedResponseFile) {
             // This should be the sub-directory the file is in.
@@ -38,12 +40,18 @@ class QueueProcessor
 
                 $filesProcessed[] = $queuedResponseFile->getFilename();
                 foreach ($response->getInstances() as $instance) {
-                    $this->recordedFutureRepo->saveInstanceForCompany($instance, $company);
+                    if($instanceId = $this->recordedFutureRepo->saveInstanceForCompany($instance, $company)) {
+                        $createdInstanceIds[] = $instanceId;
+                    }
                 }
                 if ($deleteProcessedFiles) {
                     unlink($queuedResponseFile);
                 }
             }
+        }
+
+        foreach($createdInstanceIds as $instanceId) {
+            event(new InstanceCreatedEvent($instanceId));
         }
 
         return $filesProcessed;
