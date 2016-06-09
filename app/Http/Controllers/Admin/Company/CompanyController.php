@@ -59,27 +59,23 @@ class CompanyController extends ApiController
      */
     public function getCompanyLogo(Request $request)
     {
-        try {
-            $company = Company::findOrFail($request->input('company_id'));
+        $company = Company::findOrFail($request->input('company_id'));
+        if(file_exists($company->logo_filename)) {
             return response()->download($company->logo_filename);
-        }catch(\Exception $e) {
-            return response('', 404);
         }
+        return response()->download(storage_path() . '/' . config('rrm.filesystem.logo.default'));
     }
 
     public function updateCompanyLogo(UpdateCompanyLogoRequest $request)
     {
         $company = Company::findOrFail($request->get('company_id'));
-        try {
-            file($company->logo_filename)->delete();
-        }catch(\Exception $e) {}
+        if(file_exists(config('rrm.filesystem.logo.directory') . $company->logo_filename)) {
+            file(config('rrm.filesystem.logo.directory') . $company->logo_filename)->delete();
+        }
         $logoFile = $request->file('logoImage');
-
-
         $filename = base64_encode(\Hash::make($company->id . time() . $logoFile->getClientOriginalName())) . '.' . $logoFile->getClientOriginalExtension();
 
-
-        $company->logo_filename = storage_path(config('rrm.filesystem.logo.directory') . '/' .$filename);
+        $company->logo_filename = $filename;
         $company->save();
         $logoFile->move(
             storage_path(config('rrm.filesystem.logo.directory')),
