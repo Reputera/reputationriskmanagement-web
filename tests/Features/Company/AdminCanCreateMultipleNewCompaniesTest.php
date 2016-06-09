@@ -41,5 +41,12 @@ class AdminCanCreateMultipleNewCompaniesTest extends \TestCase
             'name' => $postData['companies'][1]['name'],
             'entity_id' => $postData['companies'][1]['entity_id'],
         ]);
+
+        $this->seeInDatabase('company_alert_parameters', [
+            'company_id' => $company['id'],
+            'min_threshold' => config('rrm.default_alerts.0.min_threshold'),
+            'max_threshold' => config('rrm.default_alerts.0.max_threshold')
+        ]);
+
     }
 }

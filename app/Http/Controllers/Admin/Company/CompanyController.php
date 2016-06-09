@@ -22,6 +22,9 @@ class CompanyController extends ApiController
                 $company = Company::create($companyArray);
                 $company->industries()->attach($companyArray['industry_id']);
                 $companies->add($company);
+                foreach(config('rrm.default_alerts') as $alert) {
+                    $company->companyAlertParameters()->create($alert);
+                }
             }
         });
 

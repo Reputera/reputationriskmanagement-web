@@ -61,6 +61,11 @@ class Company extends Model
         return $this->belongsToMany(Company::class, 'company_competitor', 'company_id', 'competitor_company_id');
     }
 
+    public function companyAlertParameters()
+    {
+        return $this->hasMany(CompanyAlertParameters::class);
+    }
+
     public static function boot()
     {
         Company::created(function ($company) {
