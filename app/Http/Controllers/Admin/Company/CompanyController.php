@@ -6,6 +6,7 @@ use App\Entities\Company;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Company\NewCompanyRequest;
 use App\Http\Requests\Company\UpdateCompanyLogoRequest;
+use App\Http\Requests\Company\UpdateCompanyRequest;
 use App\Jobs\QueueYearlyRecordedFutureInstances;
 use App\Jobs\YearlyRecordedFutureInstances;
 use App\Transformers\Company\CompanyTransformer;
@@ -14,6 +15,28 @@ use Illuminate\Http\Request;
 
 class CompanyController extends ApiController
 {
+
+    public function getCompany($companyId)
+    {
+        return $this->respondWith(Company::findOrFail($companyId), new CompanyTransformer());
+    }
+
+    public function getAllCompanies()
+    {
+        return $this->respondWith(Company::all(), new CompanyTransformer());
+    }
+
+    public function updateCompany($companyId, UpdateCompanyRequest $request)
+    {
+        $params = array_filter($request->only([
+            'min_alert_threshold',
+            'max_alert_threshold'
+        ]));
+        $company = Company::findOrFail($companyId);
+        $company->update($params);
+        return $this->respondWith($company, new CompanyTransformer());
+    }
+
     public function createPost(NewCompanyRequest $request)
     {
         $companies = new Collection;

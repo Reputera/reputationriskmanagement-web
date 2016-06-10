@@ -41,7 +41,7 @@ class Company extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'stock_name', 'entity_id'
+        'name', 'stock_name', 'entity_id', 'max_alert_threshold', 'min_alert_threshold'
     ];
 
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];

@@ -13,6 +13,13 @@
         </select>
 
         <div ng-show="selectedCompanyId">
+            <h3>Alerts</h3>
+            <label for="min_alert_threshold">Minimum alert</label>
+            <input type="text" class="form-control" ng-model="company.min_alert_threshold" name="min_alert_threshold">
+            <label for="max_alert_threshold">Maximum alert</label>
+            <input type="text" class="form-control" ng-model="company.max_alert_threshold" name="max_alert_threshold">
+            <button class="btn btn-primary" ng-click="updateCompany()">Update</button>
+
             <h3>Company Logo</h3>
             <p>Current logo:</p>
             <img ng-show="currentLogo" ng-src="@{{currentLogo}}">
@@ -43,7 +50,33 @@
         $scope.selectCompany = function() {
             $scope.refreshLogo();
             $scope.loadVectors();
-        }
+            $scope.refreshCompany();
+        };
+
+        $scope.refreshCompany = function() {
+            $http.get('/company/get/' + $scope.selectedCompanyId).then(function(result) {
+                $scope.company = result.data.data;
+            });
+        };
+
+        $scope.refreshCompanyList = function() {
+            $http.get('/company').then(function(result) {
+                $scope.companies = result.data.data;
+            });
+        };
+
+        $scope.updateCompany = function() {
+            $http({
+                method: 'POST',
+                url: '/company/update/' + $scope.selectedCompanyId,
+                data: {
+                    min_alert_threshold: parseInt($scope.company.min_alert_threshold),
+                    max_alert_threshold: parseInt($scope.company.max_alert_threshold)
+                }
+            }).then(function(result) {
+                $scope.refreshCompanyList();
+            });
+        };
 
         $scope.refreshLogo = function() {
             ApplicationConfig.enableGlobalErrorHandling = false;

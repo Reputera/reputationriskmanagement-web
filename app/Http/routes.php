@@ -38,6 +38,11 @@ Route::group(['middleware' => ['web']], function () {
 
             Route::get('edit-company', 'Admin\Company\CompanyUIController@editIndex')->name('admin.company.edit');
 
+            Route::get('company', 'Admin\Company\CompanyController@getAllCompanies')->name('admin.company.all');
+            Route::get('company/get/{companyId}', 'Admin\Company\CompanyController@getCompany')->name('admin.company.get');
+            Route::post('company/update/{companyId}', 'Admin\Company\CompanyController@updateCompany')->name('admin.company.update');
+
+
             Route::post('edit-company-logo', 'Admin\Company\CompanyController@updateCompanyLogo')->name('admin.logo.edit');
             Route::get('company/logo', 'Admin\Company\CompanyController@getCompanyLogo')->name('logo.get');
 
