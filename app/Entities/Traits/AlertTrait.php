@@ -22,4 +22,17 @@ trait AlertTrait
             ->get();
     }
 
+    /**
+     * @param $instanceId
+     */
+    public function dismissAlert($instanceId)
+    {
+        \DB::table('user_instance_alerts')
+            ->update(['dismissed' => true])
+            ->where([
+                'instance_id' => $instanceId,
+                'user_id' => $this->id
+            ]);
+    }
+
 }
