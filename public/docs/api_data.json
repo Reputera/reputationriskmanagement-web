@@ -1,5 +1,47 @@
 [
   {
+    "type": "post",
+    "url": "/instance/alerts/:instanceId",
+    "title": "Dismiss Alert",
+    "name": "DismissAlert",
+    "description": "<p>Dismiss an alert by passing in an alerted instance's ID.</p>",
+    "group": "Alerts",
+    "version": "0.0.0",
+    "filename": "app/Http/Controllers/Instance/AlertController.php",
+    "groupTitle": "Alerts"
+  },
+  {
+    "type": "get",
+    "url": "/instance/alerts",
+    "title": "Get Alerts",
+    "name": "GetAlerts",
+    "description": "<p>Get the current user's alerts.</p>",
+    "group": "Alerts",
+    "version": "0.0.0",
+    "filename": "app/Http/Controllers/Instance/AlertController.php",
+    "groupTitle": "Alerts",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": true,
+            "field": "dismissed",
+            "description": "<p>Pass dismissed as true to include dismissed alerts in results.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example request:",
+        "content": "{\n    dismissed: true\n}",
+        "type": "json"
+      }
+    ]
+  },
+  {
     "type": "get",
     "url": "/company/logo",
     "title": "Company Logo",

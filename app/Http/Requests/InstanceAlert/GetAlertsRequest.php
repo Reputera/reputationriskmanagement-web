@@ -9,9 +9,8 @@ class GetAlertsRequest extends ApiRequest
 {
 
     /**
-     * @apiDefine GetAlerts
+     * @apiDefine GetAlertsParams
      * @apiParam {Boolean} [dismissed] Pass dismissed as true to include dismissed alerts in results.
-     * @apiUse MultipleInstances
      * @apiExample {json} Example request:
      *  {
      *      dismissed: true
