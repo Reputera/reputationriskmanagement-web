@@ -6,6 +6,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['api']], function () {
 
     Route::group(['middleware' => ['auth', 'apiUser']], function () {
         Route::get('company/logo', 'Admin\Company\CompanyController@getCompanyLogo')->name('logo.get');
+        Route::get('instance/alerts', 'Instance\AlertController@getAlertedInstances')->name('instance.alerts');
 
         Route::post('vectors', 'Vector\VectorController@get');
         Route::post('myRiskScore', 'Instance\QueryController@getRiskScore')->name('api.getRiskScore');
