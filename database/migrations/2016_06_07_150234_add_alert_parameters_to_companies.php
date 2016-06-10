@@ -13,8 +13,8 @@ class AddAlertParametersToCompanies extends Migration
     public function up()
     {
         Schema::table('companies', function (Blueprint $table) {
-            $table->integer('min_threshold')->nullable()->after('entity_id');
-            $table->integer('max_threshold')->nullable()->after('entity_id');
+            $table->integer('min_alert_threshold')->nullable()->after('entity_id');
+            $table->integer('max_alert_threshold')->nullable()->after('entity_id');
         });
     }
 
@@ -26,8 +26,8 @@ class AddAlertParametersToCompanies extends Migration
     public function down()
     {
         Schema::table('companies', function (Blueprint $table) {
-            $table->dropColumn('min_threshold');
-            $table->dropColumn('max_threshold');
+            $table->dropColumn('min_alert_threshold');
+            $table->dropColumn('max_alert_threshold');
         });
     }
 }

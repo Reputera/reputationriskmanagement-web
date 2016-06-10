@@ -18,8 +18,8 @@ class UserRepository
             ->join('companies', 'companies.id', '=', 'users.company_id')
             ->join('instances', 'instances.company_id', '=', 'users.company_id')
             ->where(function($query) {
-                $query->whereRaw('instances.risk_score < companies.min_threshold')
-                    ->orWhereRaw('instances.risk_score > companies.max_threshold');
+                $query->whereRaw('instances.risk_score < companies.min_alert_threshold')
+                    ->orWhereRaw('instances.risk_score > companies.max_alert_threshold');
             })
             ->where('instances.id', '=', $instanceId)
             ->get();

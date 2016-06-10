@@ -28,8 +28,8 @@ class UserRepositoryTest extends \TestCase
         factory(User::class, 'user')->create();
 
         $company = factory(Company::class)->create([
-            'min_threshold' => -90,
-            'max_threshold' => 90
+            'min_alert_threshold' => -90,
+            'max_alert_threshold' => 90
         ]);
         $instance = factory(Instance::class)->create([
             'company_id' => $company->id,
@@ -45,8 +45,8 @@ class UserRepositoryTest extends \TestCase
     public function testGetAlertedUserIdsForInstanceIdNoAlertsMatch()
     {
         $company = factory(Company::class)->create([
-            'min_threshold' => 40,
-            'max_threshold' => 100
+            'min_alert_threshold' => 40,
+            'max_alert_threshold' => 100
         ]);
         $instance = factory(Instance::class)->create([
             'company_id' => $company->id,

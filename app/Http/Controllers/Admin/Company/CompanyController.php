@@ -20,8 +20,8 @@ class CompanyController extends ApiController
         \DB::transaction(function () use ($request, $companies) {
             foreach ($request->get('companies') as $companyArray) {
                 $companyArray = array_merge($companyArray, [
-                    'min_threshold' => config('rrm.default_alerts.min_threshold'),
-                    'max_threshold' => config('rrm.default_alerts.max_threshold')
+                    'min_alert_threshold' => config('rrm.default_alerts.min_alert_threshold'),
+                    'max_alert_threshold' => config('rrm.default_alerts.max_alert_threshold')
                 ]);
                 $company = Company::create($companyArray);
                 $company->industries()->attach($companyArray['industry_id']);
@@ -86,5 +86,6 @@ class CompanyController extends ApiController
             $filename
         );
     }
+
 
 }

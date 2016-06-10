@@ -17,6 +17,8 @@ class CompanyTransformer extends TransformerAbstract
             'id' => $company->id,
             'name' => $company->name,
             'entity_id' => $company->entity_id,
+            'max_alert_threshold' => $company->max_alert_threshold,
+            'min_alert_threshold' => $company->min_alert_threshold
         ];
     }
 }
