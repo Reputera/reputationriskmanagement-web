@@ -3,6 +3,7 @@
 namespace App\Entities;
 
 use App\Entities\Exceptions\InvalidRoleAssignment;
+use App\Entities\Traits\AlertTrait;
 use App\Entities\Traits\Toggleable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -41,7 +42,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class User extends Authenticatable
 {
-    use SoftDeletes, Toggleable;
+    use SoftDeletes, Toggleable, AlertTrait;
 
     /**
      * The attributes that are mass assignable.

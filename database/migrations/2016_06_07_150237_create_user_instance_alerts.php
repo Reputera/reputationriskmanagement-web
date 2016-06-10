@@ -16,7 +16,7 @@ class CreateUserInstanceAlerts extends Migration
             $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('instance_id');
-            $table->timestamps();
+            $table->boolean('dismissed')->index();
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('instance_id')->references('id')->on('instances');
