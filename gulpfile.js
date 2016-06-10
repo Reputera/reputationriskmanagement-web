@@ -28,6 +28,7 @@ elixir(function(mix) {
             'node_modules/moment/min/moment.min.js',
             'node_modules/angular-toastr/dist/angular-toastr.min.js',
             'node_modules/angular-toastr/dist/angular-toastr.tpls.min.js',
+            'node_modules/angular-loading-bar/build/loading-bar.min.js',
             'node_modules/restangular/dist/restangular.min.js',
             'node_modules/ng-table/dist/ng-table.min.js',
             'node_modules/angular-modal-service/dst/angular-modal-service.min.js',
@@ -46,6 +47,7 @@ elixir(function(mix) {
             'bower_components/admin-lte.scss/javascripts/app.js'
         ],'public/js/adminlte.js', './')
         .styles([
+            'node_modules/angular-loading-bar/build/loading-bar.min.css',
             'bower_components/jquery-ui/themes/base/jquery-ui.min.css',
             'bower_components/spectrum/spectrum.css',
             'node_modules/angular-toastr/dist/angular-toastr.css',

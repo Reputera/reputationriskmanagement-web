@@ -10,6 +10,7 @@ var app = angular
         'angularModalService',
         'ui.mask',
         'angularSpectrumColorpicker',
+        'angular-loading-bar',
         'fileModel'
     ])
     .factory('ApplicationConfig', function($log) {

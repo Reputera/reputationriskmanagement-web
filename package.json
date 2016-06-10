@@ -12,7 +12,8 @@
     "restangular": "1.5.*",
     "angular-toastr": "1.6.*",
     "underscore": "1.8.*",
-    "angular-modal-service": "0.6.10"
+    "angular-modal-service": "0.6.10",
+    "angular-loading-bar": "0.8.*"
   },
   "apidoc": {
     "title": "Reputera: API",
