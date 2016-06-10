@@ -16,11 +16,14 @@ class UserRepository
         $userIds = \DB::table('users')
             ->select('users.id')
             ->join('companies', 'companies.id', '=', 'users.company_id')
-            ->join('company_alert_parameters', 'company_alert_parameters.company_id', '=', 'companies.id')
             ->join('instances', 'instances.company_id', '=', 'users.company_id')
-            ->whereRaw('instances.risk_score BETWEEN company_alert_parameters.min_threshold AND company_alert_parameters.max_threshold')
+            ->where(function($query) {
+                $query->whereRaw('instances.risk_score < companies.min_threshold')
+                    ->orWhereRaw('instances.risk_score > companies.max_threshold');
+            })
             ->where('instances.id', '=', $instanceId)
             ->get();
+
         $returnIds = [];
         foreach($userIds as $userId) {
             $returnIds[] = $userId->id;

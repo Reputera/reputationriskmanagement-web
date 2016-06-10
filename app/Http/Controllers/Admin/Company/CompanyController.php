@@ -19,12 +19,13 @@ class CompanyController extends ApiController
         $companies = new Collection;
         \DB::transaction(function () use ($request, $companies) {
             foreach ($request->get('companies') as $companyArray) {
+                $companyArray = array_merge($companyArray, [
+                    'min_threshold' => config('rrm.default_alerts.min_threshold'),
+                    'max_threshold' => config('rrm.default_alerts.max_threshold')
+                ]);
                 $company = Company::create($companyArray);
                 $company->industries()->attach($companyArray['industry_id']);
                 $companies->add($company);
-                foreach(config('rrm.default_alerts') as $alert) {
-                    $company->companyAlertParameters()->create($alert);
-                }
             }
         });
 

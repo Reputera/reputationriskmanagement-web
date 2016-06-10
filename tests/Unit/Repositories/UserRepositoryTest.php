@@ -27,15 +27,13 @@ class UserRepositoryTest extends \TestCase
         //Noise record that should not be returned from function.
         factory(User::class, 'user')->create();
 
-        $company = factory(Company::class)->create();
+        $company = factory(Company::class)->create([
+            'min_threshold' => -90,
+            'max_threshold' => 90
+        ]);
         $instance = factory(Instance::class)->create([
             'company_id' => $company->id,
             'risk_score' => 95
-        ]);
-        \DB::table('company_alert_parameters')->insert([
-            'company_id' => $company->id,
-            'min_threshold' => 90,
-            'max_threshold' => 100
         ]);
         $matchedUsers = factory(User::class)->times(3)->create(['company_id' => $company->id]);
 
@@ -46,15 +44,13 @@ class UserRepositoryTest extends \TestCase
 
     public function testGetAlertedUserIdsForInstanceIdNoAlertsMatch()
     {
-        $company = factory(Company::class)->create();
+        $company = factory(Company::class)->create([
+            'min_threshold' => 40,
+            'max_threshold' => 100
+        ]);
         $instance = factory(Instance::class)->create([
             'company_id' => $company->id,
             'risk_score' => 50
-        ]);
-        \DB::table('company_alert_parameters')->insert([
-            'company_id' => $company->id,
-            'min_threshold' => 90,
-            'max_threshold' => 100
         ]);
         factory(User::class)->times(3)->create(['company_id' => $company->id]);
 

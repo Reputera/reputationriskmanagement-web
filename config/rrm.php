@@ -1,8 +1,7 @@
 <?php
 return [
     'default_alerts' => [
-        ['min_threshold' => 90, 'max_threshold' => 100],
-        ['min_threshold' => -90, 'max_threshold' => -100]
+        ['min_threshold' => -90, 'max_threshold' => 90],
     ],
     'filesystem' => [
         'logo' => [
