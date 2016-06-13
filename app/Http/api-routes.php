@@ -4,6 +4,8 @@ Route::group(['prefix' => 'api', 'middleware' => ['api']], function () {
     Route::post('login', 'Auth\ApiAuthController@authenticate')->name('api.login.post');
     Route::post('password/reset', 'Auth\ApiPasswordController@sendResetLinkEmail')->name('api.password.resetToken.post');
 
+    Route::get('risk-score-change', 'Instance\QueryController@getRiskChange')->name('api.risk.change');
+
     Route::group(['middleware' => ['auth', 'apiUser']], function () {
         Route::get('company/logo', 'Admin\Company\CompanyController@getCompanyLogo')->name('logo.get');
         Route::get('instance/alerts', 'Instance\AlertController@getAlertedInstances')->name('instance.alerts');

@@ -208,6 +208,44 @@
     }
   },
   {
+    "type": "get",
+    "url": "/risk-score-change",
+    "title": "Risk Score Change",
+    "name": "RiskScoreChange",
+    "description": "<p>Return the risk score change over a period of time defined by start/end_datetime as a whole number percent.</p>",
+    "group": "Instances",
+    "examples": [
+      {
+        "title": "Success-Response:",
+        "content": "HTTP/1.1 200 OK\n{\n    \"data\":[\n        {\"change_percent\":25},\n    ],\n    \"status_code\": 200,\n    \"message\": \"Success\"\n}",
+        "type": "json"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": "app/Http/Controllers/Instance/QueryController.php",
+    "groupTitle": "Instances",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "start_datetime",
+            "description": "<p>Acceptable format: YYYY-MM-DD HH:ii:ss (Required if lastDays not given)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "end_datetime",
+            "description": "<p>Acceptable format: YYYY-MM-DD HH:ii:ss (Required if lastDays not given)</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "post",
     "url": "/riskScoreMapData",
     "title": "Risk Score map data",

@@ -6,10 +6,12 @@ use App\Entities\Company;
 use App\Http\Controllers\Controller;
 use App\Http\Queries\Instance as InstanceQuery;
 use App\Http\Requests\Instance\InstanceQueryRequest;
+use App\Http\Requests\Instance\RiskChangeRequest;
 use App\Http\Requests\Instance\RiskScoreRequest;
 use App\Http\Traits\PaginationTrait;
 use App\Services\Instance\QueryBuilder;
 use App\Transformers\Instance\InstanceTransformer;
+use Carbon\Carbon;
 use League\Csv\Writer;
 
 class QueryController extends Controller
@@ -111,4 +113,35 @@ class QueryController extends Controller
             'average_competitor_risk_score' => $competitorRiskScore
         ]);
     }
+
+    /**
+     * @api {get} /risk-score-change Risk Score Change
+     * @apiName RiskScoreChange
+     * @apiDescription Return the risk score change over a period of time defined by start/end_datetime as a whole number percent.
+     * @apiUse RiskChangeParams
+     * @apiGroup Instances
+     * @apiExample {json} Success-Response:
+     *  HTTP/1.1 200 OK
+     *  {
+     *      "data":[
+     *          {"change_percent":25},
+     *      ],
+     *      "status_code": 200,
+     *      "message": "Success"
+     *  }
+     */
+    /**
+     * @param RiskChangeRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getRiskChange(RiskChangeRequest $request)
+    {
+        return $this->respondWithArray([
+            'change_percent' => $request->user()->company->reputationChangeBetweenDates(
+                new Carbon($request->get('start_datetime')),
+                new Carbon($request->get('end_datetime'))
+            )
+        ]);
+    }
+
 }
