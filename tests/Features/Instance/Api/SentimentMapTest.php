@@ -7,7 +7,7 @@ use App\Entities\Country;
 use App\Entities\Instance;
 use Carbon\Carbon;
 
-class RiskScoreMapTest extends \TestCase
+class SentimentMapTest extends \TestCase
 {
 
     public function testGetRiskScoreMapData()
@@ -21,12 +21,14 @@ class RiskScoreMapTest extends \TestCase
         $otherCountry = factory(Country::class)->create();
         $returnedInstances = factory(Instance::class)->times(3)->create([
             'company_id' => $user->company_id,
+            'risk_score' => 60,
             'start' => Carbon::now()
         ]);
 
         $otherReturnedInstance = factory(Instance::class)->create([
             'company_id' => $user->company_id,
-            'start' => Carbon::now(),
+            'risk_score' => 50,
+            'start' => Carbon::now()->subDay(1),
             'vector_id' => $returnedInstances[0]->vector_id
         ]);
 
@@ -36,12 +38,13 @@ class RiskScoreMapTest extends \TestCase
         $otherReturnedInstance->countries()->attach($country);
 
         $this->apiCall('POST', 'riskScoreMapData', [
-            'start_datetime' => $returnedInstances[0]->start->subDay(1),
+            'start_datetime' => $returnedInstances[0]->start->subDay(2),
             'end_datetime' => $returnedInstances[0]->start->addDay(1)
         ]);
         $this->assertJsonResponseOkAndFormattedProperly();
 
         $results = $this->response->getData(true)['data'];
+        $this->assertEquals(20, array_get($results, '0.percent_change'));
         $this->assertEquals(3, array_get($results, '0.count'));
         $this->assertEquals($country->region->name, array_get($results, '0.region'));
 

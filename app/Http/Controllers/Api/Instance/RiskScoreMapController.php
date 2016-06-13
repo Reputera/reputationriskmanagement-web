@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api\Instance;
 
 
+use App\Entities\Region;
 use App\Http\Controllers\ApiController;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class RiskScoreMapController extends ApiController
@@ -22,6 +24,7 @@ class RiskScoreMapController extends ApiController
      *          {
      *              "region":"Region name",
      *              "count":15,
+     *              "percent_change":20,
      *              "vectors":[
      *                  {
      *                      "vector1":"vector name",
@@ -58,8 +61,13 @@ class RiskScoreMapController extends ApiController
             ->groupBy('regions.name')
             ->orderBy('count', 'desc')
             ->get();
-
+        \DB::setFetchMode(\PDO::FETCH_CLASS);
         foreach($regionList as $key => $region) {
+            $regionList[$key]['percent_change'] = $request->user()->company->reputationChangeForRegionBetweenDates(
+                Region::where(['name' => $region['region']])->first(),
+                new Carbon($request->get('start_datetime')),
+                new Carbon($request->get('end_datetime'))
+            );
             $regionList[$key]['vectors'] = $this->getRegionVectorData(
                 $region['region'],
                 $request->input('start_datetime'),
