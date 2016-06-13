@@ -13,6 +13,7 @@ class AlertController extends Controller
     /**
      * @api {get} /instance/alerts Get Alerts
      * @apiUse GetAlertsParams
+     * @apiUse MultipleInstances
      * @apiName GetAlerts
      * @apiDescription Get the current user's alerts.
      * @apiGroup Alerts
