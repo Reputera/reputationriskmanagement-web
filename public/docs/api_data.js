@@ -1,7 +1,7 @@
 define({ "api": [
   {
     "type": "post",
-    "url": "/instance/alerts/:instanceId",
+    "url": "/instance/alerts/dismiss/:instanceId",
     "title": "Dismiss Alert",
     "name": "DismissAlert",
     "description": "<p>Dismiss an alert by passing in an alerted instance's ID.</p>",
