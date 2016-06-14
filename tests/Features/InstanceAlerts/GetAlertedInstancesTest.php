@@ -23,6 +23,21 @@ class GetAlertedInstancesTest extends \TestCase
         $this->assertEquals($instance->id, $response[0]['id']);
     }
 
+    public function testGetAlertedInstancesReturnsDismissed() {
+        $instance = factory(Instance::class)->create();
+        $user = $this->beLoggedInAsUser();
+        \DB::table('user_instance_alerts')->insert([
+            'user_id' => $user->id,
+            'instance_id' => $instance->id,
+            'dismissed' => true
+        ]);
+
+        $this->apiCall('GET', 'instance/alerts', ['dismissed' => true]);
+        $response = $this->getResponseData();
+        $this->assertCount(1, $response);
+        $this->assertEquals($instance->id, $response[0]['id']);
+    }
+
     public function testGetAlertedInstancesDoesntReturnDismissed() {
         $dismissedInstance = factory(Instance::class)->create();
         $instance = factory(Instance::class)->create();

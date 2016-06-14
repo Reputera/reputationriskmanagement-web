@@ -25,13 +25,13 @@ class AlertController extends Controller
     public function getAlertedInstances(GetAlertsRequest $apiRequest)
     {
         return $this->respondWith(
-            $apiRequest->user()->getAlertedInstances(),
+            $apiRequest->user()->getAlertedInstances($apiRequest->get('dismissed', false)),
             new InstanceTransformer()
         );
     }
 
     /**
-     * @api {post} /instance/alerts/:instanceId Dismiss Alert
+     * @api {post} /instance/alerts/dismiss/:instanceId Dismiss Alert
      * @apiName DismissAlert
      * @apiDescription Dismiss an alert by passing in an alerted instance's ID.
      * @apiGroup Alerts
