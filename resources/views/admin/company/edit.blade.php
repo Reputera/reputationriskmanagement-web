@@ -22,7 +22,9 @@
 
             <h3>Company Logo</h3>
             <p>Current logo:</p>
-            <img ng-show="currentLogo" ng-src="@{{currentLogo}}">
+            <div id="logoDiv">
+                <img name="logoImage" ng-src="@{{currentLogo}}">
+            </div>
             <p>Upload new logo</p>
             <input type='file' file-model='file' />
             <button class="btn btn-primary" ng-click="uploadLogo()">Upload</button>
@@ -80,13 +82,12 @@
 
         $scope.refreshLogo = function() {
             ApplicationConfig.enableGlobalErrorHandling = false;
-            $http.get('/company/logo?company_id=' + $scope.selectedCompanyId).then(function(result) {
-                $scope.currentLogo =  '/company/logo?company_id=' + $scope.selectedCompanyId;
-                ApplicationConfig.enableGlobalErrorHandling = true;
-            }, function(result) {
-                $scope.currentLogo = null;
-                ApplicationConfig.enableGlobalErrorHandling = true;
-            });
+            $('#logoDiv').html('<img id="logoImage" ng-src="@{{currentLogo}}">');
+            $('#logoImage').attr('src', '/company/logo?company_id=' + $scope.selectedCompanyId);
+//            $scope.currentLogo = '';
+//            console.log($scope.selectedCompanyId);
+//            $scope.currentLogo =  '/company/logo?company_id=' + $scope.selectedCompanyId;
+
         };
 
         $scope.uploadLogo = function(){

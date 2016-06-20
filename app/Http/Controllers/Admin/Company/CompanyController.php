@@ -88,24 +88,31 @@ class CompanyController extends ApiController
     {
         $company = Company::findOrFail($request->input('company_id'));
         if(file_exists($company->logo_filename)) {
-            return response()->download($company->logo_filename);
+            return response()
+                ->download($company->logo_filename, null, ['Cache-Control' => 'no-cache, no-store, max-age=0, must-revalidate']);
         }
-        return response()->download(storage_path() . '/' . config('rrm.filesystem.logo.default'));
+        return response()
+            ->download(
+                storage_path() . '/' . config('rrm.filesystem.logo.default'),
+                null,
+                ['Cache-Control' => 'no-cache, no-store, max-age=0, must-revalidate']
+            );
     }
 
     public function updateCompanyLogo(UpdateCompanyLogoRequest $request)
     {
         $company = Company::findOrFail($request->get('company_id'));
-        if(file_exists(config('rrm.filesystem.logo.directory') . $company->logo_filename)) {
-            file(config('rrm.filesystem.logo.directory') . $company->logo_filename)->delete();
+        if(file_exists($company->logo_filename)) {
+            \File::delete($company->logo_filename);
         }
+
         $logoFile = $request->file('logoImage');
         $filename = base64_encode(\Hash::make($company->id . time() . $logoFile->getClientOriginalName())) . '.' . $logoFile->getClientOriginalExtension();
 
-        $company->logo_filename = $filename;
+        $company->logo_filename = config('rrm.filesystem.logo.directory') .$filename;
         $company->save();
         $logoFile->move(
-            storage_path(config('rrm.filesystem.logo.directory')),
+            config('rrm.filesystem.logo.directory'),
             $filename
         );
     }
