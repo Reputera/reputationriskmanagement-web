@@ -19,7 +19,7 @@ class QueryController extends Controller
     use PaginationTrait;
 
     /**
-     * @api {post} /instances/ List instances
+     * @api {get} /instance/ List instances
      * @apiName ListInstances
      * @apiDescription List instances based on query parameters.
      * @apiGroup Instances

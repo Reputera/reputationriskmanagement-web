@@ -62,8 +62,8 @@ define({ "api": [
     "groupTitle": "Company"
   },
   {
-    "type": "post",
-    "url": "/instances/",
+    "type": "get",
+    "url": "/instance/",
     "title": "List instances",
     "name": "ListInstances",
     "description": "<p>List instances based on query parameters.</p>",
