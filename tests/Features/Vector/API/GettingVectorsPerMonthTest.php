@@ -19,20 +19,30 @@ class GettingVectorsPerMonthTest extends \TestCase
         $this->apiCall('get', 'vector-risk-scores-by-month', ['dates' => $datesToProcess]);
 
         $this->assertJsonResponseOkAndFormattedProperly();
-        $this->assertJsonResponseHasDataKeys($datesToProcess);
 
         $data = $this->response->getData(true)['data'];
-        $this->assertCount(2, $data);
+        $this->assertEquals($datesToProcess[0], $data[0]['date']);
+        $this->assertEquals($datesToProcess[1], $data[1]['date']);
 
         // Make sure both dates have all the vectors.
-        $this->assertEquals($vectorsCollection->pluck('name')->toArray(), array_keys($data[$datesToProcess[0]]));
-        $this->assertEquals($vectorsCollection->pluck('name')->toArray(), array_keys($data[$datesToProcess[1]]));
+        $this->assertCount($vectorsCollection->count(), $data[0]['vectors']);
+        $this->assertCount($vectorsCollection->count(), $data[0]['vectors']);
 
-        foreach ($vectors as $vector) {
-            foreach ($datesToProcess as $date) {
-                // Loops through each vector for each date and verifies the values set in the setup functions.
-                // Also note, the "expectedOutput" is a "on-the-fly" field that is added in the setup functions.
-                $this->assertEquals($vector[$date]['expectedOutput'], $data[$date][$vector['name']]);
+//        Assert data in output array is correct.
+        foreach($data as $dateData) {
+            foreach ($dateData['vectors'] as $vectorData) {
+                $this->assertEquals(
+                    $this->getVectorData($vectors, $vectorData['vector'])[$dateData['date']]['expectedOutput'],
+                    $vectorData['value']
+                );
+            }
+        }
+    }
+
+    protected function getVectorData(array $vectorData, $vectorName) {
+        foreach($vectorData as $vector) {
+            if($vector['name'] == $vectorName) {
+                return $vector;
             }
         }
     }
