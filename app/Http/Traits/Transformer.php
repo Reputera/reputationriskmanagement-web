@@ -205,7 +205,7 @@ trait Transformer
     protected function respondWithArray(array $array, array $headers = [])
     {
         $arrayToResponse = [
-            'data' => array_get($array, 'data') ?: $array,
+            'data' => array_key_exists('data', $array) ? $array['data'] : $array,
             'status_code' => $this->statusCode,
             'message' => 'Success',
         ];
