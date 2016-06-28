@@ -372,7 +372,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n    \"data\": {\n        \"2016-04\": {\n            \"Vector 1\": 10,\n            \"Vector 2\": 20,\n            \"Vector 3\": 30,\n        },\n        \"2016-7\": {\n            \"Vector 1\": 20,\n            \"Vector 2\": 30,\n            \"Vector 3\": 10,\n        },\n        ...\n    },\n    \"status_code\": 200,\n    \"message\": \"Success\"\n}",
+          "content": "HTTP/1.1 200 OK\n{\n    \"data\": [\n        {\n            \"date\":\"2016-04\",\n            \"vectors\": [\n                {\"vector\":\"Vector 1\",\"value\": 10},\n                {\"vector\":\"Vector 2\",\"value\": 20},\n                {\"vector\":\"Vector 3\",\"value\": 30}\n            ]\n        },\n        {\n            \"date\":\"2016-04\",\n            \"vectors\": [\n                {\"vector\":\"Vector 1\",\"value\": 10},\n                {\"vector\":\"Vector 2\",\"value\": 20},\n                {\"vector\":\"Vector 3\",\"value\": 30}\n            ]\n        },\n        ...\n    ],\n    \"status_code\": 200,\n    \"message\": \"Success\"\n}",
           "type": "json"
         }
       ]

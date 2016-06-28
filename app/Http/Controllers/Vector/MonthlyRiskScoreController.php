@@ -19,19 +19,25 @@ class MonthlyRiskScoreController extends Controller
      * @apiSuccessExample {json} Success-Response:
      *  HTTP/1.1 200 OK
      *  {
-     *      "data": {
-     *          "2016-04": {
-     *              "Vector 1": 10,
-     *              "Vector 2": 20,
-     *              "Vector 3": 30,
+     *      "data": [
+     *          {
+     *              "date":"2016-04",
+     *              "vectors": [
+     *                  {"vector":"Vector 1","value": 10},
+     *                  {"vector":"Vector 2","value": 20},
+     *                  {"vector":"Vector 3","value": 30}
+     *              ]
      *          },
-     *          "2016-7": {
-     *              "Vector 1": 20,
-     *              "Vector 2": 30,
-     *              "Vector 3": 10,
+     *          {
+     *              "date":"2016-04",
+     *              "vectors": [
+     *                  {"vector":"Vector 1","value": 10},
+     *                  {"vector":"Vector 2","value": 20},
+     *                  {"vector":"Vector 3","value": 30}
+     *              ]
      *          },
-     *          ...
-     *      },
+    *          ...
+     *      ],
      *      "status_code": 200,
      *      "message": "Success"
      *  }
@@ -47,13 +53,20 @@ class MonthlyRiskScoreController extends Controller
 
         foreach ($request->get('dates') as $date) {
             list($year, $month) = explode('-', $date);
+            $dateData = [
+                'date' => $year.'-'.$month,
+            ];
             foreach ($vectors = Vector::all() as $vector) {
-                $vectorScores[$year.'-'.$month][$vector->name] = $vector->riskScoreForCompanyByYearAndMonth(
-                    $company,
-                    $year,
-                    $month
-                );
+                $dateData['vectors'][] = [
+                    'vector' => $vector->name,
+                    'value' => $vector->riskScoreForCompanyByYearAndMonth(
+                        $company,
+                        $year,
+                        $month
+                    )
+                ];
             }
+            $vectorScores[] = $dateData;
         }
 
         return $this->respondWithArray($vectorScores);
