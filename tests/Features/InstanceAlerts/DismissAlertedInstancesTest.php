@@ -16,7 +16,7 @@ class DismissAlertedInstancesTest extends \TestCase
             'instance_id' => $instance->id
         ]);
 
-        $this->apiCall('GET', 'instance/alerts/dismiss/' . $instance->id);
+        $this->apiCall('POST', 'instance/alerts/dismiss/' . $instance->id);
         $this->assertResponseOk();
         $this->seeInDatabase('user_instance_alerts', [
             'user_id' => $user->id,
