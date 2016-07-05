@@ -53,7 +53,11 @@ class RiskScoreMapController extends ApiController
         $regionList = \DB::table('instances')
             ->selectRaw('regions.name as region')
             ->selectRaw('count(*) as count')
-            ->selectRaw('"medium" as risk')
+            ->selectRaw('CASE
+        WHEN risk_score < -66 THEN \'high\'
+        WHEN risk_score > 66 THEN \'low\'
+        ELSE \'medium\'
+    END AS risk')
             ->where('instances.company_id', $request->user()->company_id)
             ->where('instances.start', '>', $request->input('start_datetime'))
             ->where('instances.start', '<', $request->input('end_datetime'))
@@ -86,7 +90,11 @@ class RiskScoreMapController extends ApiController
         return \DB::table('instances')
             ->selectRaw('vectors.name as vector')
             ->selectRaw('count(*) as count')
-            ->selectRaw('"medium" as risk')
+            ->selectRaw('CASE
+                    WHEN risk_score < -66 THEN \'high\'
+                    WHEN risk_score > 66 THEN \'low\'
+                    ELSE \'medium\'
+                END AS risk')
             ->join('vectors', 'vectors.id', '=', 'instances.vector_id')
             ->leftJoin('instance_country', 'instances.id', '=', 'instance_country.instance_id')
             ->leftJoin('countries', 'countries.id', '=', 'instance_country.country_id')
