@@ -29,11 +29,13 @@ class RiskScoreMapController extends ApiController
      *              "vectors":[
      *                  {
      *                      "vector1":"vector name",
-     *                      "count":10
+     *                      "count":10,
+     *                      "risk": "medium"
      *                  }
      *                  {
      *                      "vector1":"vector name",
-     *                      "count":5
+     *                      "count":5,
+     *                      "risk": "medium"
      *                  }
      *              ]
      *          },
@@ -84,6 +86,7 @@ class RiskScoreMapController extends ApiController
         return \DB::table('instances')
             ->selectRaw('vectors.name as vector')
             ->selectRaw('count(*) as count')
+            ->selectRaw('"medium" as risk')
             ->join('vectors', 'vectors.id', '=', 'instances.vector_id')
             ->leftJoin('instance_country', 'instances.id', '=', 'instance_country.instance_id')
             ->leftJoin('countries', 'countries.id', '=', 'instance_country.country_id')
