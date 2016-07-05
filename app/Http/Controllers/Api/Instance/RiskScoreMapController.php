@@ -25,6 +25,7 @@ class RiskScoreMapController extends ApiController
      *              "region":"Region name",
      *              "count":15,
      *              "percent_change":20,
+     *              "risk": "medium",
      *              "vectors":[
      *                  {
      *                      "vector1":"vector name",
@@ -50,6 +51,7 @@ class RiskScoreMapController extends ApiController
         $regionList = \DB::table('instances')
             ->selectRaw('regions.name as region')
             ->selectRaw('count(*) as count')
+            ->selectRaw('"medium" as risk')
             ->where('instances.company_id', $request->user()->company_id)
             ->where('instances.start', '>', $request->input('start_datetime'))
             ->where('instances.start', '<', $request->input('end_datetime'))
