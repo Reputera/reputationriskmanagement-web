@@ -252,7 +252,7 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/competitor-risk-score-change",
+    "url": "/industry-risk-score-change",
     "title": "Industry Risk Score Change",
     "name": "CompetitorRiskScoreChange",
     "description": "<p>Return the risk score change for competitors over a period of time defined by start/end_datetime as a whole number percent.</p>",

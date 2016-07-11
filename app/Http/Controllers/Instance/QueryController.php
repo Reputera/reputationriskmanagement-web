@@ -145,7 +145,7 @@ class QueryController extends Controller
     }
 
     /**
-     * @api {get} /competitor-risk-score-change Industry Risk Score Change
+     * @api {get} /industry-risk-score-change Industry Risk Score Change
      * @apiName CompetitorRiskScoreChange
      * @apiDescription Return the risk score change for competitors over a period of time defined by start/end_datetime as a whole number percent.
      * @apiUse RiskChangeParams
