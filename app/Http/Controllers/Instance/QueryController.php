@@ -119,7 +119,7 @@ class QueryController extends Controller
      * @apiName RiskScoreChange
      * @apiDescription Return the risk score change over a period of time defined by start/end_datetime as a whole number percent.
      * @apiUse RiskChangeParams
-     * @apiGroup Instances
+     * @apiGroup Risk Score
      * @apiExample {json} Success-Response:
      *  HTTP/1.1 200 OK
      *  {
@@ -138,6 +138,36 @@ class QueryController extends Controller
     {
         return $this->respondWithArray([
             'change_percent' => $request->user()->company->reputationChangeBetweenDates(
+                new Carbon($request->get('start_datetime')),
+                new Carbon($request->get('end_datetime'))
+            )
+        ]);
+    }
+
+    /**
+     * @api {get} /competitor-risk-score-change Industry Risk Score Change
+     * @apiName CompetitorRiskScoreChange
+     * @apiDescription Return the risk score change for competitors over a period of time defined by start/end_datetime as a whole number percent.
+     * @apiUse RiskChangeParams
+     * @apiGroup Risk Score
+     * @apiExample {json} Success-Response:
+     *  HTTP/1.1 200 OK
+     *  {
+     *      "data":[
+     *          {"change_percent":25},
+     *      ],
+     *      "status_code": 200,
+     *      "message": "Success"
+     *  }
+     */
+    /**
+     * @param RiskChangeRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getCompetitorRiskChange(RiskChangeRequest $request)
+    {
+        return $this->respondWithArray([
+            'change_percent' => $request->user()->company->competitorReputationChangeBetweenDates(
                 new Carbon($request->get('start_datetime')),
                 new Carbon($request->get('end_datetime'))
             )

@@ -132,6 +132,18 @@ class Company extends Model
     }
 
     /**
+     * Gets the reputation change for a particular company's competitors between two dates.
+     *
+     * @param Carbon $start
+     * @param Carbon $end
+     * @return float
+     */
+    public function competitorReputationChangeBetweenDates(Carbon $start, Carbon $end): float
+    {
+        return app(ReputationChange::class)->forCompetitorsBetween($this, $start, $end);
+    }
+
+    /**
      * Gets the reputation change for a particular company between two dates.
      *
      * @param Region $region
