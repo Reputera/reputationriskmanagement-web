@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\ApiController;
+use App\Transformers\Company\CompanyTransformer;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 class ApiAuthController extends ApiController
 {
+
     /**
      * @api {post} /login Login
      * @apiName UserLogin
@@ -19,7 +21,16 @@ class ApiAuthController extends ApiController
      * @apiSuccessExample {json} Success-Response:
      *  HTTP/1.1 200 OK
      *  {
-     *      "data": {"token": "SomeLongTokenString"},
+     *      "data": {
+     *          "token": "SomeLongTokenString",
+     *          "company": {
+     *              "id": 1,
+     *              "name": "Company Name",
+     *              "entity_id": "AV4DTB",
+     *              "max_alert_threshold": 90,
+     *              "min_alert_threshold": -90
+     *          }
+     *      },
      *      "status_code": 200,
      *      "message": "Success"
      *  }
@@ -44,6 +55,9 @@ class ApiAuthController extends ApiController
         }
 
         // all good so return the token
-        return $this->respondWithArray(compact('token'));
+        return $this->respondWithArray([
+            'token' => $token,
+            'company' => auth()->user()->company ? $this->transform(auth()->user()->company, new CompanyTransformer()) : ''
+        ]);
     }
 }

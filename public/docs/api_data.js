@@ -208,44 +208,6 @@ define({ "api": [
     }
   },
   {
-    "type": "get",
-    "url": "/risk-score-change",
-    "title": "Risk Score Change",
-    "name": "RiskScoreChange",
-    "description": "<p>Return the risk score change over a period of time defined by start/end_datetime as a whole number percent.</p>",
-    "group": "Instances",
-    "examples": [
-      {
-        "title": "Success-Response:",
-        "content": "HTTP/1.1 200 OK\n{\n    \"data\":[\n        {\"change_percent\":25},\n    ],\n    \"status_code\": 200,\n    \"message\": \"Success\"\n}",
-        "type": "json"
-      }
-    ],
-    "version": "0.0.0",
-    "filename": "app/Http/Controllers/Instance/QueryController.php",
-    "groupTitle": "Instances",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "start_datetime",
-            "description": "<p>Acceptable format: YYYY-MM-DD HH:ii:ss (Required if lastDays not given)</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "end_datetime",
-            "description": "<p>Acceptable format: YYYY-MM-DD HH:ii:ss (Required if lastDays not given)</p>"
-          }
-        ]
-      }
-    }
-  },
-  {
     "type": "post",
     "url": "/riskScoreMapData",
     "title": "Risk Score map data",
@@ -283,6 +245,82 @@ define({ "api": [
             "optional": false,
             "field": "end_datetime",
             "description": "<p>Acceptable format: YYYY-MM-DD HH:ii:ss</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "get",
+    "url": "/competitor-risk-score-change",
+    "title": "Industry Risk Score Change",
+    "name": "CompetitorRiskScoreChange",
+    "description": "<p>Return the risk score change for competitors over a period of time defined by start/end_datetime as a whole number percent.</p>",
+    "group": "Risk_Score",
+    "examples": [
+      {
+        "title": "Success-Response:",
+        "content": "HTTP/1.1 200 OK\n{\n    \"data\":[\n        {\"change_percent\":25},\n    ],\n    \"status_code\": 200,\n    \"message\": \"Success\"\n}",
+        "type": "json"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": "app/Http/Controllers/Instance/QueryController.php",
+    "groupTitle": "Risk_Score",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "start_datetime",
+            "description": "<p>Acceptable format: YYYY-MM-DD HH:ii:ss (Required if lastDays not given)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "end_datetime",
+            "description": "<p>Acceptable format: YYYY-MM-DD HH:ii:ss (Required if lastDays not given)</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "get",
+    "url": "/risk-score-change",
+    "title": "Risk Score Change",
+    "name": "RiskScoreChange",
+    "description": "<p>Return the risk score change over a period of time defined by start/end_datetime as a whole number percent.</p>",
+    "group": "Risk_Score",
+    "examples": [
+      {
+        "title": "Success-Response:",
+        "content": "HTTP/1.1 200 OK\n{\n    \"data\":[\n        {\"change_percent\":25},\n    ],\n    \"status_code\": 200,\n    \"message\": \"Success\"\n}",
+        "type": "json"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": "app/Http/Controllers/Instance/QueryController.php",
+    "groupTitle": "Risk_Score",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "start_datetime",
+            "description": "<p>Acceptable format: YYYY-MM-DD HH:ii:ss (Required if lastDays not given)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "end_datetime",
+            "description": "<p>Acceptable format: YYYY-MM-DD HH:ii:ss (Required if lastDays not given)</p>"
           }
         ]
       }
@@ -352,7 +390,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n    \"data\": {\"token\": \"SomeLongTokenString\"},\n    \"status_code\": 200,\n    \"message\": \"Success\"\n}",
+          "content": "HTTP/1.1 200 OK\n{\n    \"data\": {\n        \"token\": \"SomeLongTokenString\",\n        \"company\": {\n            \"id\": 1,\n            \"name\": \"Company Name\",\n            \"entity_id\": \"AV4DTB\",\n            \"max_alert_threshold\": 90,\n            \"min_alert_threshold\": -90\n        }\n    },\n    \"status_code\": 200,\n    \"message\": \"Success\"\n}",
           "type": "json"
         }
       ]

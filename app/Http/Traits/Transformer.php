@@ -49,6 +49,20 @@ trait Transformer
     }
 
     /**
+     * Transforms an item into an array using Fractal.
+     *
+     * @param $item
+     * @param $callback
+     * @return array
+     */
+    public function transform($item, $callback)
+    {
+        return $this->fractal()
+            ->createData(new Item($item, $callback))
+            ->toArray();
+    }
+
+    /**
      * Dynamically determines the response based on the item given.
      *
      * @param $thing IlluminateCollection|Model
