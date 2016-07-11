@@ -3,6 +3,7 @@
 namespace App\Services\Instance;
 
 use App\Entities\Company;
+use App\Entities\Instance;
 use App\Entities\Region;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -21,6 +22,18 @@ class ReputationChange
     public function forCompanyBetween(Company $company, Carbon $start, Carbon $end)
     {
         $builder = $this->buildInitialQuery($company, $start, $end);
+
+        return $this->calculateChange($builder);
+    }
+
+    public function forCompetitorsBetween(Company $company, Carbon $start, Carbon $end)
+    {
+        $competitorsArray = $company->competitors->pluck('id')->all();
+        $competitorsArray[] = $company->id;
+        $builder = Instance::whereIn('company_id', $competitorsArray)
+            ->dailyCompanyRiskScore($company)
+            ->whereRaw("start between '{$start->toDateString()} 00:00:00' and '{$end->toDateString()} 23:59:59'")
+            ->orderByRaw('start_date ASC');
 
         return $this->calculateChange($builder);
     }

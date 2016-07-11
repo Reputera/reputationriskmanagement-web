@@ -111,15 +111,13 @@ class Instance extends Model
     public static function scopeCompanyRiskScore($builder, Company $company)
     {
         return self::addSelectForRiskScoreAverage($builder)
-            ->where('instances.company_id', $company->id)
             ->groupBy('instances.company_id');
     }
 
-    public static function scopeDailyCompanyRiskScore($builder, Company $company)
+    public static function scopeDailyCompanyRiskScore($builder)
     {
         return self::addSelectForRiskScoreAverage($builder)
             ->selectRaw('date(start) as start_date')
-            ->where('instances.company_id', $company->id)
             ->groupBy('start_date');
     }
 
