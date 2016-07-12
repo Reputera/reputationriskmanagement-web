@@ -400,6 +400,26 @@
     "groupTitle": "Users"
   },
   {
+    "type": "post",
+    "url": "/logout",
+    "title": "Logout",
+    "name": "UserLogout",
+    "group": "Users",
+    "description": "<p>Logs a user out.</p>",
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n    \"data\": {\n    },\n    \"status_code\": 200,\n    \"message\": \"Success\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/Http/Controllers/Auth/ApiAuthController.php",
+    "groupTitle": "Users"
+  },
+  {
     "type": "get",
     "url": "/vector-risk-scores-by-month/",
     "title": "Per month",

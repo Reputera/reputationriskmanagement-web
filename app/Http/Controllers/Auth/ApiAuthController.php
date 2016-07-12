@@ -60,4 +60,24 @@ class ApiAuthController extends ApiController
             'company' => auth()->user()->company ? $this->transform(auth()->user()->company, new CompanyTransformer()) : ''
         ]);
     }
+
+    /**
+     * @api {post} /logout Logout
+     * @apiName UserLogout
+     * @apiGroup Users
+     * @apiDescription Logs a user out.
+     * @apiSuccessExample {json} Success-Response:
+     *  HTTP/1.1 200 OK
+     *  {
+     *      "data": {
+     *      },
+     *      "status_code": 200,
+     *      "message": "Success"
+     *  }
+     */
+    public function logout()
+    {
+        auth()->guard()->logout();
+        return $this->respondWithArray([]);
+    }
 }

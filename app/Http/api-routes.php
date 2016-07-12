@@ -2,6 +2,7 @@
 
 Route::group(['prefix' => 'api', 'middleware' => ['api']], function () {
     Route::post('login', 'Auth\ApiAuthController@authenticate')->name('api.login.post');
+    Route::post('logout', 'Auth\ApiAuthController@logout')->name('api.logout');
     Route::post('password/reset', 'Auth\ApiPasswordController@sendResetLinkEmail')->name('api.password.resetToken.post');
 
     Route::get('risk-score-change', 'Instance\QueryController@getRiskChange')->name('api.risk.change');
