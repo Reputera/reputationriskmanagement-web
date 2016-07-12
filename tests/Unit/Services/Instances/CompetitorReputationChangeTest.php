@@ -37,11 +37,11 @@ class CompetitorReputationChangeTest extends \TestCase
         $companyCompetitor = factory(Company::class)->create();
         $company->competitors()->attach($companyCompetitor->id);
 
-//        Day 1 total = 30
+//        Day 1 total = 10 + 100 + 20 + 100 = 230
         $this->createInstanceForCompanyWithScoreAndDate($company, 10, $startDate);
         $this->createInstanceForCompanyWithScoreAndDate($companyCompetitor, 20, $startDate);
 
-//        Day 2 total = 60
+//        Day 2 total = 20 + 100 + 40 + 100 = 260
         $this->createInstanceForCompanyWithScoreAndDate($company, 20, $secondDay);
         $this->createInstanceForCompanyWithScoreAndDate($companyCompetitor, 40, $secondDay);
 
@@ -49,9 +49,39 @@ class CompetitorReputationChangeTest extends \TestCase
         $this->createInstanceForCompanyWithScoreAndDate($company, -38, $outsideDateRange);
 
 
+//        Day  230 -  260 / 230 = .13 * 50 = 6.5
+        $this->assertEquals(
+            '6',
+            number_format($this->reputationChange->forCompetitorsBetween(
+                $company,
+                $startDate,
+                $endDate
+            ), 3)
+        );
+    }
+
+    public function testReputationChangeByDateForDatesWithZeroScoreInstance()
+    {
+        /** @var Company $company */
+        $company = factory(Company::class)->create();
+        $startDate = Carbon::create(2016, 05, 01);
+        $endDate = Carbon::create(2016, 05, 05);
+
+        $secondDay = clone $startDate;
+        $secondDay->addDays(1);
+
+        $companyCompetitor = factory(Company::class)->create();
+        $company->competitors()->attach($companyCompetitor->id);
+
+//        Day 1 total = 30
+        $this->createInstanceForCompanyWithScoreAndDate($company, 0, $startDate);
+
+//        Day 2 total = 60
+        $this->createInstanceForCompanyWithScoreAndDate($company, 50, $secondDay);
+
 //        Day 2 (60) -  Day 1 (30) = 30 / 30 = 1 * 100
         $this->assertEquals(
-            '100',
+            '25',
             number_format($this->reputationChange->forCompetitorsBetween(
                 $company,
                 $startDate,

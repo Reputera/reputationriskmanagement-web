@@ -4,7 +4,6 @@ namespace Tests\Features\Instance\API;
 
 
 use App\Entities\Company;
-use App\Entities\Country;
 use App\Entities\Instance;
 use Carbon\Carbon;
 
@@ -43,7 +42,7 @@ class GetRiskChangeTest extends \TestCase
         ]);
         $this->assertJsonResponseOkAndFormattedProperly();
         $results = $this->response->getData(true)['data'];
-        $this->assertEquals(100, array_get($results, 'change_percent'));
+        $this->assertEquals(16, array_get($results, 'change_percent'));
     }
 
     public function testGetIndustryRiskScoreMapData()
@@ -81,7 +80,7 @@ class GetRiskChangeTest extends \TestCase
         ]);
         $this->assertJsonResponseOkAndFormattedProperly();
         $results = $this->response->getData(true)['data'];
-        $this->assertEquals(100, array_get($results, 'change_percent'));
+        $this->assertEquals(16, array_get($results, 'change_percent'));
     }
 
 }

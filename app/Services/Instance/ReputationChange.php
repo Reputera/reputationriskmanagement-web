@@ -31,7 +31,7 @@ class ReputationChange
         $competitorsArray = $company->competitors->pluck('id')->all();
         $competitorsArray[] = $company->id;
         $builder = Instance::whereIn('company_id', $competitorsArray)
-            ->dailyCompanyRiskScore($company)
+            ->dailyScaledCompanyRiskScore($company)
             ->whereRaw("start between '{$start->toDateString()} 00:00:00' and '{$end->toDateString()} 23:59:59'")
             ->orderByRaw('start_date ASC');
 
@@ -68,7 +68,7 @@ class ReputationChange
         // We initially need to make a query to populate the instance scores (reputation score) grouped by the
         // date (YYYY-MM-DD) of the start column. They way the the datetimes (dates withe hours/minutes/seconds)
         // do not try to group.
-        return $company->instances()->getRelated()->dailyCompanyRiskScore($company)
+        return $company->instances()->getRelated()->dailyScaledCompanyRiskScore($company)
             ->whereRaw("start between '{$start->toDateString()} 00:00:00' and '{$end->toDateString()} 23:59:59'")
             ->orderByRaw('start_date ASC');
     }
@@ -83,7 +83,6 @@ class ReputationChange
     protected function calculateChange($builder)
     {
         $results = DB::select("{$builder->toSql()}", $builder->getBindings());
-
         $finalScores = [];
         foreach ($results as $key => $result) {
             if (!array_key_exists($key + 1, $results)) {
@@ -92,23 +91,15 @@ class ReputationChange
 
             $originalNumber = $result->company_risk_scores;
             $secondNumber = $results[$key + 1]->company_risk_scores;
-            if (($originalNumber - $secondNumber) > 0) {
-                $value = ($originalNumber - $secondNumber) / $originalNumber;
-            } else {
-                $value = ($secondNumber - $originalNumber) / $originalNumber;
-            }
 
-            if ($originalNumber > $secondNumber && ($originalNumber > 0)) {
-                $value = -1 * $value;
-            }
-
-            $finalScores[] = $value * 100;
+//            Multiply by (200 / 100 = 50) in order to scale for 0 to 200
+            $finalScores[] = (($secondNumber - $originalNumber) / $originalNumber) * 50;
         }
 
         if (!$finalScores) {
-            return 0.0;
+            return 0;
         }
 
-        return (float) (array_sum($finalScores) / count($finalScores));
+        return (int) (array_sum($finalScores) / count($finalScores));
     }
 }
