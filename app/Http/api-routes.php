@@ -9,7 +9,8 @@ Route::group(['prefix' => 'api', 'middleware' => ['api']], function () {
     Route::get('industry-risk-score-change', 'Instance\QueryController@getCompetitorRiskChange')->name('api.industry-risk.change');
 
     Route::group(['middleware' => ['auth', 'apiUser']], function () {
-        Route::get('company/logo', 'Admin\Company\CompanyController@getCompanyLogo')->name('logo.get');
+        Route::get('company/logo', 'Admin\Company\CompanyController@getCurrentCompanyLogo')->name('current-logo.get');
+
         Route::get('instance/alerts', 'Instance\AlertController@getAlertedInstances')->name('instance.alerts');
         Route::post('instance/alerts/dismiss/{instanceId}', 'Instance\AlertController@dismissAlert')->name('instance.dismissAlert');
 

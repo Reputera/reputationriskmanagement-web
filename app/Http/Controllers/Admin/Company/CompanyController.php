@@ -84,9 +84,24 @@ class CompanyController extends ApiController
      * @apiDescription Return the current company's logo image.
      * @apiGroup Company
      */
+    public function getCurrentCompanyLogo(Request $request)
+    {
+        $company = $request->user()->company;
+        if(file_exists($company->logo_filename)) {
+            return response()
+                ->download($company->logo_filename, null, ['Cache-Control' => 'no-cache, no-store, max-age=0, must-revalidate']);
+        }
+        return response()
+            ->download(
+                storage_path() . '/' . config('rrm.filesystem.logo.default'),
+                null,
+                ['Cache-Control' => 'no-cache, no-store, max-age=0, must-revalidate']
+            );
+    }
+
     public function getCompanyLogo(Request $request)
     {
-        $company = Company::findOrFail($request->input('company_id'));
+        $company = Company::find($request->input('company_id'));
         if(file_exists($company->logo_filename)) {
             return response()
                 ->download($company->logo_filename, null, ['Cache-Control' => 'no-cache, no-store, max-age=0, must-revalidate']);
