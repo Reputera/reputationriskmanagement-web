@@ -57,4 +57,25 @@ class GetAlertedInstancesTest extends \TestCase
         $this->assertEquals($instance->id, $response[0]['id']);
     }
 
+    public function testGetAlertedInstancesWithinDateRange() {
+        $notReturnedInstance = factory(Instance::class)->create(['start' => '2016-07-10 17:48:47']);
+        $returnedInstance = factory(Instance::class)->create(['start' => '2016-07-14 00:10:00']);
+        $user = $this->beLoggedInAsUser();
+        \DB::table('user_instance_alerts')->insert([
+            'user_id' => $user->id,
+            'instance_id' => $notReturnedInstance->id,
+        ]);
+        \DB::table('user_instance_alerts')->insert([
+            'user_id' => $user->id,
+            'instance_id' => $returnedInstance->id,
+        ]);
+        $this->apiCall('GET', 'instance/alerts', [
+            'start_datetime' => '2016-07-13 17:48:47',
+            'end_datetime' => '2016-07-14 17:48:47'
+        ]);
+        $response = $this->getResponseData();
+        $this->assertCount(1, $response);
+        $this->assertEquals($returnedInstance->id, $response[0]['id']);
+    }
+
 }

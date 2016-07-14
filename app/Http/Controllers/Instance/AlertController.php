@@ -25,7 +25,11 @@ class AlertController extends Controller
     public function getAlertedInstances(GetAlertsRequest $apiRequest)
     {
         return $this->respondWith(
-            $apiRequest->user()->getAlertedInstances($apiRequest->get('dismissed', false)),
+            $apiRequest->user()->getAlertedInstances(
+                $apiRequest->get('dismissed', false),
+                $apiRequest->get('start_datetime', null),
+                $apiRequest->get('end_datetime', null)
+            ),
             new InstanceTransformer()
         );
     }
