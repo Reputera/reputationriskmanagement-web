@@ -404,7 +404,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n    \"data\": {\n        \"token\": \"SomeLongTokenString\",\n        \"company\": {\n            \"id\": 1,\n            \"name\": \"Company Name\",\n            \"entity_id\": \"AV4DTB\",\n            \"max_alert_threshold\": 90,\n            \"min_alert_threshold\": -90\n        }\n    },\n    \"status_code\": 200,\n    \"message\": \"Success\"\n}",
+          "content": "HTTP/1.1 200 OK\n{\n    \"data\": {\n        \"token\": \"SomeLongTokenString\",\n        \"earliest_instance_date\": \"2016-07-05\",\n        \"company\": {\n            \"id\": 1,\n            \"name\": \"Company Name\",\n            \"entity_id\": \"AV4DTB\",\n            \"max_alert_threshold\": 90,\n            \"min_alert_threshold\": -90\n        }\n    },\n    \"status_code\": 200,\n    \"message\": \"Success\"\n}",
           "type": "json"
         }
       ]

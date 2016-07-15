@@ -23,6 +23,7 @@ class ApiAuthController extends ApiController
      *  {
      *      "data": {
      *          "token": "SomeLongTokenString",
+     *          "earliest_instance_date": "2016-07-05",
      *          "company": {
      *              "id": 1,
      *              "name": "Company Name",
