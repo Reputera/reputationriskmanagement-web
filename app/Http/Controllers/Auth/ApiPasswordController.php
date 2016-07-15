@@ -36,4 +36,9 @@ class ApiPasswordController extends ApiController
     {
         return $this->respondWithArray(['success' =>'Email successfully sent to ' . Request::get('email')]);
     }
+
+    protected function getSendResetLinkEmailFailureResponse($response)
+    {
+        return $this->respondWithArray(['error' => trans($response)]);
+    }
 }
