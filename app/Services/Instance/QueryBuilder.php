@@ -5,6 +5,7 @@ namespace App\Services\Instance;
 use App\Entities\Instance;
 use App\Http\Pipelines\Query\SortingPipeline;
 use App\Http\Requests\Request;
+use Carbon\Carbon;
 
 class QueryBuilder
 {
@@ -36,11 +37,12 @@ class QueryBuilder
         }
 
         if ($start = $request->input('start_datetime')) {
-            $builder->where('instances.start', '>', $start);
+            $builder->where('instances.start', '>', (new Carbon($start))->toDateString().'00:00:00');
         }
         if ($end = $request->input('end_datetime')) {
-            $builder->where('instances.start', '<', $end);
+            $builder->where('instances.start', '<', (new Carbon($end))->toDateString().'23:59:59');
         }
+        $builder->orderBy('instances.start', 'desc');
         return $builder;
     }
 }
