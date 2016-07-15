@@ -155,4 +155,12 @@ class Company extends Model
     {
         return app(ReputationChange::class)->forCompanyAndRegionBetween($this, $region, $start, $end);
     }
+
+    public function earliestInstanceDate()
+    {
+        $instance = $this->instances()
+            ->orderBy('start', 'asc')
+            ->first();
+        return $instance ? $instance->start->toDateString() : null;
+    }
 }

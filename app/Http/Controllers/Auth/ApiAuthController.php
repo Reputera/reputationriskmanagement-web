@@ -57,6 +57,7 @@ class ApiAuthController extends ApiController
         // all good so return the token
         return $this->respondWithArray([
             'token' => $token,
+            'earliest_instance_date' => auth()->user()->company ? auth()->user()->company->earliestInstanceDate() : '',
             'company' => auth()->user()->company ? $this->transform(auth()->user()->company, new CompanyTransformer()) : ''
         ]);
     }
