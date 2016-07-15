@@ -54,7 +54,7 @@ return [
     |
     */
 
-    'from' => ['address' => 'donotreply@reputera.com', 'name' => 'Reputera'],
+    'from' => ['address' => env('FROM_EMAIL', 'donotreply@reputera.com') , 'name' => 'Reputera'],
 
     /*
     |--------------------------------------------------------------------------
