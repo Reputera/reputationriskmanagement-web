@@ -28,7 +28,8 @@ class AlertController extends Controller
             $apiRequest->user()->getAlertedInstances(
                 $apiRequest->get('dismissed', false),
                 $apiRequest->get('start_datetime', null),
-                $apiRequest->get('end_datetime', null)
+                $apiRequest->get('end_datetime', null),
+                $apiRequest->get('vectors_name', null)
             ),
             new InstanceTransformer()
         );

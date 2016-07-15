@@ -11,6 +11,7 @@ class GetAlertsRequest extends ApiRequest
     /**
      * @apiDefine GetAlertsParams
      * @apiParam {Boolean} [dismissed] Pass dismissed as true to include dismissed alerts in results.
+     * @apiParam {String} [vectors_name] Name of vector to get instances for.
      * @apiParam {String} [start_datetime] Acceptable format: YYYY-MM-DD HH:ii:ss (2016-06-07 17:54:15)
      * @apiParam {String} [end_datetime] Acceptable format: YYYY-MM-DD HH:ii:ss (2016-06-07 17:54:15)
      */
@@ -24,6 +25,7 @@ class GetAlertsRequest extends ApiRequest
         return [
             'start_datetime' => 'date',
             'end_datetime' => 'date',
+            'vectors_name' => 'exists:vectors,name',
             'dismissed' => 'boolean',
         ];
     }

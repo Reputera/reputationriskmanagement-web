@@ -84,4 +84,26 @@ class GetAlertedInstancesTest extends \TestCase
         $this->assertEquals($returnedInstance->id, $response[0]['id']);
     }
 
+    public function testGetAlertedInstancesForVector() {
+        $notReturnedInstance = factory(Instance::class)->create(['start' => '2016-07-10 17:48:47']);
+        $returnedInstance = factory(Instance::class)->create(['start' => '2016-07-14 00:10:00']);
+        $user = $this->beLoggedInAsUser();
+        \DB::table('user_instance_alerts')->insert([
+            'user_id' => $user->id,
+            'instance_id' => $notReturnedInstance->id,
+        ]);
+
+        \DB::table('user_instance_alerts')->insert([
+            'user_id' => $user->id,
+            'instance_id' => $returnedInstance->id,
+        ]);
+
+        $this->apiCall('GET', 'instance/alerts', [
+            'vectors_name' => $returnedInstance->vector->name,
+        ]);
+        $response = $this->getResponseData();
+        $this->assertCount(1, $response);
+        $this->assertEquals($returnedInstance->id, $response[0]['id']);
+    }
+
 }

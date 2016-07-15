@@ -34,6 +34,13 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": true,
+            "field": "vectors_name",
+            "description": "<p>Name of vector to get instances for.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
             "field": "start_datetime",
             "description": "<p>Acceptable format: YYYY-MM-DD HH:ii:ss (2016-06-07 17:54:15)</p>"
           },

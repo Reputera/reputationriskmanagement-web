@@ -15,7 +15,7 @@ trait AlertTrait
      * @param null $end
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public function getAlertedInstances($dismissed = false, $start = null, $end = null)
+    public function getAlertedInstances($dismissed = false, $start = null, $end = null, $vectorName = null)
     {
         $builder = Instance::select('instances.*')
             ->where('user_instance_alerts.user_id', '=', $this->id)
@@ -24,6 +24,11 @@ trait AlertTrait
 
         if($dismissed == false) {
             $builder->where('user_instance_alerts.dismissed', '=', false);
+        }
+
+        if($vectorName) {
+            $builder->join('vectors', 'vectors.id', '=', 'instances.vector_id')
+                ->where('vectors.name', '=', $vectorName);
         }
 
         if ($start) {
