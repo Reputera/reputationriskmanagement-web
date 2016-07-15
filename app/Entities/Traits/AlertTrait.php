@@ -19,9 +19,12 @@ trait AlertTrait
     {
         $builder = Instance::select('instances.*')
             ->where('user_instance_alerts.user_id', '=', $this->id)
-            ->where('user_instance_alerts.dismissed', '=', $dismissed)
             ->join('user_instance_alerts', 'instances.id', '=', 'user_instance_alerts.instance_id')
             ->join('users', 'user_instance_alerts.user_id', '=', 'users.id');
+
+        if($dismissed == false) {
+            $builder->where('user_instance_alerts.dismissed', '=', false);
+        }
 
         if ($start) {
             $builder->where('instances.start', '>', (new Carbon($start))->toDateString().' 00:00:00');

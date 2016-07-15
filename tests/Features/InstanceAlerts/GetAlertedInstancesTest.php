@@ -32,9 +32,15 @@ class GetAlertedInstancesTest extends \TestCase
             'dismissed' => true
         ]);
 
+        \DB::table('user_instance_alerts')->insert([
+            'user_id' => $user->id,
+            'instance_id' => $instance->id,
+            'dismissed' => false
+        ]);
+
         $this->apiCall('GET', 'instance/alerts', ['dismissed' => true]);
         $response = $this->getResponseData();
-        $this->assertCount(1, $response);
+        $this->assertCount(2, $response);
         $this->assertEquals($instance->id, $response[0]['id']);
     }
 
