@@ -81,7 +81,6 @@
         };
 
         $scope.refreshLogo = function() {
-            ApplicationConfig.enableGlobalErrorHandling = false;
             $('#logoDiv').html('<img id="logoImage" ng-src="@{{currentLogo}}">');
             $('#logoImage').attr('src', '/company/logo?company_id=' + $scope.selectedCompanyId);
 //            $scope.currentLogo = '';
