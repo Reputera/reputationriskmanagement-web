@@ -51,6 +51,14 @@ class RiskScoreMapController extends ApiController
      * @return \Illuminate\Http\JsonResponse
      */
     public function getRiskScoreMapData(Request $request) {
+        $startTime = new Carbon($request->get('start_datetime'));
+        $endTime = new Carbon($request->get('end_datetime'));
+
+        $startTimeString = $startTime->toDateString() . '00:00:00';
+        $endTimeString = $endTime->toDateString() . '23:59:59';
+
+        $companyId = $request->user()->company_id;
+
         \DB::setFetchMode(\PDO::FETCH_ASSOC);
         $regionList = \DB::table('instances')
             ->selectRaw('regions.name as region')
@@ -60,9 +68,9 @@ class RiskScoreMapController extends ApiController
         WHEN risk_score > 66 THEN \'low\'
         ELSE \'medium\'
     END AS risk')
-            ->where('instances.company_id', $request->user()->company_id)
-            ->where('instances.start', '>', $request->input('start_datetime'))
-            ->where('instances.start', '<', $request->input('end_datetime'))
+            ->where('instances.company_id', $companyId)
+            ->where('instances.start', '>', $startTimeString)
+            ->where('instances.start', '<', $endTimeString)
             ->whereNotNull('regions.name')
             ->join('vectors', 'vectors.id', '=', 'instances.vector_id')
             ->leftJoin('instance_country', 'instances.id', '=', 'instance_country.instance_id')
@@ -75,14 +83,15 @@ class RiskScoreMapController extends ApiController
         foreach($regionList as $key => $region) {
             $regionList[$key]['percent_change'] = $request->user()->company->reputationChangeForRegionBetweenDates(
                 Region::where(['name' => $region['region']])->first(),
-                new Carbon($request->get('start_datetime')),
-                new Carbon($request->get('end_datetime'))
+                $startTime,
+                $endTime
             );
             \DB::setFetchMode(\PDO::FETCH_ASSOC);
             $regionList[$key]['vectors'] = $this->getRegionVectorData(
                 $region['region'],
-                $request->input('start_datetime'),
-                $request->input('end_datetime')
+                $startTimeString,
+                $endTimeString,
+                $companyId
             );
             \DB::setFetchMode(\PDO::FETCH_CLASS);
             foreach($regionList[$key]['vectors'] as $vectorKey => $vectorData) {
@@ -97,7 +106,7 @@ class RiskScoreMapController extends ApiController
         return $this->respondWithArray($regionList);
     }
 
-    protected function getRegionVectorData($region, $start, $end) {
+    protected function getRegionVectorData($region, $start, $end, $companyId) {
         return \DB::table('instances')
             ->selectRaw('vectors.id as id')
             ->selectRaw('vectors.name as vector')
@@ -114,6 +123,7 @@ class RiskScoreMapController extends ApiController
             ->whereNotNull('vectors.name')
             ->groupBy('vectors.name')
             ->orderBy('count', 'desc')
+            ->where('instances.company_id', '=', $companyId)
             ->where('regions.name', '=', $region)
             ->where('instances.start', '>', $start)
             ->where('instances.start', '<', $end)
