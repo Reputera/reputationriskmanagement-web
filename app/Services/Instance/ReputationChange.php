@@ -45,14 +45,23 @@ class ReputationChange
      * @param Region $region
      * @param Carbon $start
      * @param Carbon $end
+     * @param $vectorId
      * @return float
      */
-    public function forCompanyAndRegionBetween(Company $company, Region $region, Carbon $start, Carbon $end)
+    public function forCompanyAndRegionBetween(Company $company, Region $region, Carbon $start, Carbon $end, $vectorId = null)
     {
-        $builder = $this->buildInitialQuery($company, $start, $end);
+        $builder = $company->instances()
+            ->getRelated()
+            ->dailyScaledCompanyRiskScore($company)
+            ->whereRaw("start between '{$start->toDateString()} 00:00:00' and '{$end->toDateString()} 23:59:59'")
+            ->orderByRaw('start_date ASC');
         $builder->join('instance_country', 'instance_country.instance_id', '=', 'instances.id');
         $builder->join('countries', 'countries.id', '=', 'instance_country.country_id');
         $builder->where('countries.region_id', $region->id);
+
+        if($vectorId) {
+            $builder->where('instances.vector_id', '=', $vectorId);
+        }
 
         return $this->calculateChange($builder);
     }
@@ -88,10 +97,8 @@ class ReputationChange
             if (!array_key_exists($key + 1, $results)) {
                 continue;
             }
-
             $originalNumber = $result->company_risk_scores;
             $secondNumber = $results[$key + 1]->company_risk_scores;
-
 //            Multiply by (200 / 100 = 50) in order to scale for 0 to 200
             $finalScores[] = (($secondNumber - $originalNumber) / $originalNumber) * 50;
         }

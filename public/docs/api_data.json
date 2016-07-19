@@ -231,7 +231,7 @@
     "examples": [
       {
         "title": "Success-Response:",
-        "content": "HTTP/1.1 200 OK\n{\n    \"data\":[\n        {\n            \"region\":\"Region name\",\n            \"count\":15,\n            \"percent_change\":20,\n            \"risk\": \"medium\",\n            \"vectors\":[\n                {\n                    \"vector1\":\"vector name\",\n                    \"count\":10,\n                    \"risk\": \"medium\"\n                }\n                {\n                    \"vector1\":\"vector name\",\n                    \"count\":5,\n                    \"risk\": \"medium\"\n                }\n            ]\n        },\n    ],\n    \"status_code\": 200,\n    \"message\": \"Success\"\n}",
+        "content": "HTTP/1.1 200 OK\n{\n    \"data\":[\n        {\n            \"region\":\"Region name\",\n            \"count\":15,\n            \"percent_change\":20,\n            \"risk\": \"medium\",\n            \"vectors\":[\n                {\n                    \"vector1\":\"vector name\",\n                    \"count\":10,\n                    \"risk\": \"medium\",\n                    \"percent_change\": 10\n                }\n                {\n                    \"vector1\":\"vector name\",\n                    \"count\":5,\n                    \"risk\": \"medium\"\n                    \"percent_change\": 10\n                }\n            ]\n        },\n    ],\n    \"status_code\": 200,\n    \"message\": \"Success\"\n}",
         "type": "json"
       },
       {

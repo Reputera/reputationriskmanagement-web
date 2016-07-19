@@ -149,11 +149,12 @@ class Company extends Model
      * @param Region $region
      * @param Carbon $start
      * @param Carbon $end
+     * @param $vectorId
      * @return float
      */
-    public function reputationChangeForRegionBetweenDates(Region $region, Carbon $start, Carbon $end): float
+    public function reputationChangeForRegionBetweenDates(Region $region, Carbon $start, Carbon $end, $vectorId = null): float
     {
-        return app(ReputationChange::class)->forCompanyAndRegionBetween($this, $region, $start, $end);
+        return app(ReputationChange::class)->forCompanyAndRegionBetween($this, $region, $start, $end, $vectorId);
     }
 
     public function earliestInstanceDate()

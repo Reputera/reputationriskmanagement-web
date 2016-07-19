@@ -30,12 +30,14 @@ class RiskScoreMapController extends ApiController
      *                  {
      *                      "vector1":"vector name",
      *                      "count":10,
-     *                      "risk": "medium"
+     *                      "risk": "medium",
+     *                      "percent_change": 10
      *                  }
      *                  {
      *                      "vector1":"vector name",
      *                      "count":5,
      *                      "risk": "medium"
+     *                      "percent_change": 10
      *                  }
      *              ]
      *          },
@@ -76,18 +78,28 @@ class RiskScoreMapController extends ApiController
                 new Carbon($request->get('start_datetime')),
                 new Carbon($request->get('end_datetime'))
             );
+            \DB::setFetchMode(\PDO::FETCH_ASSOC);
             $regionList[$key]['vectors'] = $this->getRegionVectorData(
                 $region['region'],
                 $request->input('start_datetime'),
                 $request->input('end_datetime')
             );
+            \DB::setFetchMode(\PDO::FETCH_CLASS);
+            foreach($regionList[$key]['vectors'] as $vectorKey => $vectorData) {
+                $regionList[$key]['vectors'][$vectorKey]['percent_change'] = $request->user()->company->reputationChangeForRegionBetweenDates(
+                    Region::where(['name' => $region['region']])->first(),
+                    new Carbon($request->get('start_datetime')),
+                    new Carbon($request->get('end_datetime')),
+                    $regionList[$key]['vectors'][$vectorKey]['id']
+                );
+            }
         }
-
         return $this->respondWithArray($regionList);
     }
 
     protected function getRegionVectorData($region, $start, $end) {
         return \DB::table('instances')
+            ->selectRaw('vectors.id as id')
             ->selectRaw('vectors.name as vector')
             ->selectRaw('count(*) as count')
             ->selectRaw('CASE

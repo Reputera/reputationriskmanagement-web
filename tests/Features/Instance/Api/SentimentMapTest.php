@@ -45,6 +45,7 @@ class SentimentMapTest extends \TestCase
 
         $results = $this->response->getData(true)['data'];
         $this->assertEquals(10, array_get($results, '0.percent_change'));
+        $this->assertEquals(10, array_get($results, '0.vectors.0.percent_change'));
         $this->assertEquals('low', array_get($results, '0.risk'));
         $this->assertEquals(3, array_get($results, '0.count'));
         $this->assertEquals($country->region->name, array_get($results, '0.region'));

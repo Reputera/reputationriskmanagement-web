@@ -73,7 +73,7 @@ class CompanyTest extends \TestCase
         $dateTwo->addDay();
         $mockedReputationChange->shouldReceive('forCompanyAndRegionBetween')
             ->once()
-            ->with(\Mockery::type(Company::class), \Mockery::type(Region::class), $dateOne, $dateTwo)
+            ->with(\Mockery::type(Company::class), \Mockery::type(Region::class), $dateOne, $dateTwo, null)
             ->andReturn(0.00);
 
         app()->instance(ReputationChange::class, $mockedReputationChange);
