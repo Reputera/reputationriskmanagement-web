@@ -8677,4 +8677,7 @@ table.text-center, table.text-center td, table.text-center th {
 .editable-error {
   color: red; }
 
+.login-box {
+  width: 500px; }
+
 /*# sourceMappingURL=app.css.map */
