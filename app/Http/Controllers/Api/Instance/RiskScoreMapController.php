@@ -54,8 +54,8 @@ class RiskScoreMapController extends ApiController
         $startTime = new Carbon($request->get('start_datetime'));
         $endTime = new Carbon($request->get('end_datetime'));
 
-        $startTimeString = $startTime->toDateString() . '00:00:00';
-        $endTimeString = $endTime->toDateString() . '23:59:59';
+        $startTimeString = $startTime->toDateString() . ' 00:00:00';
+        $endTimeString = $endTime->toDateString() . ' 23:59:59';
 
         $companyId = $request->user()->company_id;
 
