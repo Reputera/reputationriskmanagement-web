@@ -54,7 +54,7 @@ class QueryController extends Controller
         ]))->get();
         $resultCount = $resultCollection->count();
         return $this->respondWithArray([
-            'risk_score' => $resultCount ? (int)($resultCollection->sum('risk_score') / $resultCount) : 0
+            'risk_score' => $resultCount ? (int)round(($resultCollection->sum('risk_score') / $resultCount)) : 0
         ]);
     }
 
