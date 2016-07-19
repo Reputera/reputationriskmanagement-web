@@ -114,6 +114,13 @@ class Instance extends Model
             ->groupBy('instances.company_id');
     }
 
+    public static function scopeCompanyRiskScore1($builder, Company $company)
+    {
+        return self::addSelectForRiskScoreAverage($builder)
+            ->where('instances.company_id', '=', $company->id)
+            ->groupBy('instances.company_id');
+    }
+
     public function scopeDailyScaledCompanyRiskScore($builder)
     {
         return $builder->selectRaw('(sum(risk_score) + COUNT(instances.id) * 100) / COUNT(instances.id) as company_risk_scores')

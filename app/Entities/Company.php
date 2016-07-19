@@ -95,8 +95,7 @@ class Company extends Model
      */
     public function averageRiskScore(InstanceQuery $filter): int
     {
-        $builder = app(Instance::class)->filter($filter)->companyRiskScore($this);
-
+        $builder = app(Instance::class)->filter($filter)->companyRiskScore1($this);
         if ($averageRiskScores = $builder->pluck('company_risk_scores')->toArray()) {
             return (int) round(array_sum($averageRiskScores) / count($averageRiskScores));
         }
