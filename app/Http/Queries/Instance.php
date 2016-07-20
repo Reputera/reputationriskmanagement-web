@@ -24,7 +24,7 @@ class Instance extends QueryFilter
     public function lastDays(int $days)
     {
         $this->builder->whereBetween('instances.start', [
-            Carbon::now()->subDay($days)->toDateString().' 00:00:00',
+            Carbon::now()->subDay($days - 1)->toDateString().' 00:00:00',
             Carbon::now()->toDateTimeString()
         ]);
     }
