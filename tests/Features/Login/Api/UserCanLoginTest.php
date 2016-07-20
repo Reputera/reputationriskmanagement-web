@@ -23,6 +23,7 @@ class UserCanLoginTest extends \TestCase
         $this->assertJsonResponseOkAndFormattedProperly();
         $results = $this->response->getData(true)['data'];
         $this->assertJsonResponseHasDataKey('token');
+        $this->assertEquals($user->name, $results['username']);
         $this->assertNotEquals('', $results['company']);
     }
 

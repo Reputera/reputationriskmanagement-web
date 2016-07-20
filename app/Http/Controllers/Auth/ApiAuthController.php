@@ -24,6 +24,7 @@ class ApiAuthController extends ApiController
      *      "data": {
      *          "token": "SomeLongTokenString",
      *          "earliest_instance_date": "2016-07-05",
+     *          "username": "user",
      *          "company": {
      *              "id": 1,
      *              "name": "Company Name",
@@ -59,6 +60,7 @@ class ApiAuthController extends ApiController
         return $this->respondWithArray([
             'token' => $token,
             'earliest_instance_date' => auth()->user()->company ? auth()->user()->company->earliestInstanceDate() : '',
+            'username' => auth()->user()->name,
             'company' => auth()->user()->company ? $this->transform(auth()->user()->company, new CompanyTransformer()) : ''
         ]);
     }
