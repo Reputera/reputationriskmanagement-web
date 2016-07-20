@@ -32,10 +32,10 @@ trait AlertTrait
         }
 
         if ($start) {
-            $builder->where('instances.start', '>', (new Carbon($start))->toDateString().' 00:00:00');
+            $builder->where('instances.start', '>=', (new Carbon($start))->toDateString().' 00:00:00');
         }
         if ($end) {
-            $builder->where('instances.start', '<', (new Carbon($end))->toDateString().' 23:59:59');
+            $builder->where('instances.start', '<=', (new Carbon($end))->toDateString().' 23:59:59');
         }
         $builder->orderBy('instances.start', 'desc');
         return $builder->get();

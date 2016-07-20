@@ -69,8 +69,8 @@ class RiskScoreMapController extends ApiController
         ELSE \'medium\'
     END AS risk')
             ->where('instances.company_id', $companyId)
-            ->where('instances.start', '>', $startTimeString)
-            ->where('instances.start', '<', $endTimeString)
+            ->where('instances.start', '>=', $startTimeString)
+            ->where('instances.start', '<=', $endTimeString)
             ->whereNotNull('regions.name')
             ->join('vectors', 'vectors.id', '=', 'instances.vector_id')
             ->leftJoin('instance_country', 'instances.id', '=', 'instance_country.instance_id')
@@ -125,8 +125,8 @@ class RiskScoreMapController extends ApiController
             ->orderBy('count', 'desc')
             ->where('instances.company_id', '=', $companyId)
             ->where('regions.name', '=', $region)
-            ->where('instances.start', '>', $start)
-            ->where('instances.start', '<', $end)
+            ->where('instances.start', '>=', $start)
+            ->where('instances.start', '<=', $end)
             ->get();
     }
 

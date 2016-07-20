@@ -14,7 +14,7 @@ class QueryBuilder
         $builder = Instance::select([
             'instances.*'
         ])
-            ->join('vectors', 'vectors.id', '=', 'instances.vector_id')
+            ->leftJoin('vectors', 'vectors.id', '=', 'instances.vector_id')
             ->join('companies', 'companies.id', '=', 'instances.company_id')
             ->leftJoin('instance_country', 'instances.id', '=', 'instance_country.instance_id')
             ->leftJoin('countries', 'countries.id', '=', 'instance_country.country_id')
@@ -37,10 +37,10 @@ class QueryBuilder
         }
 
         if ($start = $request->input('start_datetime')) {
-            $builder->where('instances.start', '>', (new Carbon($start))->toDateString().' 00:00:00');
+            $builder->where('instances.start', '>=', (new Carbon($start))->toDateString().' 00:00:00');
         }
         if ($end = $request->input('end_datetime')) {
-            $builder->where('instances.start', '<', (new Carbon($end))->toDateString().' 23:59:59');
+            $builder->where('instances.start', '<=', (new Carbon($end))->toDateString().' 23:59:59');
         }
         $builder->orderBy('instances.start', 'desc');
         return $builder;
