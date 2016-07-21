@@ -34,7 +34,7 @@ class Instance extends QueryFilter
      *
      * @param $start
      */
-    public function dateStart($start)
+    public function start_datetime($start)
     {
         $this->builder->where('instances.start', '>=', $start);
     }
@@ -44,9 +44,9 @@ class Instance extends QueryFilter
      *
      * @param $end
      */
-    public function dateEnd($end)
+    public function end_datetime($end)
     {
-        $this->builder->where('instances.end', '<=', $end);
+        $this->builder->where('instances.start', '<=', $end);
     }
 
 }
