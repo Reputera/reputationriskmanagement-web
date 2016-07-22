@@ -123,7 +123,7 @@ class Instance extends Model
 
     public function scopeDailyScaledCompanyRiskScore($builder)
     {
-        return $builder->selectRaw('(sum(risk_score) + COUNT(instances.id) * 100) / COUNT(instances.id) as company_risk_scores')
+        return $builder->selectRaw('(sum(risk_score) + COUNT(distinct instances.id) * 100) / COUNT(distinct instances.id) as company_risk_scores')
             ->selectRaw('count(instances.id)')
             ->selectRaw('date(start) as start_date')
             ->groupBy('start_date');
@@ -163,6 +163,6 @@ class Instance extends Model
      */
     protected static function addSelectForRiskScoreAverage($builder)
     {
-        return $builder->select(DB::raw('sum(risk_score) / COUNT(instances.id) as company_risk_scores'));
+        return $builder->select(DB::raw('sum(risk_score) / COUNT(distinct instances.id) as company_risk_scores'));
     }
 }

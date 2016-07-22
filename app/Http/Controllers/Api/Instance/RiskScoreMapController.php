@@ -62,7 +62,7 @@ class RiskScoreMapController extends ApiController
         \DB::setFetchMode(\PDO::FETCH_ASSOC);
         $regionList = \DB::table('instances')
             ->selectRaw('regions.name as region')
-            ->selectRaw('count(*) as count')
+            ->selectRaw('count(distinct instances.id) as count')
             ->selectRaw('CASE
         WHEN risk_score < -66 THEN \'high\'
         WHEN risk_score > 66 THEN \'low\'
@@ -110,7 +110,7 @@ class RiskScoreMapController extends ApiController
         return \DB::table('instances')
             ->selectRaw('vectors.id as id')
             ->selectRaw('vectors.name as vector')
-            ->selectRaw('count(*) as count')
+            ->selectRaw('count(distinct instances.id) as count')
             ->selectRaw('CASE
                     WHEN risk_score < -66 THEN \'high\'
                     WHEN risk_score > 66 THEN \'low\'
