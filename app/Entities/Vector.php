@@ -58,21 +58,25 @@ class Vector extends Model
      * @param Company $company
      * @param int $year
      * @param int $month
-     * @return int
+     * @return int|string
      */
-    public function riskScoreForCompanyByYearAndMonth(Company $company, int $year, int $month): int
+    public function riskScoreForCompanyByYearAndMonth(Company $company, int $year, int $month)
     {
         $month = ($month < 9 ) ? '0'.$month : $month;
         $vectorScoreQuery = $test = $this->instances()
             ->where('instances.company_id', $company->id)
             ->where('instances.start', 'like', $year.'-'.$month.'%')
             ->where('instances.vector_id', $this->id)
-            ->select(DB::raw('sum(instances.risk_score) / COUNT(distinct instances.id) AS vector_score'));
+            ->selectRaw('sum(instances.risk_score) / COUNT(distinct instances.id) AS vector_score')
+            ->selectRaw('COUNT(distinct instances.id) AS count_instances');
 
         if ($results = $vectorScoreQuery->first()) {
+            if($results->count_instances == 0) {
+                return 'N/A';
+            }
             return (int) round($results->vector_score);
         }
-        return 0;
+        return 'N/A';
     }
 
     public function color()

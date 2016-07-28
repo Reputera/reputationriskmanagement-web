@@ -25,7 +25,7 @@ class MonthlyRiskScoreController extends Controller
      *              "vectors": [
      *                  {"vector":"Vector 1","value": 10},
      *                  {"vector":"Vector 2","value": 20},
-     *                  {"vector":"Vector 3","value": 30}
+     *                  {"vector":"Vector 3","value": "N/A"}
      *              ]
      *          },
      *          {
@@ -33,7 +33,7 @@ class MonthlyRiskScoreController extends Controller
      *              "vectors": [
      *                  {"vector":"Vector 1","value": 10},
      *                  {"vector":"Vector 2","value": 20},
-     *                  {"vector":"Vector 3","value": 30}
+     *                  {"vector":"Vector 3","value": "N/A"}
      *              ]
      *          },
     *          ...

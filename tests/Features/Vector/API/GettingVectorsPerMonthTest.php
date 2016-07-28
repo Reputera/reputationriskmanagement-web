@@ -31,10 +31,17 @@ class GettingVectorsPerMonthTest extends \TestCase
 //        Assert data in output array is correct.
         foreach($data as $dateData) {
             foreach ($dateData['vectors'] as $vectorData) {
-                $this->assertEquals(
-                    $this->getVectorData($vectors, $vectorData['vector'])[$dateData['date']]['expectedOutput'],
-                    $vectorData['value']
-                );
+                if($this->getVectorData($vectors, $vectorData['vector'])[$dateData['date']]['expectedOutput'] == 0) {
+                    $this->assertEquals(
+                        'N/A',
+                        $vectorData['value']
+                    );
+                } else {
+                    $this->assertEquals(
+                        $this->getVectorData($vectors, $vectorData['vector'])[$dateData['date']]['expectedOutput'],
+                        $vectorData['value']
+                    );
+                }
             }
         }
     }

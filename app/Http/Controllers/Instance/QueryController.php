@@ -91,6 +91,16 @@ class QueryController extends Controller
      *      "status_code": 200,
      *      "message": "Success"
      *  }
+     * @apiExample {json} Success-Response-With-NA-Response:
+     *  HTTP/1.1 200 OK
+     *  {
+     *      "data":[
+     *          {"company_risk_score":"N/A"},
+     *          {"average_competitor_risk_score":"N/A"}
+     *      ],
+     *      "status_code": 200,
+     *      "message": "Success"
+     *  }
      */
     /**
      * @param RiskScoreRequest $request
@@ -129,6 +139,15 @@ class QueryController extends Controller
      *      "status_code": 200,
      *      "message": "Success"
      *  }
+     *  {json} Success-Response-With-NA-Return:
+     *  HTTP/1.1 200 OK
+     *  {
+     *      "data":[
+     *          {"change_percent":"N/A"},
+     *      ],
+     *      "status_code": 200,
+     *      "message": "Success"
+     *  }
      */
     /**
      * @param RiskChangeRequest $request
@@ -151,6 +170,15 @@ class QueryController extends Controller
      * @apiUse RiskChangeParams
      * @apiGroup Risk Score
      * @apiExample {json} Success-Response:
+     *  HTTP/1.1 200 OK
+     *  {
+     *      "data":[
+     *          {"change_percent":25},
+     *      ],
+     *      "status_code": 200,
+     *      "message": "Success"
+     *  }
+     * @apiExample {json} Success-Response-With-NA-Return:
      *  HTTP/1.1 200 OK
      *  {
      *      "data":[

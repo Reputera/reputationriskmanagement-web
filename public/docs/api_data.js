@@ -168,6 +168,11 @@ define({ "api": [
         "title": "Success-Response:",
         "content": "HTTP/1.1 200 OK\n{\n    \"data\":[\n        {\"company_risk_score\":25},\n        {\"average_competitor_risk_score\":10}\n    ],\n    \"status_code\": 200,\n    \"message\": \"Success\"\n}",
         "type": "json"
+      },
+      {
+        "title": "Success-Response-With-NA-Response:",
+        "content": "HTTP/1.1 200 OK\n{\n    \"data\":[\n        {\"company_risk_score\":\"N/A\"},\n        {\"average_competitor_risk_score\":\"N/A\"}\n    ],\n    \"status_code\": 200,\n    \"message\": \"Success\"\n}",
+        "type": "json"
       }
     ],
     "version": "0.0.0",
@@ -276,6 +281,11 @@ define({ "api": [
         "title": "Success-Response:",
         "content": "HTTP/1.1 200 OK\n{\n    \"data\":[\n        {\"change_percent\":25},\n    ],\n    \"status_code\": 200,\n    \"message\": \"Success\"\n}",
         "type": "json"
+      },
+      {
+        "title": "Success-Response-With-NA-Return:",
+        "content": "HTTP/1.1 200 OK\n{\n    \"data\":[\n        {\"change_percent\":25},\n    ],\n    \"status_code\": 200,\n    \"message\": \"Success\"\n}",
+        "type": "json"
       }
     ],
     "version": "0.0.0",
@@ -312,7 +322,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Success-Response:",
-        "content": "HTTP/1.1 200 OK\n{\n    \"data\":[\n        {\"change_percent\":25},\n    ],\n    \"status_code\": 200,\n    \"message\": \"Success\"\n}",
+        "content": "HTTP/1.1 200 OK\n{\n    \"data\":[\n        {\"change_percent\":25},\n    ],\n    \"status_code\": 200,\n    \"message\": \"Success\"\n}\n{json} Success-Response-With-NA-Return:\nHTTP/1.1 200 OK\n{\n    \"data\":[\n        {\"change_percent\":\"N/A\"},\n    ],\n    \"status_code\": 200,\n    \"message\": \"Success\"\n}",
         "type": "json"
       }
     ],
@@ -444,7 +454,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n    \"data\": [\n        {\n            \"date\":\"2016-04\",\n            \"vectors\": [\n                {\"vector\":\"Vector 1\",\"value\": 10},\n                {\"vector\":\"Vector 2\",\"value\": 20},\n                {\"vector\":\"Vector 3\",\"value\": 30}\n            ]\n        },\n        {\n            \"date\":\"2016-04\",\n            \"vectors\": [\n                {\"vector\":\"Vector 1\",\"value\": 10},\n                {\"vector\":\"Vector 2\",\"value\": 20},\n                {\"vector\":\"Vector 3\",\"value\": 30}\n            ]\n        },\n        ...\n    ],\n    \"status_code\": 200,\n    \"message\": \"Success\"\n}",
+          "content": "HTTP/1.1 200 OK\n{\n    \"data\": [\n        {\n            \"date\":\"2016-04\",\n            \"vectors\": [\n                {\"vector\":\"Vector 1\",\"value\": 10},\n                {\"vector\":\"Vector 2\",\"value\": 20},\n                {\"vector\":\"Vector 3\",\"value\": \"N/A\"}\n            ]\n        },\n        {\n            \"date\":\"2016-04\",\n            \"vectors\": [\n                {\"vector\":\"Vector 1\",\"value\": 10},\n                {\"vector\":\"Vector 2\",\"value\": 20},\n                {\"vector\":\"Vector 3\",\"value\": \"N/A\"}\n            ]\n        },\n        ...\n    ],\n    \"status_code\": 200,\n    \"message\": \"Success\"\n}",
           "type": "json"
         }
       ]
