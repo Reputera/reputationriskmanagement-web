@@ -42,7 +42,7 @@ class CompetitorRiskScoreDateRangeTest extends \TestCase
 
         $now = Carbon::now();
         $this->createCompetitorWithInstanceScoreAndDateTimeForCompany(6, $company, $now->toDateTimeString());
-        $this->createCompetitorWithInstanceScoreAndDateTimeForCompany(25, $company, $now->subDays(30)->toDateTimeString());
+        $this->createCompetitorWithInstanceScoreAndDateTimeForCompany(25, $company, $now->subDays(29)->toDateTimeString());
         $this->createCompetitorWithInstanceScoreAndDateTimeForCompany(31, $company, $now->subYear(1)->toDateTimeString());
 
         $this->beLoggedInAsAdmin();
