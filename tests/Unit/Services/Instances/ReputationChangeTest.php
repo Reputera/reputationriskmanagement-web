@@ -105,6 +105,19 @@ class ReputationChangeTest extends \TestCase
         );
     }
 
+    public function testReputationChangeWithNoInstancesReturned()
+    {
+        /** @var Company $company */
+        $company = factory(Company::class)->create();
+        $startDate = Carbon::create(2016, 05, 01);
+        $endDate = Carbon::create(2016, 05, 05);
+
+        $this->assertEquals(
+            'N/A',
+            $this->reputationChange->forCompanyBetween($company, $startDate, $endDate)
+        );
+    }
+
     /**
      * @param Company $company
      * @param $riskScore

@@ -104,7 +104,7 @@ class ReputationChange
         }
 
         if (!$finalScores) {
-            return 0;
+            return 'N/A';
         }
 
         return (int) (array_sum($finalScores) / count($finalScores));

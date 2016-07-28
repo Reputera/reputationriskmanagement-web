@@ -90,6 +90,29 @@ class CompetitorReputationChangeTest extends \TestCase
         );
     }
 
+    public function testReputationChangeWithNoInstancesReturned()
+    {
+        /** @var Company $company */
+        $company = factory(Company::class)->create();
+        $startDate = Carbon::create(2016, 05, 01);
+        $endDate = Carbon::create(2016, 05, 05);
+
+        $secondDay = clone $startDate;
+        $secondDay->addDays(1);
+
+        $companyCompetitor = factory(Company::class)->create();
+        $company->competitors()->attach($companyCompetitor->id);
+
+        $this->assertEquals(
+            'N/A',
+            $this->reputationChange->forCompetitorsBetween(
+                $company,
+                $startDate,
+                $endDate
+            )
+        );
+    }
+
     /**
      * @param Company $company
      * @param $riskScore

@@ -135,9 +135,8 @@ class Company extends Model
      *
      * @param Carbon $start
      * @param Carbon $end
-     * @return float
      */
-    public function competitorReputationChangeBetweenDates(Carbon $start, Carbon $end): float
+    public function competitorReputationChangeBetweenDates(Carbon $start, Carbon $end)
     {
         return app(ReputationChange::class)->forCompetitorsBetween($this, $start, $end);
     }
@@ -149,9 +148,8 @@ class Company extends Model
      * @param Carbon $start
      * @param Carbon $end
      * @param $vectorId
-     * @return float
      */
-    public function reputationChangeForRegionBetweenDates(Region $region, Carbon $start, Carbon $end, $vectorId = null): float
+    public function reputationChangeForRegionBetweenDates(Region $region, Carbon $start, Carbon $end, $vectorId = null)
     {
         return app(ReputationChange::class)->forCompanyAndRegionBetween($this, $region, $start, $end, $vectorId);
     }
