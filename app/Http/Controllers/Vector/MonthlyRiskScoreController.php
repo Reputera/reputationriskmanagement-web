@@ -59,7 +59,7 @@ class MonthlyRiskScoreController extends Controller
             foreach ($vectors = Vector::all() as $vector) {
                 $dateData['vectors'][] = [
                     'vector' => $vector->name,
-                    'value' => $vector->riskScoreForCompanyByYearAndMonth(
+                    'value' => (string)$vector->riskScoreForCompanyByYearAndMonth(
                         $company,
                         $year,
                         $month

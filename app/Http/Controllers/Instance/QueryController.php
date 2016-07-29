@@ -119,8 +119,8 @@ class QueryController extends Controller
         }
 
         return $this->respondWithArray([
-            'company_risk_score' => $companyRiskScore,
-            'average_competitor_risk_score' => $competitorRiskScore
+            'company_risk_score' => (string)$companyRiskScore,
+            'average_competitor_risk_score' => (string)$competitorRiskScore
         ]);
     }
 
@@ -156,7 +156,7 @@ class QueryController extends Controller
     public function getRiskChange(RiskChangeRequest $request)
     {
         return $this->respondWithArray([
-            'change_percent' => $request->user()->company->reputationChangeBetweenDates(
+            'change_percent' => (string)$request->user()->company->reputationChangeBetweenDates(
                 new Carbon($request->get('start_datetime')),
                 new Carbon($request->get('end_datetime'))
             )
@@ -195,7 +195,7 @@ class QueryController extends Controller
     public function getCompetitorRiskChange(RiskChangeRequest $request)
     {
         return $this->respondWithArray([
-            'change_percent' => $request->user()->company->competitorReputationChangeBetweenDates(
+            'change_percent' => (string)$request->user()->company->competitorReputationChangeBetweenDates(
                 new Carbon($request->get('start_datetime')),
                 new Carbon($request->get('end_datetime'))
             )
