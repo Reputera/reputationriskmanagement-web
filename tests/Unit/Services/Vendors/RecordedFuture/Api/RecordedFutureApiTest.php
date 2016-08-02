@@ -156,10 +156,6 @@ class RecordedFutureApiTest extends \TestCase
                 'instance' => [
                     'attributes' => [
                         ['entity' => ['id' => $entityId]],
-                        [
-                            'name' => ['general_positive', 'general_negative'],
-                            'range' => ['gt' => 0]
-                        ]
                     ],
                 ],
                 'token' => $this->apiKey,

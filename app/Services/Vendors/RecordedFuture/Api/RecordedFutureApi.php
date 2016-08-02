@@ -90,10 +90,6 @@ class RecordedFutureApi
         $defaultOptions = [
             'attributes' => [
                 ['entity' => ['id' => $entityId]],
-                [
-                    'name' => ['general_positive', 'general_negative'],
-                    'range' => ['gt' => 0]
-                ]
             ],
             'time_range' => "-{$measurement}{$timeMeasurement} to +0{$timeMeasurement}",
         ];
