@@ -144,6 +144,7 @@ class Instance extends Model
                     ->from($company->competitors()->getTable())
                     ->where('company_id', $company->id);
             })
+            ->where('risk_score', '!=', 0)
             ->groupBy('instances.company_id');
     }
 

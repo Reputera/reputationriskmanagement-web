@@ -72,8 +72,8 @@ class InstanceTransformer extends TransformerAbstract
      *              "link" => "A URL to the instance",
      *              "regions" => "Europe, South America",
      *              "positive_risk_score" => "20",
-     *              "negative_risk_score" => "50",
-     *              "risk_score" => "-30",
+     *              "negative_risk_score" => "20",
+     *              "risk_score" => "N/A",
      *              "flagged" => true
      *          }
      *      ]},
@@ -102,7 +102,7 @@ class InstanceTransformer extends TransformerAbstract
             'regions' => implode(', ', $instance->getRegions()),
             'positive_risk_score' => $instance->positive_risk_score,
             'negative_risk_score' => $instance->negative_risk_score,
-            'risk_score' => $instance->risk_score,
+            'risk_score' => $instance->risk_score ?: 'N/A',
             'deleted_at' => $instance->deleted_at
         ];
     }

@@ -73,15 +73,18 @@ class CompetitorReputationChangeTest extends \TestCase
         $companyCompetitor = factory(Company::class)->create();
         $company->competitors()->attach($companyCompetitor->id);
 
-//        Day 1 total = 30
+//        Not counted because 0 risk score.
         $this->createInstanceForCompanyWithScoreAndDate($company, 0, $startDate);
+
+//        Day 1 total = 31
+        $this->createInstanceForCompanyWithScoreAndDate($company, 1, $startDate);
 
 //        Day 2 total = 60
         $this->createInstanceForCompanyWithScoreAndDate($company, 50, $secondDay);
 
-//        Day 2 (60) -  Day 1 (30) = 30 / 30 = 1 * 100
+//        Day 2 (60) -  Day 1 (31) = 31 / 31 = 1 * 100
         $this->assertEquals(
-            '25',
+            '24',
             number_format($this->reputationChange->forCompetitorsBetween(
                 $company,
                 $startDate,

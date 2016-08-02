@@ -15,6 +15,8 @@ class QueryingTest extends \TestCase
         $returnedInstance = factory(Instance::class)->create();
         $returnedInstance->countries()->attach($country);
 
+        factory(Instance::class)->create(['risk_score' => 0])->countries()->attach($country);
+
         $deletedInstance = factory(Instance::class)->create([
             'start' => $returnedInstance->start,
             'vector_id' => $returnedInstance->vector->id,
