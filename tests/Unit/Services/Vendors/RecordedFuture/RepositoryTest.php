@@ -50,7 +50,7 @@ class RepositoryTest extends \TestCase
         $this->assertInstanceDoesNotSave($instance, $company, 'Duplicate Record:');
     }
 
-    public function test_no_saving_of_instance_with_zero_total_sentiment()
+    public function test_saving_of_instance_with_zero_total_sentiment()
     {
         $singleInstance = SingleInstance::get();
         $singleInstance['instances'][0]['attributes']['general_negative'] =
@@ -59,7 +59,8 @@ class RepositoryTest extends \TestCase
 
         $company = factory(Company::class)->create();
 
-        $this->assertInstanceDoesNotSave($instance, $company, 'Nullifed sentiment:');
+        $this->assertNotFalse($this->repo->saveInstanceForCompany($instance, $company));
+        $this->assertInstanceInDb($company, $singleInstance['instances'][0]);
     }
 
     protected function assertInstanceDoesNotSave(Instance $instance, Company $company, $message)

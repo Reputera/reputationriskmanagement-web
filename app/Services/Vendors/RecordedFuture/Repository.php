@@ -54,11 +54,6 @@ class Repository
             return false;
         }
 
-        if ($attributes->getPositiveSentiment() == $attributes->getNegativeSentiment()) {
-            $this->error = 'Nullifed sentiment: '.(string) $instance;
-            return false;
-        }
-
         $timestamp = (new Carbon())->toDateTimeString();
         $positiveScore = round($attributes->getPositiveSentiment() * 100);
         $negativeScore = round($attributes->getNegativeSentiment() * 100);
