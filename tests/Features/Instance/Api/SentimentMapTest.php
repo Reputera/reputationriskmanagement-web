@@ -15,6 +15,8 @@ class SentimentMapTest extends \TestCase
 //        This record is noise, so assert it is not returned in results.
         factory(Instance::class)->create();
 
+
+
         $user = $this->beLoggedInAsUser();
 
         $country = factory(Country::class)->create();
@@ -32,6 +34,14 @@ class SentimentMapTest extends \TestCase
             'vector_id' => $returnedInstances[0]->vector_id
         ]);
 
+        $nullInstance = factory(Instance::class)->create([
+            'company_id' => $user->company_id,
+            'risk_score' => 0,
+            'start' => Carbon::now()->subDay(1),
+            'vector_id' => $returnedInstances[0]->vector_id
+        ]);
+
+        $nullInstance->countries()->attach($country);
         $returnedInstances[0]->countries()->attach($country);
         $returnedInstances[1]->countries()->attach($country);
         $returnedInstances[2]->countries()->attach($otherCountry);

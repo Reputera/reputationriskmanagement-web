@@ -31,6 +31,7 @@ class ReputationChange
         $competitorsArray = $company->competitors->pluck('id')->all();
         $competitorsArray[] = $company->id;
         $builder = Instance::whereIn('company_id', $competitorsArray)
+            ->where('risk_score', '!=', 0)
             ->dailyScaledCompanyRiskScore($company)
             ->whereRaw("start between '{$start->toDateString()} 00:00:00' and '{$end->toDateString()} 23:59:59'")
             ->orderByRaw('start_date ASC');
@@ -54,6 +55,7 @@ class ReputationChange
             ->getRelated()
             ->dailyScaledCompanyRiskScore($company)
             ->whereRaw("start between '{$start->toDateString()} 00:00:00' and '{$end->toDateString()} 23:59:59'")
+            ->where('risk_score', '!=', 0)
             ->orderByRaw('start_date ASC');
         $builder->join('instance_country', 'instance_country.instance_id', '=', 'instances.id');
         $builder->join('countries', 'countries.id', '=', 'instance_country.country_id');
@@ -79,6 +81,7 @@ class ReputationChange
         // do not try to group.
         return $company->instances()->getRelated()->dailyScaledCompanyRiskScore($company)
             ->whereRaw("start between '{$start->toDateString()} 00:00:00' and '{$end->toDateString()} 23:59:59'")
+            ->where('risk_score', '!=', 0)
             ->orderByRaw('start_date ASC');
     }
 

@@ -19,6 +19,7 @@ class QueryBuilder
             ->leftJoin('instance_country', 'instances.id', '=', 'instance_country.instance_id')
             ->leftJoin('countries', 'countries.id', '=', 'instance_country.country_id')
             ->leftJoin('regions', 'regions.id', '=', 'countries.region_id')
+            ->where('risk_score', '!=', 0)
             ->groupBy('instances.id');
 
         $builder = $request->sendBuilderThroughPipeline($builder, [SortingPipeline::class]);
