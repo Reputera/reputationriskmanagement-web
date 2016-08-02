@@ -40,7 +40,7 @@ class QueueProcessor
 
                 $filesProcessed[] = $queuedResponseFile->getFilename();
                 foreach ($response->getInstances() as $instance) {
-                    if($instanceId = $this->recordedFutureRepo->saveInstanceForCompany($instance, $company)) {
+                    if ($instanceId = $this->recordedFutureRepo->saveInstanceForCompany($instance, $company)) {
                         $createdInstanceIds[] = $instanceId;
                     }
                 }
@@ -50,7 +50,7 @@ class QueueProcessor
             }
         }
 
-        foreach($createdInstanceIds as $instanceId) {
+        foreach ($createdInstanceIds as $instanceId) {
             event(new InstanceCreatedEvent($instanceId));
         }
 
