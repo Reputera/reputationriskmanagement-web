@@ -102,7 +102,7 @@ class InstanceTransformer extends TransformerAbstract
             'regions' => implode(', ', $instance->getRegions()),
             'positive_risk_score' => $instance->positive_risk_score,
             'negative_risk_score' => $instance->negative_risk_score,
-            'risk_score' => $instance->risk_score ?: 'N/A',
+            'risk_score' => (string)$instance->risk_score ?: 'N/A',
             'deleted_at' => $instance->deleted_at
         ];
     }
