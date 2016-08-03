@@ -9,6 +9,12 @@ use Tests\StubData\RecordedFuture\SingleInstance;
 
 class ResponseTest extends \TestCase
 {
+    public function test_the_instance_has_a_source_media_type_the_entity_is_put_into_the_related_entities()
+    {
+        $this->markTestSkipped('We are leaving Recorded Future, in the future, and there is not a good case for writing this complex test.');
+    }
+
+
     public function test_the_response_has_more_pages()
     {
         $this->assertTrue($this->getResponse(['next_page_start' => '123456'])->hasMorePages());

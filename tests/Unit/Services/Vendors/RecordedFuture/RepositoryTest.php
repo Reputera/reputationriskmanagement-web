@@ -24,6 +24,11 @@ class RepositoryTest extends \TestCase
         $this->repo = new Repository();
     }
 
+    public function test_instance_is_of_social_media_type_and_assigned_properly()
+    {
+        $this->markTestSkipped('We are leaving Recorded Future, in the future, and there is not a good case for writing this complex test.');
+    }
+
     public function test_duplicate_based_on_fragment_does_not_save()
     {
         $company = factory(Company::class)->create();

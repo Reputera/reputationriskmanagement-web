@@ -27,7 +27,7 @@ class Repository
      *
      * @param Instance $instance
      * @param Company $company
-     * @return bool
+     * @return integer
      */
     public function saveInstanceForCompany(Instance $instance, Company $company)
     {
@@ -37,6 +37,15 @@ class Repository
         $hashedFragment = sha1($fragment);
         $attributes = $instance->getAttributes();
         $document = $instance->getDocument();
+
+
+        $vectorId = DB::table('vector_event_types')->where('event_type', $instance->getType())->value('vector_id');
+        if ($mediaEntity = array_get($instance->getRelatedEntities(), $document->getSource()->getMediaType())) {
+            if ($mediaEntity->getName() == 'Social Media') {
+                $vectorId = DB::table('vectors')->where('name', 'Social Intelligence')->value('id');
+            }
+        }
+
         $link = $document->getUrl();
         $hashedLink = sha1($link);
 
@@ -61,7 +70,7 @@ class Repository
         try {
             $instanceId = DB::table('instances')->insertGetId([
                 'company_id' => $company->id,
-                'vector_id' => DB::table('vector_event_types')->where('event_type', $instance->getType())->value('vector_id'),
+                'vector_id' => $vectorId,
                 'entity_id' => $instance->getId(),
                 'type' => $instance->getType(),
                 'start' => (new Carbon($instance->getStart()))->toDateTimeString(),

@@ -70,6 +70,17 @@ class Response extends BaseRecord
                 $newInstance->setRelatedEntities(array_merge($thisInstanceEntities, $allInstanceEntities));
             }
 
+            $mediaTypeKey = null;
+            if ($newInstance->getDocument()->getSource()->getMediaType()) {
+                $mediaTypeKey = $newInstance->getDocument()->getSource()->getMediaType();
+            }
+
+            if ($mediaTypeKey && $mediaEntity = array_get($requestEntities, $mediaTypeKey)) {
+                $newInstance->setRelatedEntities(
+                    array_merge([$mediaTypeKey => $mediaEntity], $newInstance->getRelatedEntities())
+                );
+            }
+
             $instancesToReturn[] = $newInstance;
         }
 
