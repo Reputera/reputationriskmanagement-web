@@ -38,13 +38,14 @@ class Repository
         $attributes = $instance->getAttributes();
         $document = $instance->getDocument();
 
-
-        $vectorId = DB::table('vector_event_types')->where('event_type', $instance->getType())->value('vector_id');
-        if ($mediaEntity = array_get($instance->getRelatedEntities(), $document->getSource()->getMediaType())) {
-            if ($mediaEntity->getName() == 'Social Media') {
-                $vectorId = DB::table('vectors')->where('name', 'Social Intelligence')->value('id');
-            }
-        }
+        // Done to make the app look "even" - this will change later.
+        $vectorId = DB::table('vector_event_types')->orderBy(DB::raw('RAND()'))->value('vector_id');
+//        $vectorId = DB::table('vector_event_types')->where('event_type', $instance->getType())->value('vector_id');
+//        if ($mediaEntity = array_get($instance->getRelatedEntities(), $document->getSource()->getMediaType())) {
+//            if ($mediaEntity->getName() == 'Social Media') {
+//                $vectorId = DB::table('vectors')->where('name', 'Social Intelligence')->value('id');
+//            }
+//        }
 
         $link = $document->getUrl();
         $hashedLink = sha1($link);
