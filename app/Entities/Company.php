@@ -123,9 +123,8 @@ class Company extends Model
      *
      * @param Carbon $start
      * @param Carbon $end
-     * @return float
      */
-    public function reputationChangeBetweenDates(Carbon $start, Carbon $end): float
+    public function reputationChangeBetweenDates(Carbon $start, Carbon $end)
     {
         return app(ReputationChange::class)->forCompanyBetween($this, $start, $end);
     }
