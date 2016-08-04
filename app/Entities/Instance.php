@@ -118,6 +118,7 @@ class Instance extends Model
     {
         return self::addSelectForRiskScoreAverage($builder)
             ->where('instances.company_id', '=', $company->id)
+            ->where('instances.risk_score', '!=', 0)
             ->groupBy('instances.company_id');
     }
 

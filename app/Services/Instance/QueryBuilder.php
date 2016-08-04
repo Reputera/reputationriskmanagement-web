@@ -19,7 +19,7 @@ class QueryBuilder
             ->leftJoin('instance_country', 'instances.id', '=', 'instance_country.instance_id')
             ->leftJoin('countries', 'countries.id', '=', 'instance_country.country_id')
             ->leftJoin('regions', 'regions.id', '=', 'countries.region_id')
-            ->where('risk_score', '!=', 0)
+
             ->groupBy('instances.id');
 
         $builder = $request->sendBuilderThroughPipeline($builder, [SortingPipeline::class]);
@@ -27,6 +27,11 @@ class QueryBuilder
 
         if ($request->get('showDeleted')) {
             $builder->withTrashed();
+        }
+
+        if (array_get($paramArray, 'ignoreNulls') == true ) {
+            dd('asdf');
+            $builder->where('risk_score', '!=', 0);
         }
 
         if (array_has($paramArray, 'fragment')) {

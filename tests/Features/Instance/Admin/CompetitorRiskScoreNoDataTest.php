@@ -3,6 +3,8 @@
 namespace Tests\Features\Instance\Admin;
 
 use App\Entities\Company;
+use App\Entities\Instance;
+use Carbon\Carbon;
 
 class CompetitorRiskScoreNoDataTest extends \TestCase
 {
@@ -10,6 +12,12 @@ class CompetitorRiskScoreNoDataTest extends \TestCase
     {
         /** @var Company $company */
         $company = factory(Company::class)->create();
+
+        factory(Instance::class)->create([
+            'company_id' => $company->id,
+            'start' => Carbon::now()->subDay(),
+            'risk_score' => 0
+        ]);
 
         $this->beLoggedInAsAdmin();
         $this->apiCall('GET', 'competitors-average-risk-score', [

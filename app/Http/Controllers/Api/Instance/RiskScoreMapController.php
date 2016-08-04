@@ -82,7 +82,7 @@ class RiskScoreMapController extends ApiController
             ->get();
         \DB::setFetchMode(\PDO::FETCH_CLASS);
         foreach($regionList as $key => $region) {
-            $regionList[$key]['percent_change'] = $request->user()->company->reputationChangeForRegionBetweenDates(
+            $regionList[$key]['percent_change'] = (string)$request->user()->company->reputationChangeForRegionBetweenDates(
                 Region::where(['name' => $region['region']])->first(),
                 $startTime,
                 $endTime
@@ -96,7 +96,7 @@ class RiskScoreMapController extends ApiController
             );
             \DB::setFetchMode(\PDO::FETCH_CLASS);
             foreach($regionList[$key]['vectors'] as $vectorKey => $vectorData) {
-                $regionList[$key]['vectors'][$vectorKey]['percent_change'] = $request->user()->company->reputationChangeForRegionBetweenDates(
+                $regionList[$key]['vectors'][$vectorKey]['percent_change'] = (string)$request->user()->company->reputationChangeForRegionBetweenDates(
                     Region::where(['name' => $region['region']])->first(),
                     new Carbon($request->get('start_datetime')),
                     new Carbon($request->get('end_datetime')),

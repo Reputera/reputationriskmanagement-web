@@ -12,7 +12,7 @@ class QueryingTest extends \TestCase
         factory(Instance::class)->create();
 
         $country = factory(Country::class)->create();
-        $returnedInstance = factory(Instance::class)->create();
+        $returnedInstance = factory(Instance::class)->create(['risk_score' => 0]);
         $returnedInstance->countries()->attach($country);
 
         factory(Instance::class)->create(['risk_score' => 0])->countries()->attach($country);

@@ -49,9 +49,11 @@ class QueryController extends Controller
      */
     public function getRiskScore(InstanceQueryRequest $request, QueryBuilder $queryBuilder)
     {
-        $resultCollection = $queryBuilder->queryInstances($request, $request->getForQuery([
+        $params = $request->getForQuery([
             'vectors_name', 'companies_name', 'regions_name', 'hideFlagged', 'fragment'
-        ]))->get();
+        ]);
+        $params['ignoreNulls'] = true;
+        $resultCollection = $queryBuilder->queryInstances($request, $params)->get();
         $resultCount = $resultCollection->count();
         return $this->respondWithArray([
             'risk_score' => $resultCount ? (int)round(($resultCollection->sum('risk_score') / $resultCount)) : 0
@@ -64,9 +66,10 @@ class QueryController extends Controller
      */
     public function getInstancesCsv(InstanceQueryRequest $request, QueryBuilder $queryBuilder)
     {
-        $resultCollection = $queryBuilder->queryInstances($request, $request->getForQuery([
+        $params = $request->getForQuery([
             'vectors_name', 'companies_name', 'regions_name', 'hideFlagged', 'fragment'
-        ]))->get();
+        ]);
+        $resultCollection = $queryBuilder->queryInstances($request, $params)->get();
         $instances = $this->fractalizeCollection($resultCollection, new InstanceTransformer());
         $csv = Writer::createFromFileObject(new \SplTempFileObject());
         $csv->insertOne(array_keys(array_get($instances, 'data.0')));
