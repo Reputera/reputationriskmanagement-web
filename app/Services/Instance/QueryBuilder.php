@@ -30,7 +30,6 @@ class QueryBuilder
         }
 
         if (array_get($paramArray, 'ignoreNulls') == true ) {
-            dd('asdf');
             $builder->where('risk_score', '!=', 0);
         }
 
