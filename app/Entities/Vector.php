@@ -67,6 +67,7 @@ class Vector extends Model
             ->where('instances.company_id', $company->id)
             ->where('instances.start', 'like', $year.'-'.$month.'%')
             ->where('instances.vector_id', $this->id)
+            ->where('instances.risk_score', '!=', 0)
             ->selectRaw('sum(instances.risk_score) / COUNT(distinct instances.id) AS vector_score')
             ->selectRaw('COUNT(distinct instances.id) AS count_instances');
 

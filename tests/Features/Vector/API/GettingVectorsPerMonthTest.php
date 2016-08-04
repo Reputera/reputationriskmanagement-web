@@ -10,6 +10,7 @@ class GettingVectorsPerMonthTest extends \TestCase
     public function testTwoMonthsOfRiskScoresAreBrokenIntoVectors()
     {
         $vectorsCollection = factory(Vector::class)->times(4)->create();
+
         $vectors = $vectorsCollection->toArray();
         $user = $this->beLoggedInAsUser();
 
@@ -62,6 +63,13 @@ class GettingVectorsPerMonthTest extends \TestCase
         factory(Instance::class)->create([
             'company_id' => $user->company->id,
             'risk_score' => '20',
+            'vector_id' => $vectors[0]['id'],
+            'start' => $date.'-'.$faker->dateTime()->format('d H:i:s')
+        ]);
+
+        factory(Instance::class)->create([
+            'company_id' => $user->company->id,
+            'risk_score' => '0',
             'vector_id' => $vectors[0]['id'],
             'start' => $date.'-'.$faker->dateTime()->format('d H:i:s')
         ]);
